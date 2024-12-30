@@ -9,12 +9,12 @@ Route::get('/', function () {
 });
 
 // Admin authentication routes
-Route::group([ 'middlleware' => 'admin.redirect'], function() {
+Route::group([ 'middleware' => 'admin.redirect'], function() {
   Route::get('/admin-login', [ AdminAuthController::class, 'showLoginPage' ]) -> name('admin.login.page');
   Route::post('/admin-login', [ AdminAuthController::class, 'login' ]) -> name('admin.login');
 });
 
 // Admin page routes
-Route::group([ 'middlleware' => 'admin'], function() {
+Route::group([ 'middleware' => 'admin'], function() {
   Route::get('/admin-dashboard', [ AdminPageController::class, 'showDashboard' ]) -> name('admin.dashboard');
 });
