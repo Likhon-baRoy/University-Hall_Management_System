@@ -13,7 +13,7 @@ class AdminAuthController extends Controller
     return view('admin.pages.login');
   }
 
-  // Admin login system
+  // Admin Login system
   public function login(Request $request) {
 
     // Data Validation
@@ -33,5 +33,13 @@ class AdminAuthController extends Controller
     }
 
     return $request -> all();
+  }
+
+  // Admin Logout system
+  public function logout() {
+    // logout the user from Admin guard
+    Auth::guard('admin') -> logout();
+    // then redirect the user to admin login page
+    return redirect() -> route('admin.login.page');
   }
 }

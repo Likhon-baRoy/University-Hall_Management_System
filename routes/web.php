@@ -17,4 +17,5 @@ Route::group([ 'middleware' => 'admin.redirect'], function() {
 // Admin page routes
 Route::group([ 'middleware' => 'admin'], function() {
   Route::get('/admin-dashboard', [ AdminPageController::class, 'showDashboard' ]) -> name('admin.dashboard');
+  Route::get('/admin-logout', [ AdminAuthController::class, 'logout' ]) -> name('admin.logout');
 });
