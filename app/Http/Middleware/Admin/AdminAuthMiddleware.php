@@ -16,10 +16,11 @@ class AdminAuthMiddleware
    */
   public function handle(Request $request, Closure $next): Response {
 
+    // if user is logged-in then let user go to request
     if (Auth::guard('admin') -> check()) {
       return $next($request);
     }
-
+    // else redirect user to login page
     return redirect() -> route('admin.login.page');
   }
 }
