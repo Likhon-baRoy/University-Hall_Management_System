@@ -10,6 +10,7 @@ Route::get('/', function () {
 
 // Admin authentication routes
 Route::get('/admin-login', [ AdminAuthController::class, 'showLoginPage' ]) -> name('admin.login.page');
+Route::post('/admin-login', [ AdminAuthController::class, 'login' ]) -> name('admin.login');
 
 // Admin page routes
 Route::get('/admin-dashboard', [ AdminPageController::class, 'showDashboard' ]) -> name('admin.dashboard');
