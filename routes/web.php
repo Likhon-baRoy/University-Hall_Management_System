@@ -13,4 +13,6 @@ Route::get('/admin-login', [ AdminAuthController::class, 'showLoginPage' ]) -> n
 Route::post('/admin-login', [ AdminAuthController::class, 'login' ]) -> name('admin.login');
 
 // Admin page routes
-Route::get('/admin-dashboard', [ AdminPageController::class, 'showDashboard' ]) -> name('admin.dashboard');
+Route::group([ 'middlleware' => 'admin'], function() {
+  Route::get('/admin-dashboard', [ AdminPageController::class, 'showDashboard' ]) -> name('admin.dashboard');
+});
