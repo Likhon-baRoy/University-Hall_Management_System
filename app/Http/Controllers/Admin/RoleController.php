@@ -80,26 +80,37 @@ class RoleController extends Controller
       'permissions'  => $permissions,
       'edit'         => $edit
     ]);
-    }
+  }
 
-      /**
-       * Update the specified resource in storage.
-       */
-      public function update(Request $request, string $id) {
-        //
-      }
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, string $id) {
+    // get the data to update
+    $update_data = Role::findOrFail($id);
 
-      /**
-       * Remove the specified resource from storage.
-       */
-      public function destroy(string $id) {
-        // search id to delete
-        $data = Role::findOrFail($id);
+    // update data
+    $update_data -> update([
+      'name'    => $request -> name,
+      'slug'    => Str::slug($request -> name),
+      'permissions' => json_encode($request -> permission ?? [])
+    ]);
 
-        // delete if found
-        $data -> delete();
+    // return with a success message and redirect to the role index page
+    return redirect()->route('role.index')->with('success-main', $request->name . ' role updated successfully');
+  }
 
-        // return with a success message
-        return back() -> with('success-main', 'Role deleted successfully');
-      }
-    }
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(string $id) {
+    // search id to delete
+    $data = Role::findOrFail($id);
+
+    // delete if found
+    $data -> delete();
+
+    // return with a success message
+    return back() -> with('success-main', 'Role deleted successfully');
+  }
+}
