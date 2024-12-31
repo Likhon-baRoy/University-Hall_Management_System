@@ -122,7 +122,7 @@
                   <ul style="list-style: none; padding-left: 0px;">
                     @forelse(json_decode($permissions) as $item)
                       <li>
-                        <label><input type="checkbox" @if(in_array($item -> name, json_decode($edit -> permissions))) checked @endif value="{{ $item -> name }}" /> {{ $item -> name }}</label>
+                        <label><input name="permission[]" type="checkbox" @if(in_array($item -> name, json_decode($edit -> permissions))) checked @endif value="{{ $item -> name }}" /> {{ $item -> name }}</label>
                       </li>
                     @empty
                       <li>
