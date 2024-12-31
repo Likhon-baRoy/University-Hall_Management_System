@@ -92,4 +92,29 @@ class AdminController extends Controller
   {
     //
   }
+
+  /*****************************************************************
+   * Custom Methods Section
+   *****************************************************************/
+  /**
+   * Status update
+   */
+  public function updateStatus($id) {
+    // catch data
+    $data = Admin::findOrFail($id);
+
+    // change status
+    if ($data -> status) {
+      $data -> update([
+        'status' => false
+      ]);
+    } else {
+      $data -> update([
+        'status' => true
+      ]);
+    }
+
+    // return with a success message
+    return back() -> with('success-main','Admin user created!');
+  }
 }

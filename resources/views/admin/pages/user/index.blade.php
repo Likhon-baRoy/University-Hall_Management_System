@@ -19,6 +19,7 @@
                   <th>Role</th>
                   <th>Photo</th>
                   <th>Created At</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -37,6 +38,15 @@
                         @endif
                       </td>
                       <td>{{$item -> created_at -> diffForHumans()}}</td>
+                      <td>
+                        @if($item -> status)
+                          <span class="badge badge-success">Active User</span>
+                          <a class="text-danger" href="{{ route('admin.status.update', $item -> id) }} "><i class="fa fa-times"></i></a>
+                        @else
+                          <span class="badge badge-danger">Blocked User</span>
+                          <a class="text-success" href="{{ route('admin.status.update', $item -> id) }} "><i class="fa fa-check"></i></a>
+                        @endif
+                      </td>
                       <td>
                         <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                         <a class="btn btn-sm btn-warning" href="{{ route('admin-user.edit', $item -> id) }} "><i class="fa fa-edit"></i></a>
