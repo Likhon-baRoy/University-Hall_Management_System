@@ -30,7 +30,15 @@
                     <td>{{$loop -> index + 1}}</td>
                     <td>{{$per -> name}}</td>
                     <td>{{$per -> slug}}</td>
-                    <td>{{$per -> permissions}}</td>
+                    <td>
+                      <ul style="list-style: none; padding-left: 0px;">
+                        @forelse( json_decode($per -> permissions ?? '[]') as $item )
+                          <li><i class="fa fa-angle-right"></i> {{ $item }}</li>
+                        @empty
+                          <li> No permission found! </li>
+                        @endforelse
+                      </ul>
+                    </td>
                     <td>{{$per -> created_at -> diffForHumans()}}</td>
                     <td>
                       <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
@@ -76,7 +84,7 @@
                 <ul style="list-style: none; padding-left: 0px;">
                   @forelse($permissions as $item)
                     <li>
-                      <label><input type="checkbox"/> {{ $item -> name }}</label>
+                      <label><input name="permission[]" value="{{ $item -> name }}" type="checkbox"/> {{ $item -> name }}</label>
                     </li>
                   @empty
                     <li>
