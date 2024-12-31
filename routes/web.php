@@ -24,6 +24,6 @@ Route::group([ 'middleware' => 'admin'], function() {
   // Admin Permission routes
   Route::resource('/permission', PermissionController::class);
 
-
+  // Roles route
   Route::resource('/role', RoleController::class);
 });
