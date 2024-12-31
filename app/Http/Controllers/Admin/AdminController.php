@@ -41,8 +41,8 @@ class AdminController extends Controller
     // Data Validation
     $request -> validate([
       'name'        => ['required'],
-      'email'       => 'required|email|unique:students',
-      'cell'        => ['required', 'starts_with:01,8801,+8801', 'regex:/^\+?[0-9]{11,15}$/', 'unique:students'], // Regex for phone number validation
+      'email'       => 'required|email|unique:admins',
+      'cell'        => ['required', 'starts_with:01,8801,+8801', 'regex:/^\+?[0-9]{11,15}$/', 'unique:admins'], // Regex for phone number validation
       'username'    => ['required', 'unique:admins', 'min:4', 'max:10'],
     ]);
 
