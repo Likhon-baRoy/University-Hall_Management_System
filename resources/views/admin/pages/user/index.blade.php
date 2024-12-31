@@ -17,6 +17,7 @@
                   <th>#</th>
                   <th>Name</th>
                   <th>Role</th>
+                  <th>Photo</th>
                   <th>Created At</th>
                   <th>Action</th>
                 </tr>
@@ -30,6 +31,11 @@
                       <td>{{$loop -> index + 1}}</td>
                       <td>{{$item -> name}}</td>
                       <td>{{$item -> role_id}}</td>
+                      <td>
+                        @if ($item -> photo == 'avatar.png')
+                          <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/avatar.png') }}" alt="">
+                        @endif
+                      </td>
                       <td>{{$item -> created_at -> diffForHumans()}}</td>
                       <td>
                         <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
