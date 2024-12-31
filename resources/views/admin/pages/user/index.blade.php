@@ -25,22 +25,24 @@
 
                 @forelse ($all_admin as $item)
 
-                  <tr>
-                    <td>{{$loop -> index + 1}}</td>
-                    <td>{{$item -> name}}</td>
-                    <td>{{$item -> role_id}}</td>
-                    <td>{{$item -> created_at -> diffForHumans()}}</td>
-                    <td>
-                      <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
-                      <a class="btn btn-sm btn-warning" href="{{ route('admin-user.edit', $item -> id) }} "><i class="fa fa-edit"></i></a>
+                  @if( $item -> name !== 'Provider' )
+                    <tr>
+                      <td>{{$loop -> index + 1}}</td>
+                      <td>{{$item -> name}}</td>
+                      <td>{{$item -> role_id}}</td>
+                      <td>{{$item -> created_at -> diffForHumans()}}</td>
+                      <td>
+                        <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-sm btn-warning" href="{{ route('admin-user.edit', $item -> id) }} "><i class="fa fa-edit"></i></a>
 
-                      <form method="POST" action="{{ route('admin-user.destroy', $item -> id) }}" class="d-inline delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
-                      </form>
-                    </td>
-                  </tr>
+                        <form method="POST" action="{{ route('admin-user.destroy', $item -> id) }}" class="d-inline delete-form">
+                          @csrf
+                          @method('DELETE')
+                          <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endif
 
                 @empty
                   <tr>
