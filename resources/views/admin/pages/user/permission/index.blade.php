@@ -32,7 +32,12 @@
                                     <td>
                                         <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                                         <a class="btn btn-sm btn-warning" href="#"><i class="fa fa-edit"></i></a>
-                                        <a class="btn btn-sm btn-danger" href="#"><i class="fa fa-trash"></i></a>
+
+                                        <form method="POST" action="{{ route('permission.destroy', $per -> id) }}" class="d-inline">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
 
