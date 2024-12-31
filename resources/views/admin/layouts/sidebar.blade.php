@@ -46,7 +46,7 @@
 		  <a href="#"><i class="fe fe-check-verified"></i> <span> Admin User</span> <span class="menu-arrow"></span></a>
 		  <ul style="display: none;">
 			<li><a href="#">Users</a></li>
-			<li><a href="#">Role</a></li>
+			<li><a href="{{ route('role.index') }}">Role</a></li>
 			<li><a href="{{ route('permission.index') }}">Permission</a></li>
 		  </ul>
 		</li>
