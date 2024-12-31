@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Permission;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+  /**
+   * Display a listing of the resource.
+   */
   public function index() {
-    return view('admin.pages.user.permission.index');
+    $permissions = Permission::latest() -> get();
+    return view('admin.pages.user.permission.index', [
+      'all_permission'    => $permissions
+    ]);
   }
 
   /**
@@ -25,9 +30,18 @@ class PermissionController extends Controller
   /**
    * Store a newly created resource in storage.
    */
-  public function store(Request $request)
-  {
-    //
+  public function store(Request $request) {
+    // Data Validation
+    $request -> validate([
+      'name'    => 'required|unique:permissions',
+    ]);
+    // Data Store
+    Permission::create([
+      'name'    => $request -> name,
+      'slug'    => Str::slug($request -> name)
+    ]);
+
+    return back() -> with('success', 'permission added successfully');
   }
 
   /**
