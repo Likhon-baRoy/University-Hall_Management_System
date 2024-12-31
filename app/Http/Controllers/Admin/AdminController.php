@@ -52,6 +52,7 @@ class AdminController extends Controller
 
     // store data
     Admin::create([
+      'role_id'   => $request -> role,
       'name'      => $request -> name,
       'email'     => $request -> email,
       'cell'      => $request -> cell,
