@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminPageController;
+use App\Http\Controllers\Admin\PermissionController;
 
 Route::get('/', function () {
   return view('admin.pages.dashboard');
@@ -18,4 +19,7 @@ Route::group([ 'middleware' => 'admin.redirect'], function() {
 Route::group([ 'middleware' => 'admin'], function() {
   Route::get('/admin-dashboard', [ AdminPageController::class, 'showDashboard' ]) -> name('admin.dashboard');
   Route::get('/admin-logout', [ AdminAuthController::class, 'logout' ]) -> name('admin.logout');
+
+  // Admin Permission routes
+  Route::resource('/permission', PermissionController::class);
 });
