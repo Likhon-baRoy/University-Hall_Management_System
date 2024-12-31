@@ -31,7 +31,7 @@
                     <tr>
                       <td>{{$loop -> index + 1}}</td>
                       <td>{{$item -> name}}</td>
-                      <td>{{$item -> role_id}}</td>
+                      <td>{{$item -> role -> name}}</td>
                       <td>
                         @if ($item -> photo == 'avatar.png')
                           <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/avatar.png') }}" alt="">
@@ -108,7 +108,7 @@
                               <select name="role" id="" class="form-control">
                                     <option value="">-- Select --</option>
                                  @foreach ($roles as $role)
-                                     <option value="">{{$role -> name}}</option>
+                                   <option value="{{$role -> id}}">{{$role -> name}}</option>
                                  @endforeach
                               </select>
                             </div>
