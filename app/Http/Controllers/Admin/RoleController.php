@@ -50,8 +50,6 @@ class RoleController extends Controller
     ]);
 
     return back() -> with('success', 'Role added successfully');
-
-    return $request -> all();
   }
 
   /**
@@ -65,30 +63,43 @@ class RoleController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id)
-  {
-    //
-  }
+  public function edit(string $id) {
+    // get latest role
+    $roles = Role::latest() -> get();
 
-  /**
-   * Update the specified resource in storage.
-   */
-  public function update(Request $request, string $id)
-  {
-    //
-  }
+    // get latest permission from Permission table
+    $permissions = Permission::latest() -> get();
 
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(string $id) {
-    // search id to delete
-    $data = Role::findOrFail($id);
+    // find role data by id
+    $edit = Role::findOrFail($id);
 
-    // delete if found
-    $data -> delete();
+    // return the get data
+    return view('admin.pages.user.role.index', [
+      'roles'        => $roles,
+      'form_type'    => 'edit',
+      'permissions'  => $permissions,
+      'edit'         => $edit
+    ]);
+    }
 
-    // return with a success message
-    return back() -> with('success-main', 'Role deleted successfully');
-  }
-}
+      /**
+       * Update the specified resource in storage.
+       */
+      public function update(Request $request, string $id) {
+        //
+      }
+
+      /**
+       * Remove the specified resource from storage.
+       */
+      public function destroy(string $id) {
+        // search id to delete
+        $data = Role::findOrFail($id);
+
+        // delete if found
+        $data -> delete();
+
+        // return with a success message
+        return back() -> with('success-main', 'Role deleted successfully');
+      }
+    }

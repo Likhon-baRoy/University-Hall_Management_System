@@ -42,7 +42,7 @@
                     <td>{{$per -> created_at -> diffForHumans()}}</td>
                     <td>
                       <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
-                      <a class="btn btn-sm btn-warning" href="{{ route('permission.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
+                      <a class="btn btn-sm btn-warning" href="{{ route('role.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
 
                       <form method="POST" action="{{ route('role.destroy', $per -> id) }}" class="d-inline delete-form">
                         @csrf
@@ -100,6 +100,44 @@
             </form>
           </div>
         </div>
+        @endif
+
+        @if ( $form_type == 'edit')
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <h4 class="card-title">Edit Role Data</h4>
+              <a href="{{ route('role.index') }}">Go Back</a>
+            </div>
+            <div class="card-body">
+              <form action="{{ route('role.update', $edit -> id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="form-group">
+                  @include('validate')
+                  <label>Name</label>
+                  <input name="name" type="text" value="{{ $edit -> name }}" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <ul style="list-style: none; padding-left: 0px;">
+                    @forelse(json_decode($permissions) as $item)
+                      <li>
+                        <label><input type="checkbox" @if(in_array($item -> name, json_decode($edit -> permissions))) checked @endif value="{{ $item -> name }}" /> {{ $item -> name }}</label>
+                      </li>
+                    @empty
+                      <li>
+                        <label>No records found</label>
+                      </li>
+                    @endforelse
+                  </ul>
+                </div>
+
+                <div class="text-right">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
         @endif
 
     </div>
