@@ -28,7 +28,7 @@
                                     <td>{{$loop -> index + 1}}</td>
                                     <td>{{$per -> name}}</td>
                                     <td>{{$per -> slug}}</td>
-                                    <td>{{$per -> created_at}}</td>
+                                    <td>{{$per -> created_at -> diffForHumans()}}</td>
                                     <td>
                                         <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                                         <a class="btn btn-sm btn-warning" href="#"><i class="fa fa-edit"></i></a>
@@ -36,13 +36,11 @@
                                     </td>
                                 </tr>
 
-
                                 @empty
                                     <tr>
                                         <td class="text-center text-danger" colspan="5">No Records Found</td>
                                     </tr>
                                 @endforelse
-
 
                             </tbody>
                         </table>
@@ -56,16 +54,16 @@
                     <h4 class="card-title">Add New Permission</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('permission.store')}}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            @include('validate')
-                            <label>Name</label>
-                            <input name="name" type="text" class="form-control">
-                        </div>
-                        <div class="text-right">
-                          <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
+                  <form action="{{ route('permission.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                      @include('validate')
+                      <label>Name</label>
+                      <input name="name" type="text" class="form-control">
+                    </div>
+                    <div class="text-right">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                     </form>
                 </div>
             </div>
