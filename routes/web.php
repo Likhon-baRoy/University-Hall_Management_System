@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 
 Route::get('/', function () {
   return view('admin.pages.dashboard');
@@ -22,4 +23,7 @@ Route::group([ 'middleware' => 'admin'], function() {
 
   // Admin Permission routes
   Route::resource('/permission', PermissionController::class);
+
+
+  Route::resource('/role', RoleController::class);
 });
