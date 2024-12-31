@@ -44,7 +44,7 @@
                       <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                       <a class="btn btn-sm btn-warning" href="{{ route('permission.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
 
-                      <form method="POST" action="{{ route('permission.destroy', $per -> id) }}" class="d-inline">
+                      <form method="POST" action="{{ route('role.destroy', $per -> id) }}" class="d-inline delete-form">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
