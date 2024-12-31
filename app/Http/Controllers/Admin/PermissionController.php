@@ -79,7 +79,7 @@ class PermissionController extends Controller
     $data -> delete();
 
     // return with a success message
-    return back() -> with('success', 'permission deleted successfully');
+    return back() -> with('success-main', 'permission deleted successfully');
 
   }
 }
