@@ -50,12 +50,7 @@
                       <td>
                         <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                         <a class="btn btn-sm btn-warning" href="{{ route('admin-user.edit', $item -> id) }} "><i class="fa fa-edit"></i></a>
-
-                        <form method="POST" action="{{ route('admin-user.destroy', $item -> id) }}" class="d-inline delete-form">
-                          @csrf
-                          @method('DELETE')
-                          <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
-                        </form>
+                        <a class="btn btn-sm btn-danger" href="{{ route('admin.trash.update', $item -> id) }}"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
                   @endif

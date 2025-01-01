@@ -15,7 +15,7 @@ class AdminController extends Controller
    */
   public function index() {
     //
-    $all_admin = Admin::latest() -> get();
+    $all_admin = Admin::latest() -> where('trash', false) -> get();
 
     $roles = Role::latest() -> get();
 
@@ -117,5 +117,27 @@ class AdminController extends Controller
 
     // return with a success message
     return back() -> with('success-main', $data -> name . ' status update successful');
+  }
+
+  /**
+   * Trash update
+   */
+  public function updateTrash($id) {
+    // catch data
+    $data = Admin::findOrFail($id);
+
+    // change status
+    if ($data -> trash) {
+      $data -> update([
+        'trash' => false
+      ]);
+    } else {
+      $data -> update([
+        'trash' => true
+      ]);
+    }
+
+    // return with a success message
+    return back() -> with('success-main', $data -> name . ' data moved to Trash');
   }
 }
