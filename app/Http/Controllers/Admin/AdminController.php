@@ -7,6 +7,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\AdminAccountInfoNotification;
 
 class AdminController extends Controller
 {
@@ -54,7 +55,7 @@ class AdminController extends Controller
     $pass = substr($pass_string, 3, 6); // now take string from position: 3 to 9, 6 digit
 
     // store data
-    Admin::create([
+    $user = Admin::create([
       'role_id'   => $request -> role,
       'name'      => $request -> name,
       'email'     => $request -> email,
@@ -62,8 +63,12 @@ class AdminController extends Controller
       'username'  => $request -> username,
       'password'  => Hash::make($pass),
     ]);
+
+    // send notification to user email
+    $user -> notify( new AdminAccountInfoNotification( [$user['name'], $pass] ));
+
     return back() -> with('success','Admin user created!');
-  }
+    }
 
   /**
    * Display the specified resource.
