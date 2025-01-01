@@ -19,6 +19,7 @@
                   <th>Slug</th>
                   <th>Permissions</th>
                   <th>Created At</th>
+                  <th>Users</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -40,6 +41,7 @@
                       </ul>
                     </td>
                     <td>{{$per -> created_at -> diffForHumans()}}</td>
+                    <td class="text-center">{{ $per->users->count() }}</td> <!-- Count of users -->
                     <td>
                       <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                       <a class="btn btn-sm btn-warning" href="{{ route('role.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
