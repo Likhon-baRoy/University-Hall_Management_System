@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminPageController;
@@ -33,4 +34,8 @@ Route::group([ 'middleware' => 'admin'], function() {
   Route::get('/admin-user-status-update/{id}', [ AdminController::class, 'updateStatus' ]) -> name('admin.status.update');
   Route::get('/admin-user-trash-update/{id}', [ AdminController::class, 'updateTrash' ]) -> name('admin.trash.update');
   Route::get('/admin-trash', [ AdminController::class, 'trashUsers' ]) -> name('admin.trash');
+
+  // user profile routes
+  Route::resource('/profile', ProfileController::class);
+  /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
 });
