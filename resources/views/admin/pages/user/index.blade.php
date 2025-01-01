@@ -5,11 +5,12 @@
   <div class="row">
     <div class="col-lg-8">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between">
           <h4 class="card-title">All Admin User</h4>
-          @include('validate-main')
+          <a href="{{ route('admin.trash') }}" class="text-danger">Trash Users <i class="fa fa-arrow-right"></i></a>
         </div>
         <div class="card-body">
+          @include('validate-main')
           <div class="table-responsive">
             <table class="table mb-0">
               <thead>

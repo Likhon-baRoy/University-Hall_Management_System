@@ -128,16 +128,33 @@ class AdminController extends Controller
 
     // change status
     if ($data -> trash) {
+
       $data -> update([
         'trash' => false
       ]);
+      // return with a success message
+      return back() -> with('success-main', $data -> name . ' data moved to Admin user');
+
     } else {
       $data -> update([
         'trash' => true
       ]);
+      // return with a success message
+      return back() -> with('success-main', $data -> name . ' data moved to Trash');
     }
 
-    // return with a success message
-    return back() -> with('success-main', $data -> name . ' data moved to Trash');
+  }
+
+  /**
+   * Display Trash Users
+   */
+  public function trashUsers() {
+    //
+    $all_admin = Admin::latest() -> where('trash', true) -> get();
+
+    return view('admin.pages.user.trash', [
+      'all_admin'      => $all_admin,
+      'form_type'     => 'trash',
+    ]);
   }
 }
