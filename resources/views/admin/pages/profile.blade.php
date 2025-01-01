@@ -19,7 +19,7 @@
 		  </div>
 
 		  <div class="col-auto profile-btn">
-			<a href="#" class="btn btn-primary"> Edit </a>
+            <a class="btn btn-primary" data-toggle="modal" href="#edit_personal_details"> Edit </a>
 		  </div>
 		</div>
 	  </div>
@@ -69,92 +69,119 @@
               </div>
               <!-- /Personal Details -->
 
-	          <!-- Edit Details Modal -->
-	          <div class="modal fade" id="edit_personal_details" aria-hidden="true" role="dialog">
-		        <div class="modal-dialog modal-dialog-centered" role="document" >
-		          <div class="modal-content">
-			        <div class="modal-header">
-			          <h5 class="modal-title">Personal Details</h5>
-			          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				        <span aria-hidden="true">&times;</span>
-			          </button>
-			        </div>
-			        <div class="modal-body">
-			          <form>
-				        <div class="row form-row">
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>First Name</label>
-					          <input type="text" class="form-control" value="John">
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>Last Name</label>
-					          <input type="text"  class="form-control" value="Doe">
-					        </div>
-				          </div>
-				          <div class="col-12">
-					        <div class="form-group">
-					          <label>Date of Birth</label>
-					          <div class="cal-icon">
-						        <input type="text" class="form-control" value="24-07-1983">
-					          </div>
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>Email ID</label>
-					          <input type="email" class="form-control" value="johndoe@example.com">
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>Mobile</label>
-					          <input type="text" value="+1 202-555-0125" class="form-control">
-					        </div>
-				          </div>
-				          <div class="col-12">
-					        <h5 class="form-title"><span>Address</span></h5>
-				          </div>
-				          <div class="col-12">
-					        <div class="form-group">
-					          <label>Address</label>
-					          <input type="text" class="form-control" value="4663 Agriculture Lane">
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>City</label>
-					          <input type="text" class="form-control" value="Miami">
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>State</label>
-					          <input type="text" class="form-control" value="Florida">
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>Zip Code</label>
-					          <input type="text" class="form-control" value="22434">
-					        </div>
-				          </div>
-				          <div class="col-12 col-sm-6">
-					        <div class="form-group">
-					          <label>Country</label>
-					          <input type="text" class="form-control" value="United States">
-					        </div>
-				          </div>
-				        </div>
-				        <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
-			          </form>
-			        </div>
-		          </div>
-		        </div>
-	          </div>
-			  <!-- /Edit Details Modal -->
+              <!-- Edit Details Modal -->
+              <div class="modal fade" id="edit_personal_details" aria-hidden="true" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Personal Details</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+                      <form method="POST" action="">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="row form-row">
+                          <!-- First Name -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>First Name</label>
+                              <input type="text" class="form-control" name="first_name" value="{{ old('first_name', Auth::guard('admin')->user()->first_name) }}">
+                            </div>
+                          </div>
+
+                          <!-- Last Name -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Last Name</label>
+                              <input type="text" class="form-control" name="last_name" value="{{ old('last_name', Auth::guard('admin')->user()->last_name) }}">
+                            </div>
+                          </div>
+
+                          <!-- Date of Birth -->
+                          <div class="col-12">
+                            <div class="form-group">
+                              <label>Date of Birth</label>
+                              <div class="cal-icon">
+                                <input type="text" class="form-control" name="date_of_birth" value="{{ old('date_of_birth', Auth::guard('admin')->user()->date_of_birth) }}">
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Email -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Email ID</label>
+                              <input type="email" class="form-control" name="email" value="{{ old('email', Auth::guard('admin')->user()->email) }}">
+                            </div>
+                          </div>
+
+                          <!-- Mobile -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Mobile</label>
+                              <input type="text" class="form-control" name="cell" value="{{ old('cell', Auth::guard('admin')->user()->cell) }}">
+                            </div>
+                          </div>
+
+                          <!-- Address -->
+                          <div class="col-12">
+                            <h5 class="form-title"><span>Address</span></h5>
+                          </div>
+
+                          <!-- Address Field -->
+                          <div class="col-12">
+                            <div class="form-group">
+                              <label>Address</label>
+                              <input type="text" class="form-control" name="address" value="{{ old('address', Auth::guard('admin')->user()->address) }}">
+                            </div>
+                          </div>
+
+                          <!-- City -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>City</label>
+                              <input type="text" class="form-control" name="city" value="{{ old('city', Auth::guard('admin')->user()->city) }}">
+                            </div>
+                          </div>
+
+                          <!-- State -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>State</label>
+                              <input type="text" class="form-control" name="state" value="{{ old('state', Auth::guard('admin')->user()->state) }}">
+                            </div>
+                          </div>
+
+                          <!-- Zip Code -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Zip Code</label>
+                              <input type="text" class="form-control" name="zip_code" value="{{ old('zip_code', Auth::guard('admin')->user()->zip_code) }}">
+                            </div>
+                          </div>
+
+                          <!-- Country -->
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Country</label>
+                              <input type="text" class="form-control" name="country" value="{{ old('country', Auth::guard('admin')->user()->country) }}">
+                            </div>
+                          </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Edit Details Modal -->
+
 
 			</div>
 
