@@ -2,9 +2,10 @@
 <div class="sidebar" id="sidebar">
   <div class="sidebar-inner slimscroll">
 	<div id="sidebar-menu" class="sidebar-menu">
+	  <h2 style="text-align: center; color: #91f1ff; font-size: 24px; margin-bottom: 20px; font-weight: bold;">ADMIN PANEL</h2> <hr/>
 	  <ul>
 		<li class="menu-title">
-		  <span>Main</span>
+          <span>Main</span>
 		</li>
 		<li>
 		  <a href="#"><i class="fe fe-home"></i> <span>Dashboard</span></a>
