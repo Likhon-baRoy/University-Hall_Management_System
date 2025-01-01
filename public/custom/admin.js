@@ -14,6 +14,6 @@
             }
         });
 
-        $('.data-table-search').DataTable();
+        $('.data-table-element').DataTable();
     });
 })(jQuery)

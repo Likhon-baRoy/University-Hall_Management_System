@@ -12,6 +12,7 @@
 
 	<!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('admin/assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.css"/>
 
 	<!-- Fontawesome CSS -->
     <link rel="stylesheet" href="{{asset('admin/assets/css/font-awesome.min.css')}}">
@@ -73,6 +74,8 @@
 	<!-- Bootstrap Core JS -->
     <script src="{{asset('admin/assets/js/popper.min.js')}}"></script>
     <script src="{{asset('admin/assets/js/bootstrap.min.js')}}"></script>
+    <!--Searcing javascript-->
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.js"></script>
 
 	<!-- Slimscroll JS -->
     <script src="{{asset('admin/assets/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
