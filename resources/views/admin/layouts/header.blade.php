@@ -120,7 +120,7 @@
             <p class="text-muted mb-0">{{ Auth::guard('admin') -> user() -> role -> name }}</p>
           </div>
         </div>
-        <a class="dropdown-item" href="profile.html">My Profile</a>
+        <a class="dropdown-item" href="{{ route('profile.index') }}">My Profile</a>
         <a class="dropdown-item" href="settings.html">Settings</a>
         <a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a>
       </div>
