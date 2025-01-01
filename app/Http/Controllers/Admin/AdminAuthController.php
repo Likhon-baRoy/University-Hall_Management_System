@@ -31,7 +31,7 @@ class AdminAuthController extends Controller
         return redirect() -> route('admin.dashboard');
       } else {
         Auth::guard('admin') -> logout(); // logged-out the user first, because user is already logged-in
-        return redirect() -> route('admin.login.page') -> with('danger', 'This account is blocked');
+        return redirect() -> route('admin.login.page') -> with('danger', 'This account is restricted');
       }
     } else {
       return redirect() -> route('admin.login.page') -> with('warning', 'Email/Password not matched');
