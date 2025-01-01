@@ -8,22 +8,22 @@
     <title>Doccure - Dashboard</title>
 
 	<!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('admin/assets/img/favicon.png')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('admin/assets/img/favicon.png') }}">
 
 	<!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{asset('admin/assets/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.css"/>
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.css') }}"/>
 
 	<!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{asset('admin/assets/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/font-awesome.min.css') }}">
 
 	<!-- Feathericon CSS -->
-    <link rel="stylesheet" href="{{asset('admin/assets/css/feathericon.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/feathericon.min.css') }}">
 
-	<link rel="stylesheet" href="{{asset('admin/assets/plugins/morris/morris.css')}}">
+	<link rel="stylesheet" href="{{ asset('admin/assets/plugins/morris/morris.css') }}">
 
 	<!-- Main CSS -->
-    <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
 
 	<!--[if lt IE 9]>
 	  <script src="admin/assets/js/html5shiv.min.js"></script>
@@ -75,7 +75,7 @@
     <script src="{{asset('admin/assets/js/popper.min.js')}}"></script>
     <script src="{{asset('admin/assets/js/bootstrap.min.js')}}"></script>
     <!--Searcing javascript-->
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.js"></script>
+	<script type="text/javascript" src="{{ asset('https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.js') }}"></script>
 
 	<!-- Slimscroll JS -->
     <script src="{{asset('admin/assets/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
