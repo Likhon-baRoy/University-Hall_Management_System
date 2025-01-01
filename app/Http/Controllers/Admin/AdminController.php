@@ -40,10 +40,13 @@ class AdminController extends Controller
   public function store(Request $request) {
     // Data Validation
     $request -> validate([
+      'role'        => ['required'], // Ensure the role field is selected
       'name'        => ['required'],
       'email'       => 'required|email|unique:admins',
       'cell'        => ['required', 'starts_with:01,8801,+8801', 'regex:/^\+?[0-9]{11,15}$/', 'unique:admins'], // Regex for phone number validation
       'username'    => ['required', 'unique:admins', 'min:4', 'max:10'],
+    ], [
+      'role.required' => 'Please select a role.', // Custom error message
     ]);
 
     // genarete random password
