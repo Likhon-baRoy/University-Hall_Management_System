@@ -116,6 +116,6 @@ class AdminController extends Controller
     }
 
     // return with a success message
-    return back() -> with('success-main','Admin user created!');
+    return back() -> with('success-main', $data -> name . ' status update successful');
   }
 }
