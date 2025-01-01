@@ -35,7 +35,7 @@
                       <td>{{$item -> role -> name}}</td>
                       <td>
                         @if ($item -> photo == 'avatar.png')
-                          <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/avatar.png') }}" alt="">
+                          <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/img/avatar.png') }}" alt="">
                         @endif
                       </td>
                       <td>{{$item -> created_at -> diffForHumans()}}</td>
