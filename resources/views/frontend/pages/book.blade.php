@@ -50,7 +50,7 @@
         <ul class="slides">
 
           @php
-          $sliders = App\Models\Slider::latest() -> get();
+          $sliders = App\Models\Slider::latest() -> where('status', true) -> where('trash', false) -> get();
           @endphp
 
           @foreach ($sliders as $slide)
