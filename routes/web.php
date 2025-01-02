@@ -37,8 +37,11 @@ Route::group([ 'middleware' => 'admin'], function() {
   Route::get('/admin-user-trash-update/{id}', [ AdminController::class, 'updateTrash' ]) -> name('admin.trash.update');
   Route::get('/admin-trash', [ AdminController::class, 'trashUsers' ]) -> name('admin.trash');
 
-  // slider routes
+  // Slider routes
   Route::resource('/slider', SlideController::class);
+  Route::get('/slider-status-update/{id}', [SlideController::class, 'updateStatus'])->name('slider.status.update');
+  Route::get('/slider-trash-update/{id}', [SlideController::class, 'updateTrash'])->name('slider.trash.update');
+  Route::get('/slider-trash', [SlideController::class, 'trashSlider'])->name('slider.trash');
 
   // user profile routes
   Route::resource('/profile', ProfileController::class);

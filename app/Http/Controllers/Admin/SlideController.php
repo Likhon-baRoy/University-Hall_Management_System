@@ -11,15 +11,15 @@ class SlideController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
-  {
-    $sliders = Slider::latest() -> get();
+  public function index() {
+
+    $sliders = Slider::latest() -> where('trash', false) -> get();
+
     return view('admin.pages.slider.index', [
       'form_type' => 'create',
       'sliders'   => $sliders
     ]);
   }
-
 
   /**
    * Show the form for creating a new resource.
@@ -128,8 +128,77 @@ class SlideController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
-  {
-    //
+  public function destroy(string $id) {
+
+    $slider_data = Slider::findOrFail($id);
+
+    $slider_data -> delete();
+
+    // return with a success message
+    return back() -> with('success-main', $data -> title . ', deleted permanantly');
+  }
+
+
+  /*****************************************************************
+   * Custom Methods Section
+   *****************************************************************/
+  /**
+   * Status update
+   */
+  public function updateStatus($id) {
+
+    $slider_data = Slider::findOrfail($id);
+
+    if ($slider_data -> status) {
+
+      $slider_data -> update([
+        'status'    => false
+      ]);
+
+    } else{
+
+      $slider_data -> update([
+        'status'    => true
+      ]);
+    }
+
+    return back() -> with('success-main', $slider_data -> title . ', status update successful');
+  }
+
+  /**
+   * Trash update
+   */
+  public function updateTrash($id) {
+
+    $slider_data = Slider::findOrfail($id);
+
+    if ($slider_data -> trash) {
+
+      $slider_data -> update([
+        'trash'    => false
+      ]);
+
+    } else{
+
+      $slider_data -> update([
+        'trash'    => true
+      ]);
+    }
+
+    // return with a success message
+    return back() -> with('success-main', $slider_data -> title . ' data moved to Trash');
+  }
+
+  /**
+   * Display Trash Users
+   */
+  public function trashSlider() {
+
+    $slider_data = Slider::latest() -> where('trash', true) -> get();
+
+    return view('admin.pages.slider.trash', [
+      'slider_data'      => $slider_data,
+      'form_type'     => 'trash',
+    ]);
   }
 }
