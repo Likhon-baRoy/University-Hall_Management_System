@@ -59,8 +59,9 @@
               <div class="slide-wrap">
                 <div class="slide-content">
                   <div class="container">
-                    <h1>{{$slide -> title}}<span class="red-dot"></span></h1>
-                    <h6>{{ $slide -> subtitle}}</h6>
+                    <h1>{{$slide -> hall}}<span class="red-dot"></span></h1>
+                    <i>for {{$slide -> gender}}</i>
+                    <h6>Room No: {{ $slide -> room}}, Seat No: {{ $slide -> seat }}</h6>
                     <p>
 
                       @foreach (json_decode($slide -> btns) as $btn)

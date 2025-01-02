@@ -17,7 +17,10 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Title</th>
+                  <th>Hall Name</th>
+                  <th>Room No</th>
+                  <th>Seat No</th>
+                  <th>For Gender</th>
                   <th>Photo</th>
                   <th>Created At</th>
                   <th>Status</th>
@@ -29,7 +32,10 @@
                 @forelse ($sliders as $item)
                   <tr>
                     <td>{{ $loop -> index + 1 }}</td>
-                    <td>{{ $item -> title }}</td>
+                    <td>{{ $item -> hall }}</td>
+                    <td>{{ $item -> room }}</td>
+                    <td>{{ $item -> seat }}</td>
+                    <td>{{ $item -> gender }}</td>
                     <td><img style="width:60px;height:60px;object-fit:cover;" src="{{ url('storage/sliders/' . $item -> photo ) }}" alt=""></td>
                     <td>{{ $item -> created_at -> diffForHumans() }}</td>
                     <td>
@@ -70,13 +76,24 @@
             <form action="{{ route('slider.store') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">
-                <label>Title</label>
-                <input name="title" type="text" value="{{ old('title') }}" class="form-control">
+                <label>Hall Name:</label>
+                <input name="hall" type="text" value="{{ old('hall') }}" class="form-control">
               </div>
 
               <div class="form-group">
-                <label>Sub Title</label>
-                <input name="subtitle" value="{{ old('subtitle') }}" type="text" class="form-control">
+                <label>Room No:</label>
+                <input name="room" value="{{ old('room') }}" type="text" class="form-control">
+              </div>
+
+
+              <div class="form-group">
+                <label>Seat No:</label>
+                <input name="seat" value="{{ old('seat') }}" type="text" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label>For Gender:</label>
+                <input name="gender" value="{{ old('gender') }}" type="text" class="form-control">
               </div>
 
               <div class="form-group">
@@ -115,13 +132,23 @@
               @csrf
               @method('PUT')
               <div class="form-group">
-                <label>Title</label>
-                <input name="title" type="text" value="{{ $slider -> title }}" class="form-control">
+                <label>Hall Name:</label>
+                <input name="hall" type="text" value="{{ $slider -> hall }}" class="form-control">
               </div>
 
               <div class="form-group">
-                <label>Sub Title</label>
-                <input name="subtitle" value="{{ $slider -> subtitle }}" type="text" class="form-control">
+                <label>Room No:</label>
+                <input name="room" value="{{ $slider -> room }}" type="text" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label>Seat No:</label>
+                <input name="seat" value="{{ $slider -> seat }}" type="text" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label>For Gender:</label>
+                <input name="gender" value="{{ $slider -> gender }}" type="text" class="form-control">
               </div>
 
               <div class="form-group">

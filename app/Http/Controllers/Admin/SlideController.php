@@ -36,9 +36,11 @@ class SlideController extends Controller
   {
     // validation
     $request -> validate([
-      'title'             => 'required',
-      'subtitle'          => 'required',
-      'photo'             => 'required',
+      'hall'    => 'required',
+      'room'    => 'required',
+      'seat'    => 'required',
+      'gender'  => 'required',
+      'photo'   => 'required',
     ]);
 
     // btn management
@@ -63,10 +65,12 @@ class SlideController extends Controller
 
     // add new slide
     Slider::create([
-      'title'     => $request -> title,
-      'subtitle'  => $request -> subtitle,
-      'photo'     => $file_name,
-      'btns'      => json_encode($buttons)
+      'hall'     => $request -> hall,
+      'room'     => $request -> room,
+      'seat'     => $request -> seat,
+      'gender'   => $request -> gender,
+      'photo'    => $file_name,
+      'btns'     => json_encode($buttons)
     ]);
 
     // return back
@@ -84,14 +88,16 @@ class SlideController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id)
-  {
+  public function edit(string $id) {
+
     $slider = Slider::findOrFail($id);
+
     $sliders = Slider::latest() -> get();
+
     return view('admin.pages.slider.index', [
       'form_type' => 'edit',
       'sliders'   => $sliders,
-      'slider'   => $slider,
+      'slider'    => $slider,
     ]);
   }
 
@@ -116,9 +122,11 @@ class SlideController extends Controller
 
     // update slider
     $slider -> update([
-      'title'     => $request -> title,
-      'subtitle'  => $request -> subtitle,
-      'btns'      => json_encode($buttons)
+      'hall'     => $request -> hall,
+      'room'     => $request -> room,
+      'seat'     => $request -> seat,
+      'gender'   => $request -> gender,
+      'btns'     => json_encode($buttons)
     ]);
 
     // return back
@@ -135,7 +143,7 @@ class SlideController extends Controller
     $slider_data -> delete();
 
     // return with a success message
-    return back() -> with('success-main', $data -> title . ', deleted permanantly');
+    return back() -> with('success-main', $data -> hall . ', deleted permanantly');
   }
 
 
@@ -162,7 +170,7 @@ class SlideController extends Controller
       ]);
     }
 
-    return back() -> with('success-main', $slider_data -> title . ', status update successful');
+    return back() -> with('success-main', $slider_data -> hall . ', status update successful');
   }
 
   /**
@@ -186,7 +194,7 @@ class SlideController extends Controller
     }
 
     // return with a success message
-    return back() -> with('success-main', $slider_data -> title . ' data moved to Trash');
+    return back() -> with('success-main', $slider_data -> hall . ' data moved to Trash');
   }
 
   /**
