@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+@section('title', 'Slider Page')
 
 @section('main-section')
 
@@ -7,7 +8,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <h4 class="card-title">All Sliders</h4>
-          <a href="{{ route('admin.trash') }}" class="text-danger">Trash users <i class="fa fa-arrow-right"></i></a>
+          <a href="{{ route('slider.trash') }}" class="btn btn-sm btn-danger">Trash Slides <i class="fa fa-arrow-right"></i></a>
         </div>
         <div class="card-body">
           @include('validate-main')
@@ -34,16 +35,16 @@
                     <td>
                       @if($item -> status )
                         <span class="badge badge-success">Published</span>
-                        <a class="text-danger" href="{{ route('admin.status.update', $item -> id ) }}"><i class="fa fa-times"></i></a>
+                        <a class="text-danger" href="{{ route('slider.status.update', $item -> id ) }}"><i class="fa fa-times"></i></a>
                       @else
                         <span class="badge badge-danger">unpublished</span>
-                        <a class="text-success" href="{{ route('admin.status.update', $item -> id ) }}"><i class="fa fa-check"></i></a>
+                        <a class="text-success" href="{{ route('slider.status.update', $item -> id ) }}"><i class="fa fa-check"></i></a>
                       @endif
                     </td>
                     <td>
                       <a class="btn btn-sm btn-warning" href="{{ route('slider.edit', $item -> id ) }}"><i class="fa fa-edit"></i></a>
 
-                      <a href="{{ route('admin.trash.update', $item -> id) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                      <a href="{{ route('slider.trash.update', $item -> id) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
 
                     </td>
                   </tr>
@@ -81,13 +82,12 @@
               <div class="form-group">
                 <label>Photo</label>
                 <br>
-                <br>
                 <img style="max-width:100%;" id="slider-photo-preview" src="" alt="">
                 <br>
                 <br>
                 <input style="display:none;" name="photo" type="file" class="form-control" id="slider-photo">
                 <label for="slider-photo">
-                  <img style="width:100px; cursor:pointer;" src="https://icon-library.com/images/image-icon/image-icon-2.jpg" alt="">
+                  <img style="width:60px; cursor:pointer;" src="https://icon-library.com/images/image-icon/image-icon-2.jpg" alt="">
                 </label>
               </div>
               <hr>
@@ -127,13 +127,11 @@
               <div class="form-group">
                 <label>Photo</label>
                 <br>
-                <br>
                 <img style="max-width:100%;" id="slider-photo-preview" src="{{ url('storage/sliders/' . $slider -> photo) }}" alt="">
-                <br>
                 <br>
                 <input style="display:none;" name="photo" type="file" class="form-control" id="slider-photo">
                 <label for="slider-photo">
-                  <img style="width:100px; cursor:pointer;" src="https://icon-library.com/images/image-icon/image-icon-2.jpg" alt="">
+                  <img style="width: 80px; cursor: pointer;" src="https://icon-library.com/images/image-icon/image-icon-2.jpg" alt="">
                 </label>
               </div>
               <hr>
@@ -141,7 +139,7 @@
                 @php $i = 1; @endphp
                 @foreach ( json_decode($slider -> btns) as $btn)
                   <div class="btn-opt-area">
-                    <span>Button #{{ $i }}</span>
+                    <span>Button:{{ $i }}</span>
                     <span class="badge badge-danger remove-btn" style="margin-left:300px;cursor:pointer;">remove</span>
                     <input class="form-control" name="btn_title[]" value="{{ $btn -> btn_title }}" type="text" placeholder="Button Title">
                     <input class="form-control" value="{{ $btn -> btn_link }}" name="btn_link[]" type="text" placeholder="Button Link">
