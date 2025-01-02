@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+@section('title', 'Trash Users Page')
 
 @section('main-section')
 

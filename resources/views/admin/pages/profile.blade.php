@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+@section('title', 'ProfilePage')
 
 @section('main-section')
 

@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+@section('title', 'Admin Role Panel')
 
 @section('main-section')
 

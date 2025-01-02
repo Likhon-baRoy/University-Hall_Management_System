@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+@section('title', 'Admin Permission Panel')
 
 @section('main-section')
 
