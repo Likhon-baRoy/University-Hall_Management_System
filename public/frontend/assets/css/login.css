@@ -1,0 +1,122 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: poppins, sans-serif;
+    text-decoration: none;
+}
+
+body {
+    background-color: #f2f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo {
+    max-width: 230px;
+    height: auto;
+}
+
+div.login-form {
+    width: 400px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 5px 10px black;
+}
+
+div.login-form h2 {
+    text-align: center;
+    /* background-color: #204969; */
+    padding: 12px 0px;
+    color: #204969;
+}
+
+div.login-form form {
+    padding: 20px 40px;
+}
+
+div.login-form form div.input-field {
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+div.login-form form div.input-field i {
+    color: darkslategray;
+    padding: 10px 14px;
+    background-color: #f2f4f6;
+    margin-right: 4px;
+}
+
+div.login-form form div.input-field input {
+    background-color: #f2f4f6;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    width: 100%;
+    padding-left: 15px;
+}
+
+div.login-form form div.form-group {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+div.login-form form div.form-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #204969;
+}
+
+div.login-form form div.form-group select {
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    background-color: #f2f4f6;
+    width: 100%;
+}
+
+div.login-form form button {
+    width: 100%;
+    background-color: #5bd1d7;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    margin: 20px 0;
+    transition: background-color 0.4s;
+}
+
+div.login-form form button:hover {
+    background-color: #41b6e6;
+}
+
+div.login-form form div.extra {
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+div.login-form form div.extra a:first-child {
+    color: darkgrey;
+}
+
+div.login-form form div.extra a:last-child {
+    color: grey;
+}

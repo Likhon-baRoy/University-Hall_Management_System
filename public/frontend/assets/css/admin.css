@@ -1,0 +1,96 @@
+/* Push content below the fixed header */
+body {
+    padding-top: 60px; /* Matches header height */
+}
+
+.card {
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+#hall-info .card {
+    background-color: #f9f9f9;
+}
+
+/* CSS for Pie Charts */
+#roleChart, #hallChart {
+    width: 100% !important;    /* Make both charts responsive */
+    max-width: 450px;          /* Set a maximum width for both charts */
+    height: 400px !important;  /* Set a fixed height for both charts */
+    margin: 0 auto;            /* Center the charts horizontally */
+    image-rendering: optimizeQuality;  /* Ensures high-quality scaling */
+}
+
+/* Hall Information Table Styling */
+#hall-info {
+    width: 100%;              /* Makes it responsive */
+    max-width: 600px;         /* Limits the maximum width to match pie chart size */
+    margin: 0 auto;           /* Centers the table */
+}
+
+#hall-info h3 {
+    color: #4a6fa5;           /* Matches page theme */
+    font-weight: bold;        /* Bold header */
+}
+
+.table thead th {
+    background-color: #4a6fa5; /* Adds appealing header color */
+    color: white;             /* White text for contrast */
+    text-align: center;       /* Center aligns the text */
+    font-size: 1.1rem;        /* Slightly increases font size */
+}
+
+.table tbody td {
+    text-align: center;       /* Center aligns body text */
+    vertical-align: middle;   /* Aligns content vertically */
+    font-size: 0.95rem;       /* Standardizes font size */
+}
+
+/* Table Header Styles */
+.table thead th {
+    background-color: #4267b2; /* Darker blue for header */
+    color: white;             /* White text for contrast */
+    border-bottom: 2px solid #35496f; /* Subtle border */
+}
+
+/* Hover Effect for Rows */
+.table tbody tr:hover {
+    background-color: #f2f2f2; /* Light gray on hover */
+    cursor: pointer;          /* Interactive pointer */
+}
+
+/* Box Shadow for Table */
+#hall-info {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 8px; /* Rounded corners for a modern look */
+}
+
+/* Striped Row Colors */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #e9f1f7; /* Light blue for odd rows */
+}
+
+/* Column Widths */
+.table th, .table td {
+    width: 25%; /* Equal column widths */
+}
+
+/* Padding Adjustments for Better Spacing */
+.table th, .table td {
+    padding: 15px; /* Adds more space between text and borders */
+}
+/* .both { */
+/*     margin-left: 260px; */
+/*     /\* padding-left: 260px; *\/ */
+/* } */
+.main-content {
+    padding-left: 260px;
+}
+h1 {
+    text-align: center;
+}

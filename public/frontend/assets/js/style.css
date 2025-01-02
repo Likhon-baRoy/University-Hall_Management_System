@@ -1,0 +1,1242 @@
+/**************************************** Template CSS **********************/
+
+:root {
+  --primary: #bd0404;
+  --light: #f0fbfc;
+  --dark: #181d38;
+  --primary-font: "Roboto";
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: var(--primary-font);
+}
+.container {
+  max-width: 1172px;
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.fw-medium {
+  font-weight: 600 !important;
+}
+
+.fw-semi-bold {
+  font-weight: 700 !important;
+}
+
+.back-to-top {
+  position: fixed;
+  display: none;
+  right: 45px;
+  bottom: 45px;
+  z-index: 99;
+}
+
+/* ---------------------------- Header Start ------------------------------- */
+header {
+  height: 50px;
+  padding: 5px 0;
+  margin-top: 5px;
+  font-size: 18px;
+  margin-bottom: auto;
+  background-color: var(--primary);
+}
+
+header .header_contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-info i {
+  color: #ffffff;
+  padding: 5px;
+}
+.c-info a {
+  color: #ffffff;
+  text-align: left;
+  text-decoration: none;
+}
+
+/* header .c-info a:hover {
+  font-size: 15px;
+  font-weight: 400;
+  transition: all linear 0.3s;
+} */
+header .c_box i {
+  color: #ffffff;
+  margin-right: 5px;
+}
+
+header .c_box a {
+  color: var(--light);
+  font-family: var(--primary-font);
+  text-decoration: none;
+}
+
+/* header .c_box a:hover {
+  font-size: 15px;
+  font-weight: 400;
+  transition: all linear 0.3s;
+} */
+
+/* -------------------------- Header end -------------------------- */
+
+/*** Spinner ***/
+#spinner {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
+  z-index: 99999;
+}
+
+#spinner.show {
+  transition: opacity 0.5s ease-out, visibility 0s linear 0s;
+  visibility: visible;
+  opacity: 1;
+}
+
+/************************************ Button **************************************/
+.btn {
+  font-family: var(--primary-font);
+  font-weight: 600;
+  transition: 0.5s;
+}
+
+.btn.btn-primary,
+.btn.btn-secondary {
+  color: #ffffff;
+}
+
+.btn-square {
+  width: 30px;
+  height: 30px;
+}
+
+.btn-sm-square {
+  width: 35px;
+  height: 35px;
+}
+
+.btn-lg-square {
+  width: 48px;
+  height: 48px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
+  border-radius: 0px;
+}
+
+/* ================== Navbar =========================*/
+/* .navbar .dropdown-toggle::after {
+  border: none;
+  content: "\f107";
+  font-family: var(--primary-font);
+  font-weight: 900;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.city_logo {
+  margin-top: 20px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  margin-top: 20px;
+  margin-right: 40px;
+  color: #bd0404;
+  font-size: 13px;
+  padding: 15px 15px 15px 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  outline: none;
+  margin-bottom: 15px;
+} */
+/* afafaf */
+
+.navbar .dropdown-toggle::after {
+  border: none;
+  content: "\f107";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  margin-right: 30px;
+  padding: 25px 0;
+  color: #ffffff;
+  font-size: 15px;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+  color: var(--primary);
+}
+
+@media (max-width: 991.98px) {
+  .navbar-light .navbar-nav .nav-link {
+    margin-right: 0;
+    padding: 10px 0;
+  }
+
+  .navbar-light .navbar-nav {
+    border-top: 1px solid #eeeeee;
+  }
+}
+
+.navbar-light .navbar-brand,
+.navbar-light a.btn {
+  height: 75px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: var(--dark);
+  font-weight: 500;
+}
+
+.navbar-light.sticky-top {
+  top: -100px;
+  transition: 0.5s;
+}
+
+@media (min-width: 992px) {
+  .navbar .nav-item .dropdown-menu {
+    display: block;
+    margin-top: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+  }
+
+  .navbar .dropdown-menu.fade-down {
+    top: 100%;
+    transform: rotateX(-75deg);
+    transform-origin: 0% 0%;
+  }
+
+  .navbar .nav-item:hover .dropdown-menu {
+    top: 100%;
+    transform: rotateX(0deg);
+    visibility: visible;
+    transition: 0.5s;
+    opacity: 1;
+  }
+}
+
+/*************************************** Combine btn start*****************************************/
+.combined-button {
+  display: inline-flex;
+  align-items: center;
+  background-color: #d44040;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+/* ===============================Sign Up button style =============================*/
+.signup-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: var(--primary);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 30px 0 0 30px;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+/*============================= Log In button style =====================================*/
+.login-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  color: whitesmoke;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+/*==== Hover effects =========*/
+.signup-btn:hover {
+  background-color: #d44040;
+  color: black;
+}
+
+.login-btn:hover {
+  background-color: var(--primary);
+  color: black;
+}
+
+/************************************** Combine btn end *******************************/
+
+.primary-btn:hover {
+  font-size: 15px;
+  font-weight: 600;
+  background-color: var(--primary);
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-light .navbar-nav .nav-link {
+    margin-right: 0;
+    padding: 10px 0;
+  }
+
+  .navbar-light .navbar-nav {
+    border-top: 1px solid #eeeeee;
+  }
+}
+
+.navbar-light .navbar-brand,
+.navbar-light a.btn {
+  height: 75px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+.navbar-light.sticky-top {
+  top: -100px;
+  transition: 0.5s;
+}
+
+@media (min-width: 992px) {
+  .navbar .nav-item .dropdown-menu {
+    display: block;
+    margin-top: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+  }
+
+  .navbar .dropdown-menu.fade-down {
+    top: 100%;
+    transform: rotateX(-75deg);
+    transform-origin: 0% 0%;
+  }
+
+  .navbar .nav-item:hover .dropdown-menu {
+    top: 100%;
+    transform: rotateX(0deg);
+    visibility: visible;
+    transition: 0.5s;
+    opacity: 1;
+  }
+}
+
+/***===================== Header carousel ==================***/
+@media (max-width: 768px) {
+  .header-carousel .owl-carousel-item {
+    position: relative;
+    min-height: 500px;
+  }
+
+  .header-carousel .owl-carousel-item img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.header-carousel .owl-nav {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+}
+
+.header-carousel .owl-nav .owl-prev,
+.header-carousel .owl-nav .owl-next {
+  margin: 7px 0;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid #ffffff;
+  font-size: 22px;
+  transition: 0.9s;
+}
+
+.header-carousel .owl-nav .owl-prev:hover,
+.header-carousel .owl-nav .owl-next:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.page-header {
+  background: linear-gradient(rgba(24, 29, 56, 0.7), rgba(24, 29, 56, 0.7)),
+    url(../img/carousel-1.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.page-header-inner {
+  background: rgba(15, 23, 43, 0.7);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: var(--light);
+}
+
+/*** =================Section Title =================***/
+.section-title {
+  position: relative;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.section-title::before {
+  position: absolute;
+  content: "";
+  width: calc(100% + 80px);
+  height: 2px;
+  top: 4px;
+  left: -40px;
+  background: var(--primary);
+  z-index: -1;
+}
+
+.section-title::after {
+  position: absolute;
+  content: "";
+  width: calc(100% + 120px);
+  height: 2px;
+  bottom: 5px;
+  left: -60px;
+  background: var(--primary);
+  z-index: -1;
+}
+
+.section-title.text-start::before {
+  width: calc(100% + 40px);
+  left: 0;
+}
+
+.section-title.text-start::after {
+  width: calc(100% + 60px);
+  left: 0;
+}
+
+.section_heading {
+  text-align: center;
+  font-weight: 900;
+}
+
+/* =======================Facility Start ======================*/
+#facility {
+  margin-top: 120px;
+}
+
+#facility .facility_main {
+  margin-top: 15px;
+}
+
+#facility .facility_main .service_box {
+  margin-top: 60px;
+}
+
+#facility .facility_main .service_list {
+  margin-top: 33px;
+  margin-left: 10px;
+  margin-right: 40px;
+}
+
+#facility .facility_main .service_list ul li {
+  margin: 8px 0;
+  list-style: square;
+}
+
+#facility .facility_main .service_list ul li i {
+  font-size: 15px;
+  color: #064789;
+  margin-right: 12px;
+}
+/* ==========================    Facility End      =========================  */
+
+.see_more_btn {
+  margin-top: 100px;
+  margin-bottom: 150px;
+  text-align: center;
+}
+
+/*================== SEE MORE Button =======================*/
+.see_more_btn .s_m_btn {
+  background-color: #064789;
+  font-family: var(--primary-font);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  padding: 14px 50px;
+  border-radius: 6px;
+  transition: all linear 0.2s;
+  text-decoration: none;
+}
+
+.see_more_btn .s_m_btn:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+/*** Service ***/
+.service-item {
+  background: var(--light);
+  transition: 0.5s;
+}
+
+.service-item:hover {
+  margin-top: -10px;
+  background: var(--primary);
+}
+
+.service-item * {
+  transition: 0.5s;
+}
+
+.service-item:hover * {
+  color: var(--light) !important;
+}
+
+/*====================In room facility start ==========================*/
+#in_room_facility {
+  margin-top: 100px;
+}
+
+#in_room_facility .in_room_main {
+  margin-top: 48px;
+  padding-left: 32px;
+}
+
+#in_room_facility .in_room_main .in_room_box {
+  display: flex;
+  align-items: center;
+  margin-top: 27px;
+  padding-left: 20px;
+}
+
+#in_room_facility .in_room_main .in_room_box .in_room_icon {
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#in_room_facility .in_room_main .in_room_box ul li i {
+  font-size: 20px;
+  color: black;
+  padding: 0 3px;
+}
+
+#in_room_facility .in_room_main .in_room_box .in_room_text {
+  font-family: var(--primary-font);
+  font-size: 17px;
+  font-weight: 400;
+  color: black;
+  margin-left: 20px;
+}
+/* -------------------------- In-room Facility end -------------------------- */
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 0.75rem);
+  padding-left: var(--bs-gutter-x, 0.75rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container,
+  .container-sm {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container,
+  .container-md,
+  .container-sm {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 1320px;
+  }
+}
+
+/* -------------------------- Life at hall start -------------------------- */
+#life_at_hall {
+  margin-top: 120px;
+}
+
+#life_at_hall .life_at_main {
+  margin-top: 75px;
+  overflow: hidden;
+}
+
+#life_at_hall .life_at_main .img_row {
+  margin: 0;
+}
+
+#life_at_hall .life_at_main .img_main {
+  padding: 0;
+}
+
+#life_at_hall .life_at_main .img_main_2 {
+  padding: 0;
+}
+
+#life_at_hall .life_at_main .img_box {
+  position: relative;
+}
+
+#life_at_hall .life_at_main .img_box .img_overlay {
+  background-color: rgb(6, 71, 137, 0.9);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all linear 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#life_at_hall .life_at_main .img_main:nth-child(even) .img_overlay {
+  background-color: var(--primary);
+}
+
+#life_at_hall .life_at_main .img_main_2:nth-child(odd) .img_overlay {
+  background-color: var(--primary);
+}
+
+#life_at_hall .life_at_main .img_box .img_overlay a {
+  font-family: "Poppins", sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: #fff;
+  padding: 0 50px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+#life_at_hall .life_at_main .img_box img {
+  display: block;
+  width: 100%;
+}
+
+#life_at_hall .life_at_main .img_box .img_overlay:hover {
+  opacity: 1;
+}
+/* -------------------------- Life at hall end -------------------------- */
+
+/* -------------------------- FAQ start -------------------------- */
+#faq .faq_main {
+  margin-top: 75px;
+}
+
+#faq .accordion-item {
+  margin-left: 20px;
+}
+
+#faq .accordion-button:not(.collapsed) {
+  color: #fff;
+  background-color: #bd0404;
+}
+
+#faq .accordion-button {
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-weight: 400;
+  color: #2b2b2b;
+  line-height: 2;
+}
+
+#faq .accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+#faq .accordion-body {
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-weight: 400;
+  color: #2b2b2b;
+}
+
+#faq .accordion-button:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* -------------------------- FAQ end -------------------------- */
+
+/*** Testimonial ***/
+.testimonial-carousel::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+}
+
+.testimonial-carousel::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .testimonial-carousel::before,
+  .testimonial-carousel::after {
+    width: 200px;
+  }
+}
+
+@media (min-width: 992px) {
+  .testimonial-carousel::before,
+  .testimonial-carousel::after {
+    width: 300px;
+  }
+}
+
+.testimonial-carousel .owl-item .testimonial-text,
+.testimonial-carousel .owl-item.center .testimonial-text * {
+  transition: 0.5s;
+}
+
+.testimonial-carousel .owl-item.center .testimonial-text {
+  background: var(--primary) !important;
+}
+
+.testimonial-carousel .owl-item.center .testimonial-text * {
+  color: #ffffff !important;
+}
+
+.testimonial-carousel .owl-dots {
+  margin-top: 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.testimonial-carousel .owl-dot {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #cccccc;
+  transition: 0.5s;
+}
+
+.testimonial-carousel .owl-dot.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/************************ Footer Starts***************************/
+.footer .btn.btn-social {
+  margin-right: 5px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--light);
+  font-weight: normal;
+  border: 1px solid #ffffff;
+  border-radius: 35px;
+  transition: 0.3s;
+}
+
+.footer .btn.btn-social:hover {
+  color: var(--primary);
+}
+
+.footer .btn.btn-link {
+  display: block;
+  margin-bottom: 5px;
+  padding: 0;
+  text-align: left;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: normal;
+  text-transform: capitalize;
+  transition: 0.3s;
+}
+
+.footer .btn.btn-link::before {
+  position: relative;
+  content: "\f105";
+  font-family: var(--primary-font);
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.footer .btn.btn-link:hover {
+  letter-spacing: 1px;
+  box-shadow: none;
+}
+
+.footer .copyright {
+  padding: 20px 0 50px;
+  font-size: 15px;
+  border-top: 1px solid rgba(256, 256, 256, 0.1);
+}
+
+.footer .p_text {
+  margin-left: 100px;
+  align-items: center;
+  text-align: center;
+}
+
+/* .footer .footer-menu a {
+    margin-right: 15px;
+    padding-right: 15px;
+    border-right: 1px solid rgba(255, 255, 255, .1);
+}
+
+.footer .footer-menu a:last-child {
+    margin-right: 0;
+    padding-right: 0;
+    border-right: none;
+}
+
+.img-fluid1{
+    height: auto;
+    width: auto;
+} */
+
+/* .containerbox{
+    width: 100%;
+    display: grid;
+    padding-right: var(--bs-gutter-x),.75rem;
+    padding-left: var(--bs-gutter-x),.75rem;
+    margin-right: auto;
+    margin-left: auto;
+    box-sizing: border-box;
+} */
+
+/************************************* Footer Ends **************************************/
+
+/* ========================= Page common CSS end ========================= */
+
+#page_banner {
+  background-image: url(/assets/img/gallery-1.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#page_banner .p_banner_main {
+  padding: 120px 0;
+  position: relative;
+}
+
+#page_banner .p_banner_overlay {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 500;
+}
+
+.banner_heading {
+  color: #fff;
+  position: relative;
+  z-index: 501;
+}
+
+/* breadcrumb start */
+
+#page_breadcrumb {
+  margin: 30px 0;
+}
+
+.breadcrumb-item a {
+  color: #064789;
+  transition: all linear 0.3s;
+}
+
+.breadcrumb-item a:hover {
+  color: #ff7317;
+}
+
+.page_text {
+  margin-right: 25px;
+  margin-top: 35px;
+  margin-bottom: 75px;
+}
+
+/*=========================== breadcrumb end =====================*/
+
+/*============================= Page image section start================= */
+
+#page_img .page_img_box {
+  position: relative;
+}
+
+#page_img .page_img_box img {
+  display: block;
+  width: 100%;
+}
+
+#page_img .page_img_box .img_name {
+  background-color: rgba(255, 115, 23, 0.9);
+}
+
+#page_img .page_img_box .img_name {
+  width: 140px;
+  height: 94px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#page_img .page_img_box .img_name p {
+  font-family: var(--primary-font);
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+}
+
+/* Page image section end */
+
+.other_text {
+  margin-top: 35px;
+  margin-bottom: 35px;
+}
+
+/* ========================= Page common CSS end ========================= */
+
+/* ========================= Hall Failities page start ========================= */
+
+#hall_facility_main {
+  margin-top: 90px;
+}
+
+#hall_inroom {
+  margin-top: 90px;
+}
+
+/* ========================= Hall Failities page end ========================= */
+
+/* ========================= In-room Failities page start ========================= */
+#inroom_facility_main {
+  margin-top: 90px;
+}
+
+#inroom_facility_main .inroom_box {
+  margin-bottom: 75px;
+}
+
+#common_facility {
+  margin-top: 90px;
+}
+
+#common_facility .common_facility_box {
+  margin-bottom: 75px;
+}
+
+#other_support {
+  margin-top: 15px;
+}
+
+.other_text {
+  margin-top: 35px;
+  margin-bottom: 35px;
+}
+/* ========================= In-room Failities page end ========================= */
+
+/* ========================= Admission page start ========================= */
+#admission_main {
+  margin-top: 90px;
+  font-size: medium;
+  font-weight: 600;
+}
+
+#admission_main .seat_booking {
+  margin-bottom: 65px;
+  display: flex;
+}
+
+#admission_main .hall_fees {
+  margin-top: 75px;
+}
+
+#admission_main .fees_text {
+  margin-bottom: 15px;
+}
+
+#admission_main .payment_procedure {
+  margin-top: 75px;
+}
+
+.p_text other_text {
+  text-decoration: none;
+}
+#admission_main .payment_list {
+  margin-top: 35px;
+  margin-left: 15px;
+  margin-right: 40px;
+}
+
+#admission_main .payment_list ul li {
+  margin: 8px 0;
+  list-style: decimal;
+}
+
+#admission_main .seat_cancellation {
+  margin-top: 75px;
+}
+
+.admission-btn .p_btn {
+  background-color: #064789;
+  color: #fff;
+  margin-top: 100px;
+  margin-left: 30px;
+  margin-bottom: 150px;
+  text-align: center;
+  font-family: var(--primary-font);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 14px 50px;
+  border-radius: 6px;
+  transition: all linear 0.2s;
+  text-decoration: none;
+}
+
+.admission-btn .p_btn:hover {
+  background-color: #bd0404;
+  transition: all 0.3 ease-in-out;
+}
+/* ========================= Admission page end ========================= */
+
+/* ========================= FAQ page start ========================= */
+#faq_page .faq_main {
+  margin-top: 80px;
+}
+
+#faq_page .faq_categories {
+  background-color: var(--primary);
+  padding-top: 30px;
+  margin-right: 40px;
+}
+
+#faq_page .faq_categories .section_heading {
+  margin-bottom: 30px;
+}
+
+#faq_page .faq_categories button {
+  background: transparent;
+  border: none;
+  display: block;
+  padding: 20px 30px;
+  color: #fff;
+  font-family: "Poppins";
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 2;
+  transition: all linear 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+#faq_page .faq_categories button:hover {
+  background-color: #f5f5f5;
+  color: black;
+}
+
+#faq_page .faq_categories button.active {
+  background-color: #f5f5f5;
+  color: black;
+}
+
+#faq_page .tablink {
+  display: none;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#faq_page .faq_heading {
+  text-align: left;
+  margin-bottom: 50px;
+  color: #064789;
+}
+
+#faq_page .faq_sub_heading {
+  margin-bottom: 15px;
+  line-height: 2;
+}
+
+#faq_page .faq_box {
+  margin-bottom: 35px;
+}
+/* ========================= FAQ page end ========================= */
+
+/* ========================= Contact page start ========================= */
+#contact .contact_box {
+  margin-top: 60px;
+}
+.hall_name_heading {
+  color: #bd0404;
+  font-size: 30px;
+  font-weight: 600;
+}
+#contact .hall_name_heading {
+  margin-bottom: 20px;
+}
+
+.hall_location .p_text {
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+#contact .hall_location {
+  display: flex;
+  align-items: center;
+}
+
+#contact .hall_location i {
+  margin-right: 15px;
+}
+
+#contact .contact_main {
+  margin-top: 50px;
+}
+
+.contact_person_box {
+  margin-top: 30px;
+}
+
+.person_name {
+  font-weight: 700;
+}
+
+.designation_location {
+  margin-top: 15px;
+}
+
+.contact_details_box {
+  margin-top: 25px;
+}
+
+.contact_details_box .hall_contact i {
+  margin-right: 15px;
+}
+
+/* ========================= Contact page end ========================= */

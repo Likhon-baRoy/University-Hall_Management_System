@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\FrontendPageController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\RoleController;
 
 Route::get('/', function () {
   return view('admin.pages.dashboard');
@@ -38,4 +39,9 @@ Route::group([ 'middleware' => 'admin'], function() {
   // user profile routes
   Route::resource('/profile', ProfileController::class);
   /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
+
+  /**
+   * Frontend routes
+   */
+  Route::get('/', [ FrontendPageController::class, 'showHomePage' ]) -> name('home.page');
 });
