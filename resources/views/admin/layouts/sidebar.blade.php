@@ -20,7 +20,7 @@
         <!-- Slider -->
         @if (in_array('Slider', $permissions))
           <li class="{{ Request::is('slider*') ? 'active' : '' }}">
-            <a href="  "><i class="fe fe-desktop"></i> <span>Slider</span></a>
+            <a href="{{ route('slider.index') }}"><i class="fe fe-desktop"></i> <span>Slider</span></a>
           </li>
         @endif
 

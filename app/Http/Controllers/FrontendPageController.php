@@ -11,4 +11,8 @@ class FrontendPageController extends Controller {
   public function showHomePage() {
     return view('frontend.pages.home');
   }
+
+  public function showBookPage() {
+    return view('frontend.pages.book');
+  }
 }
