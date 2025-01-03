@@ -1,0 +1,63 @@
+#+TITLE:        🏢 University Hall Management System
+#+AUTHOR:       Likhon Baroi
+#+EMAIL:        likhonhere007@gmail.com
+#+DATE:         [2024-Sep-25 Wed]
+#+TAGS:         management database query university project
+
+:PROPERTIES:
+#+OPTIONS:
+:END:
+
+
+* About
+
+This is a project of a dormitory management system website designed to improve the efficiency and effectiveness of managing dormitories or student housing. The website addresses the specific challenges faced by dormitory management, such as managing room assignments, maintaining accurate occupancy records, and processing billing and payment information. The proposed system provides user registration and login, room assignment management, and payment processing functionality. The website was implemented using a combination of programming languages and frameworks, and rigorous testing and validation processes were performed to ensure its reliability and effectiveness. The results of the project showed that the website provided significant benefits to both students and administrators, such as reducing paperwork, increasing transparency, and improving communication. The report concludes with potential areas for future development and improvement, such as integrating with other campus management systems or adding new features to the website. Overall, the dormitory management system website has the potential to revolutionize the management of dormitories and student housing, and provide significant benefits to both students and administrators.
+
+* Table of Contents                                                     :toc:
+- [[#about][About]]
+- [[#what-are-we-looking-for][What are we looking for?]]
+- [[#-how-to-contribute][💻 How to contribute?]]
+- [[#-license][📜 License]]
+- [[#-where-to-report-for-bugs-or-issues][📝 Where to Report for bugs or issues?]]
+
+* What are we looking for?
+The basic things that we're looking for is fulfilment of all facilities shown this video: https://youtu.be/5u11Gv-wc_U
+
+- **Visual Booking facility*:* Allow users visual representation of rooms,
+  something like: hotel online book with view system. There Wil be section Boys
+  and Girls hall in frontend and they can choose their own seat from the
+  available(only available seat will be shown).
+
+  - When user clicked on =Book Now=, will redirect in registration form with info
+    data's: Hall, Room, Seat.
+
+- *Online Payment:* After Signup form submit, user data will be stored in database
+  but with inactive status. To activate account user have to pay the rent in
+  advance. There will be shown a =Complete Payment= button to pay online after
+  submitting the registration form.
+- *Notify on account activate:* When user account is activated, user will get notified via email.
+- *Auto Activate:* on paying due the user account will activate automatically.
+- *Renewing Seat:* Inactive users can Renew seat by paying the rent.
+- *Seat Cancellation:* User can cancel their seat by future month but not acceptable in current month.
+- *Dashboard graphical representation:* In user Dashboard we'll try to show some infos about hall, users ups-and-down etc through graphical representation.
+- *User validity check:* Check user ID If the user is from city university registered ID. Then we'll let them in. Otherwise we'll show user is invalid.
+
+~(/so that's it for now! we may update according to our requirements./)~
+
+* 💻 How to contribute?
+
+All contributions are welcome! Code, documentation, graphics or even design suggestions are welcome; use GitHub to its fullest. Submit pull requests, contribute tutorials or other wiki content -- whatever you have to offer, it would be appreciated!
+
+* 📜 License
+
+This project is licensed under the GNU General Public License v3.0 - see the [[https://github.com/Likhon-baRoy/Hall-Management-System/blob/main/LICENSE][LICENSE]] file for details.
+
+* 📝 Where to Report for bugs or issues?
+
+Report [[https://github.com/Likhon-baRoy/Hall-Management-System/issues/new][here]] in detail answering these questions:
+
+- What steps did you take to make the bug appear?
+- How can the bug be fixed? (In case you know)
+- Which OS and which all packages / softwares / dependencies are you using?
+- Have you tried any troubleshooting steps such as a reboot for example?
+- Have you followed the prescribed prerequisites?
