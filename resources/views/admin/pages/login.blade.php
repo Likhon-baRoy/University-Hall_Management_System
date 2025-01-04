@@ -27,7 +27,7 @@
         <div class="container">
           <div class="loginbox">
             <div class="login-left">
-			  <img class="img-fluid" src="admin/assets/img/logo-white.png" alt="Logo">
+			  <img class="img-fluid" src="admin/assets/img/cu-logo.png" alt="Logo">
             </div>
             <div class="login-right">
 			  <div class="login-right-wrap">
@@ -42,7 +42,7 @@
 					<input name="auth" class="form-control" type="text" placeholder="Email/Cell/Username">
 				  </div>
 				  <div class="form-group">
-					<input name = "password" class="form-control" type="text" placeholder="Password">
+					<input name = "password" class="form-control" type="password" placeholder="Password">
 				  </div>
 				  <div class="form-group">
 					<button class="btn btn-primary btn-block" type="submit">Login</button>
@@ -57,7 +57,7 @@
                   <span class="span-or">or</span>
                 </div>
 
-                <div class="text-center dont-have">Don't have an account? <a href="">Register</a></div>
+                <div class="text-center dont-have">Don't have an account? <a href="{{ route('admin.register.page') }}">Register</a></div>
 
 			  </div>
             </div>
