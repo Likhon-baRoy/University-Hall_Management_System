@@ -74,6 +74,23 @@
           <a href="{{ route('profile.index') }}"><i class="fe fe-user-plus"></i> <span>Profile</span></a>
         </li>
 
+        <!-- Hall Options -->
+        @if (in_array('Admins', $permissions))
+          <li class="menu-title">
+            <span>Hall Options</span>
+          </li>
+          <li class="submenu {{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'open active-parent' : '' }}">
+            <a href="#" aria-expanded="{{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'true' : 'false' }}">
+              <i class="fa fa-university"></i> <span> Hall Management</span> <span class="menu-arrow"></span>
+            </a>
+            <ul>
+              <li><a href="{{ route('hall.index') }}" class="{{ Request::routeIs('hall.index') ? 'active' : '' }}">Halls</a></li>
+              <li><a href="{{ route('hall-room.index') }}" class="{{ Request::routeIs('hall-room.index') ? 'active' : '' }}">Rooms</a></li>
+              <li><a href="{{ route('hall-seat.index') }}" class="{{ Request::routeIs('hall-seat.index') ? 'active' : '' }}">Seats</a></li>
+            </ul>
+          </li>
+        @endif
+
         <!-- Admin Options -->
         @if (in_array('Admins', $permissions))
           <li class="menu-title">

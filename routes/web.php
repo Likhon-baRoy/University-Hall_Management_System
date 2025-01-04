@@ -3,12 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\FrontendPageController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\HallRoomController;
+use App\Http\Controllers\Admin\HallSeatController;
 
 Route::get('/', function () {
   return view('admin.pages.dashboard');
@@ -16,6 +19,11 @@ Route::get('/', function () {
 
 // Admin authentication routes
 Route::group([ 'middleware' => 'admin.redirect'], function() {
+
+  // Registration routes
+  Route::post('/admin-register', [ AdminAuthController::class, 'register' ])->name('admin.register');
+  Route::get('/admin-register', [ AdminAuthController::class, 'showRegisterPage' ]) -> name('admin.register.page');
+
   Route::get('/admin-login', [ AdminAuthController::class, 'showLoginPage' ]) -> name('admin.login.page');
   Route::post('/admin-login', [ AdminAuthController::class, 'login' ]) -> name('admin.login');
 });
@@ -39,9 +47,29 @@ Route::group([ 'middleware' => 'admin'], function() {
 
   // Slider routes
   Route::resource('/slider', SlideController::class);
-  Route::get('/slider-status-update/{id}', [SlideController::class, 'updateStatus'])->name('slider.status.update');
-  Route::get('/slider-trash-update/{id}', [SlideController::class, 'updateTrash'])->name('slider.trash.update');
-  Route::get('/slider-trash', [SlideController::class, 'trashSlider'])->name('slider.trash');
+  Route::get('/slider-status-update/{id}', [ SlideController::class, 'updateStatus'])->name('slider.status.update');
+  Route::get('/slider-trash-update/{id}', [ SlideController::class, 'updateTrash'])->name('slider.trash.update');
+  Route::get('/slider-trash', [ SlideController::class, 'trashSlider'])->name('slider.trash');
+
+  // Hall routes
+  Route::resource('/hall', HallController::class);
+  Route::get('/hall-status-update/{id}', [ HallController::class, 'updateStatus'])->name('hall.status.update');
+  Route::get('/hall-trash-update/{id}', [ HallController::class, 'updateTrash'])->name('hall.trash.update');
+  Route::get('/hall-trash', [ HallController::class, 'trashHall'])->name('hall.trash');
+
+  // Hall-Room routes
+  Route::resource('/hall-room', HallRoomController::class);
+  Route::get('/hall-room-status-update/{id}', [ HallRoomController::class, 'updateStatus'])->name('room.status.update');
+  Route::get('/hall-room-trash-update/{id}', [ HallRoomController::class, 'updateTrash'])->name('room.trash.update');
+  Route::get('/hall-room-trash', [ HallRoomController::class, 'trashHall'])->name('hall-room.trash');
+
+  // Hall-Seat routes
+  Route::resource('/hall-seat', HallSeatController::class);
+  Route::get('/hall-seat-status-update/{id}', [ HallSeatController::class, 'updateStatus'])->name('seat.status.update');
+  Route::get('/hall-seat-trash-update/{id}', [ HallSeatController::class, 'updateTrash'])->name('seat.trash.update');
+  Route::get('/hall-seat-trash', [ HallSeatController::class, 'trashHall'])->name('hall-seat.trash');
+
+  /*   Route::get('create/{room}', [ HallSeatController::class, 'create'])->name('hall-seat.create'); */
 
   // user profile routes
   Route::resource('/profile', ProfileController::class);
