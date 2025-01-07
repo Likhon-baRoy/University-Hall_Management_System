@@ -42,6 +42,8 @@ class HallRoomController extends Controller
     // validation
     $request -> validate([
       'hall_id'            => 'required',
+      'start'   => 'required|integer|min:1',
+      'end'     => 'required|integer|gte:start',
     ]);
 
     foreach(range($request->start, $request->end) as $item) {

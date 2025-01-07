@@ -15,9 +15,9 @@
             <table class="table mb-0 data-table-element">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Hall</th>
-                  <th>Seat No</th>
+                  <th>Room</th>
+                  <th>Seat</th>
                   <th>Created At</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -25,15 +25,16 @@
               </thead>
               <tbody>
 
-                @forelse ($seats as $item)
+                @forelse ($seats as $seat)
                   <tr>
-                    <td>{{ $loop -> index + 1 }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item -> name }}</td>
-                    <td>{{ $item -> created_at -> diffForHumans() }}</td>
+                    <td>{{ $seat->room->hall->name }}</td>
+                    <td>{{ $seat->room->name }}</td>
+                    <td>{{ $seat -> name }}</td>
+                    <td>{{ $seat -> created_at -> diffForHumans() }}</td>
+                    <td>{{ $seat -> status }}</td>
 
                     <td>
-                      <a class="btn btn-sm btn-warning" href="{{ route('hall-seat.edit', $item -> id ) }}"><i class="fa fa-edit"></i></a>
+                      <a class="btn btn-sm btn-warning" href="{{ route('hall-seat.edit', $seat -> id ) }}"><i class="fa fa-edit"></i></a>
                     </td>
 
                   </tr>
@@ -64,7 +65,7 @@
                 <select name="room_id" id="room_id" class="form-control">
                   <option value="">-- Select --</option>
                   @foreach ($rooms as $room)
-                    <option value="{{ $room->id }}" {{ old('room') == $room->id ? 'selected' : '' }}>
+                    <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
                       {{ $room->hall?->name . '-' . $room->name }}
                     </option>
                   @endforeach
@@ -75,7 +76,6 @@
                 <label>Seat Start No:</label>
                 <input name="start" type="text" value="{{ old('start') }}" class="form-control">
               </div>
-
 
               <div class="form-group">
                 <label>Seat End No:</label>

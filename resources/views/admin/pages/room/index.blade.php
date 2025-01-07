@@ -15,9 +15,8 @@
             <table class="table mb-0 data-table-element">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Hall</th>
-                  <th>Room No</th>
+                  <th>Room</th>
                   <th>Created At</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -25,15 +24,14 @@
               </thead>
               <tbody>
 
-                @forelse ($rooms as $item)
+                @forelse ($rooms as $room)
                   <tr>
-                    <td>{{ $loop -> index + 1 }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item -> name }}</td>
-                    <td>{{ $item -> created_at -> diffForHumans() }}</td>
-
+                    <td>{{ $room->hall->name }}</td>
+                    <td>{{ $room -> name }}</td>
+                    <td>{{ $room -> created_at -> diffForHumans() }}</td>
+                    <td>{{ $room -> status }}</td>
                     <td>
-                      <a class="btn btn-sm btn-warning" href="{{ route('hall-room.edit', $item -> id ) }}"><i class="fa fa-edit"></i></a>
+                      <a class="btn btn-sm btn-warning" href="{{ route('hall-room.edit', $room -> id ) }}"><i class="fa fa-edit"></i></a>
                     </td>
 
                   </tr>
@@ -64,7 +62,7 @@
                 <select name="hall_id" id="hall_id" class="form-control">
                   <option value="">-- Select --</option>
                   @foreach ($halls as $hall)
-                    <option value="{{ $hall->id }}" {{ old('hall') == $hall->id ? 'selected' : '' }}>
+                    <option value="{{ $hall->id }}" {{ old('hall_id') == $hall->id ? 'selected' : '' }}>
                       {{ $hall->name }}
                     </option>
                   @endforeach
