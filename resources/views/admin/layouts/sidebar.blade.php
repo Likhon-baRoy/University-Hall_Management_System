@@ -1,11 +1,10 @@
-
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-inner slimscroll">
     <div id="sidebar-menu" class="sidebar-menu">
       @php
       // Cache permissions to avoid redundant calls
-      $permissions = json_decode(Auth::guard('admin')->user()->role->permissions, true);
+      $permissions = json_decode(Auth::guard('admin')->user()?->role?->permissions, true);
       @endphp
 
       <ul>
@@ -18,52 +17,52 @@
         </li>
 
         <!-- Slider -->
-        @if (in_array('Slider', $permissions))
-          <li class="{{ Request::is('slider*') ? 'active' : '' }}">
-            <a href="{{ route('slider.index') }}"><i class="fe fe-desktop"></i> <span>Slider</span></a>
-          </li>
+        @if (in_array('Slider', isset($permissions) ? $permissions : []))
+        <li class="{{ Request::is('slider*') ? 'active' : '' }}">
+          <a href="{{ route('slider.index') }}"><i class="fe fe-desktop"></i> <span>Slider</span></a>
+        </li>
         @endif
 
         <!-- Testimonials -->
-        @if (in_array('Testimonials', $permissions))
-          <li class="{{ Request::is('testimonials*') ? 'active' : '' }}">
-            <a href="  "><i class="fe fe-commenting"></i> <span>Testimonials</span></a>
-          </li>
+        @if (in_array('Testimonials', isset($permissions) ? $permissions : []))
+        <li class="{{ Request::is('testimonials*') ? 'active' : '' }}">
+          <a href="  "><i class="fe fe-commenting"></i> <span>Testimonials</span></a>
+        </li>
         @endif
 
         <!-- Our Clients -->
-        @if (in_array('Clients', $permissions))
-          <li class="{{ Request::is('clients*') ? 'active' : '' }}">
-            <a href="  "><i class="fe fe-user"></i> <span>Our Clients</span></a>
-          </li>
+        @if (in_array('Clients', isset($permissions) ? $permissions : []))
+        <li class="{{ Request::is('clients*') ? 'active' : '' }}">
+          <a href="  "><i class="fe fe-user"></i> <span>Our Clients</span></a>
+        </li>
         @endif
 
         <!-- Protfolio -->
-        @if (in_array('Protfolio', $permissions))
-          <li class="submenu {{ Request::is('protfolio*') ? 'open active-parent' : '' }}">
-            <a href="#" aria-expanded="{{ Request::is('protfolio*') ? 'true' : 'false' }}">
-              <i class="fe fe-beginner"></i> <span> Protfolio</span> <span class="menu-arrow"></span>
-            </a>
-            <ul>
-              <li><a href="  " class="{{ Request::is('protfolio') ? 'active' : '' }}">Protfolio</a></li>
-              <li><a href="  " class="{{ Request::is('protfolio/tag') ? 'active' : '' }}">Tag</a></li>
-              <li><a href="  " class="{{ Request::is('protfolio/categories') ? 'active' : '' }}">Categories</a></li>
-            </ul>
-          </li>
+        @if (in_array('Protfolio', isset($permissions) ? $permissions : []))
+        <li class="submenu {{ Request::is('protfolio*') ? 'open active-parent' : '' }}">
+          <a href="#" aria-expanded="{{ Request::is('protfolio*') ? 'true' : 'false' }}">
+            <i class="fe fe-beginner"></i> <span> Protfolio</span> <span class="menu-arrow"></span>
+          </a>
+          <ul>
+            <li><a href="  " class="{{ Request::is('protfolio') ? 'active' : '' }}">Protfolio</a></li>
+            <li><a href="  " class="{{ Request::is('protfolio/tag') ? 'active' : '' }}">Tag</a></li>
+            <li><a href="  " class="{{ Request::is('protfolio/categories') ? 'active' : '' }}">Categories</a></li>
+          </ul>
+        </li>
         @endif
 
         <!-- Posts -->
-        @if (in_array('Posts', $permissions))
-          <li class="submenu {{ Request::is('posts*') ? 'open active-parent' : '' }}">
-            <a href="#" aria-expanded="{{ Request::is('posts*') ? 'true' : 'false' }}">
-              <i class="fe fe-document"></i> <span> Posts</span> <span class="menu-arrow"></span>
-            </a>
-            <ul>
-              <li><a href="  " class="{{ Request::is('posts') ? 'active' : '' }}">All Posts</a></li>
-              <li><a href="  " class="{{ Request::is('posts/categories') ? 'active' : '' }}">Categories</a></li>
-              <li><a href="  " class="{{ Request::is('posts/tag') ? 'active' : '' }}">Tag</a></li>
-            </ul>
-          </li>
+        @if (in_array('Posts', isset($permissions) ? $permissions : []))
+        <li class="submenu {{ Request::is('posts*') ? 'open active-parent' : '' }}">
+          <a href="#" aria-expanded="{{ Request::is('posts*') ? 'true' : 'false' }}">
+            <i class="fe fe-document"></i> <span> Posts</span> <span class="menu-arrow"></span>
+          </a>
+          <ul>
+            <li><a href="  " class="{{ Request::is('posts') ? 'active' : '' }}">All Posts</a></li>
+            <li><a href="  " class="{{ Request::is('posts/categories') ? 'active' : '' }}">Categories</a></li>
+            <li><a href="  " class="{{ Request::is('posts/tag') ? 'active' : '' }}">Tag</a></li>
+          </ul>
+        </li>
         @endif
 
         <!-- Pages Section -->
@@ -75,37 +74,37 @@
         </li>
 
         <!-- Hall Options -->
-        @if (in_array('Admins', $permissions))
-          <li class="menu-title">
-            <span>Hall Options</span>
-          </li>
-          <li class="submenu {{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'open active-parent' : '' }}">
-            <a href="#" aria-expanded="{{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'true' : 'false' }}">
-              <i class="fa fa-university"></i> <span> Hall Management</span> <span class="menu-arrow"></span>
-            </a>
-            <ul>
-              <li><a href="{{ route('hall.index') }}" class="{{ Request::routeIs('hall.index') ? 'active' : '' }}">Halls</a></li>
-              <li><a href="{{ route('hall-room.index') }}" class="{{ Request::routeIs('hall-room.index') ? 'active' : '' }}">Rooms</a></li>
-              <li><a href="{{ route('hall-seat.index') }}" class="{{ Request::routeIs('hall-seat.index') ? 'active' : '' }}">Seats</a></li>
-            </ul>
-          </li>
+        @if (in_array('Admins', isset($permissions) ? $permissions : []))
+        <li class="menu-title">
+          <span>Hall Options</span>
+        </li>
+        <li class="submenu {{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'open active-parent' : '' }}">
+          <a href="#" aria-expanded="{{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'true' : 'false' }}">
+            <i class="fa fa-university"></i> <span> Hall Management</span> <span class="menu-arrow"></span>
+          </a>
+          <ul>
+            <li><a href="{{ route('hall.index') }}" class="{{ Request::routeIs('hall.index') ? 'active' : '' }}">Halls</a></li>
+            <li><a href="{{ route('hall-room.index') }}" class="{{ Request::routeIs('hall-room.index') ? 'active' : '' }}">Rooms</a></li>
+            <li><a href="{{ route('hall-seat.index') }}" class="{{ Request::routeIs('hall-seat.index') ? 'active' : '' }}">Seats</a></li>
+          </ul>
+        </li>
         @endif
 
         <!-- Admin Options -->
-        @if (in_array('Admins', $permissions))
-          <li class="menu-title">
-            <span>Admin Options</span>
-          </li>
-          <li class="submenu {{ Request::is('admin-user*') || Request::is('role*') || Request::is('permission*') ? 'open active-parent' : '' }}">
-            <a href="#" aria-expanded="{{ Request::is('admin-user*') || Request::is('role*') || Request::is('permission*') ? 'true' : 'false' }}">
-              <i class="fe fe-check-verified"></i> <span> Admin User</span> <span class="menu-arrow"></span>
-            </a>
-            <ul>
-              <li><a href="{{ route('admin-user.index') }}" class="{{ Request::routeIs('admin-user.index') ? 'active' : '' }}">Users</a></li>
-              <li><a href="{{ route('role.index') }}" class="{{ Request::routeIs('role.index') ? 'active' : '' }}">Role</a></li>
-              <li><a href="{{ route('permission.index') }}" class="{{ Request::routeIs('permission.index') ? 'active' : '' }}">Permission</a></li>
-            </ul>
-          </li>
+        @if (in_array('Admins', isset($permissions) ? $permissions : []))
+        <li class="menu-title">
+          <span>Admin Options</span>
+        </li>
+        <li class="submenu {{ Request::is('admin-user*') || Request::is('role*') || Request::is('permission*') ? 'open active-parent' : '' }}">
+          <a href="#" aria-expanded="{{ Request::is('admin-user*') || Request::is('role*') || Request::is('permission*') ? 'true' : 'false' }}">
+            <i class="fe fe-check-verified"></i> <span> Admin User</span> <span class="menu-arrow"></span>
+          </a>
+          <ul>
+            <li><a href="{{ route('admin-user.index') }}" class="{{ Request::routeIs('admin-user.index') ? 'active' : '' }}">Users</a></li>
+            <li><a href="{{ route('role.index') }}" class="{{ Request::routeIs('role.index') ? 'active' : '' }}">Role</a></li>
+            <li><a href="{{ route('permission.index') }}" class="{{ Request::routeIs('permission.index') ? 'active' : '' }}">Permission</a></li>
+          </ul>
+        </li>
         @endif
 
       </ul>

@@ -8,7 +8,8 @@ class Room extends Model
 {
   protected $guarded = [];
 
-  public function hall() {
+  public function hall()
+  {
     return $this->belongsTo(Hall::class);
   }
 }

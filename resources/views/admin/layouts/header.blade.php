@@ -108,16 +108,16 @@
     <!-- User Menu -->
     <li class="nav-item dropdown has-arrow">
       <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-        <span class="user-img"><img class="rounded-circle" src="{{ url('storage/img/' . Auth::guard('admin') -> user() -> photo) }}" width="31" alt="Ryan Taylor"></span>
+        <span class="user-img"><img class="rounded-circle" src="{{ url('storage/img/' . Auth::guard('admin')?->user()?->photo) }}" width="31" alt="Ryan Taylor"></span>
       </a>
       <div class="dropdown-menu">
         <div class="user-header">
           <div class="avatar avatar-sm">
-            <img src="{{ url('storage/img/' . Auth::guard('admin') -> user() -> photo) }}" alt="User Image" class="avatar-img rounded-circle">
+            <img src="{{ url('storage/img/' . Auth::guard('admin')?->user()?->photo) }}" alt="User Image" class="avatar-img rounded-circle">
           </div>
           <div class="user-text">
-            <h6>{{ Auth::guard('admin') -> user() -> name }}</h6>
-            <p class="text-muted mb-0">{{ Auth::guard('admin') -> user() -> role -> name }}</p>
+            <h6>{{ Auth::guard('admin')?->user()?->name }}</h6>
+            <p class="text-muted mb-0">{{ Auth::guard('admin')?->user()?->role?->name }}</p>
           </div>
         </div>
         <a class="dropdown-item" href="{{ route('profile.index') }}">My Profile</a>
