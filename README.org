@@ -23,7 +23,7 @@ This is a project of a dormitory management system website designed to improve t
 * What are we looking for?
 The basic things that we're looking for is fulfilment of all facilities shown this video: https://youtu.be/5u11Gv-wc_U
 
-- **Visual Booking facility*:* Allow users visual representation of rooms,
+- *Visual Booking facility:* Allow users visual representation of rooms,
   something like: hotel online book with view system. There Wil be section Boys
   and Girls hall in frontend and they can choose their own seat from the
   available(only available seat will be shown).
