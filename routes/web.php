@@ -14,10 +14,6 @@ use App\Http\Controllers\Admin\HallRoomController;
 use App\Http\Controllers\Admin\HallSeatController;
 use App\Http\Controllers\HallBookingController;
 
-Route::get('/', function () {
-  return view('admin.pages.dashboard');
-});
-
 // Admin authentication routes
 Route::group(['middleware' => 'admin.redirect'], function () {
 
@@ -85,5 +81,5 @@ Route::group(['middleware' => 'admin'], function () {
 
 Route::controller(HallBookingController::class)->prefix('hall-bookings')->name('hall-booking.')->group(function () {
   Route::get('/', 'index')->name('index');
-  Route::get('/{seat}', 'booking')->name('booking');
+  Route::get('/{room}', 'booking')->name('booking');
 });
