@@ -71,13 +71,13 @@ Route::group(['middleware' => 'admin'], function () {
   // user profile routes
   Route::resource('/profile', ProfileController::class);
   /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
+});
 
   /**
    * Frontend routes
    */
   Route::get('/', [FrontendPageController::class, 'showHomePage'])->name('home.page');
   Route::get('/book', [FrontendPageController::class, 'showBookPage'])->name('book.page');
-});
 
 Route::controller(HallBookingController::class)->prefix('hall-bookings')->name('hall-booking.')->group(function () {
   Route::get('/', 'index')->name('index');
