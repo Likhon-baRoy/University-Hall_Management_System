@@ -13,7 +13,7 @@ return new class extends Migration {
       $table->id();
       $table->string('name') -> unique();
       $table->string('slug') -> unique();
-      $table->text('permissions');
+      $table->text('permissions')->default('[]');
       $table->boolean('status') -> default(true);
       $table->boolean('trash') -> default(false);
       $table->timestamps();
@@ -25,5 +25,5 @@ return new class extends Migration {
    */
   public function down(): void {
     Schema::dropIfExists('roles');
-    }
-    };
+  }
+};
