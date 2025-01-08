@@ -14,10 +14,9 @@ class HallSeatController extends Controller
    */
   public function index() {
 
-    /*     $seats = Seat::latest() -> where('trash', false) -> get(); */
-    $seats = Seat::with('room')->latest() -> get();
+    $seats = Seat::with(['room.hall'])->latest()->get();
 
-    $rooms = Room::latest()->with('hall') -> get();
+    $rooms = Room::active()->latest()->get();
 
     return view('admin.pages.seat.index', [
       'form_type' => 'create',
@@ -91,11 +90,12 @@ class HallSeatController extends Controller
   public function edit(string $id)
   {
     $seat = Seat::findOrFail($id);
-    $rooms = Room::with('hall')
-                 ->where('status', true)
-                 ->whereNull('deleted_at')
-                 ->latest()
-                 ->get();
+    $rooms = Room::active()->latest()->get();
+    /* $rooms = Room::with('hall')
+     *              ->where('status', true)
+     *              ->whereNull('deleted_at')
+     *              ->latest()
+     *              ->get(); */
 
     // Return the new dedicated edit view
     return view('admin.pages.seat.edit', [
@@ -142,7 +142,7 @@ class HallSeatController extends Controller
     $seat_data -> delete();
 
     // return with a success message
-    return back() -> with('success-main', $data -> seat . ', deleted permanantly');
+    return back() -> with('success-main', $seat_data -> seat . ', deleted permanantly');
   }
 
 

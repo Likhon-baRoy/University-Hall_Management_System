@@ -16,11 +16,11 @@
 
         $('.data-table-element').DataTable();
 
-        // slider photo management
-        $('#slider-photo').change(function(e){
+        // photo preview management
+        $('#photo-preview').change(function(e){
 
             const photo_url = URL.createObjectURL(e.target.files[0]);
-            $('#slider-photo-preview').attr('src', photo_url);
+            $('#make-photo-preview').attr('src', photo_url);
 
 
         });

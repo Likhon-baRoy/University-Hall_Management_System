@@ -17,26 +17,17 @@ class HallBookingController extends Controller
    */
   public function index(): View
   {
-    // Add this at the start of the index method in HallBookingController
-    $testRoom = Room::first();
-    if ($testRoom) {
-      \Log::info('Room photo path: ' . $testRoom->photo);
-      \Log::info('Storage exists: ' . Storage::disk('public')->exists('image/room/' . $testRoom->photo));
-      \Log::info('Full storage path: ' . Storage::disk('public')->path('image/room/' . $testRoom->photo));
-    }
-
-    // Get rooms with available seats, grouped by room
-    $rooms = Room::query()
-                 ->with(['hall', 'seats' => function($query) {
-                   $query->where('status', true); // Only available seats
+    $rooms = Room::active()
+                 ->with(['seats' => function($query) {
+                   $query->where('status', true);
                  }])
                  ->whereHas('seats', function($query) {
-                   $query->where('status', true); // Only rooms with available seats
+                   $query->where('status', true);
                  })
                  ->paginate(8);
 
-    // Get all halls for filter
     $halls = Hall::where('status', true)
+                 ->whereNull('deleted_at')
                  ->orderBy('name')
                  ->get();
 

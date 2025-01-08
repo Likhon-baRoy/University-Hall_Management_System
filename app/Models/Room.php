@@ -11,6 +11,19 @@ class Room extends Model
 
   protected $guarded = [];
 
+  /**
+   * Scope to get only active rooms from active halls
+   */
+  public function scopeActive($query)
+  {
+    return $query->where('status', true)
+                 ->whereNull('deleted_at')
+                 ->whereHas('hall', function($query) {
+                   $query->where('status', true)
+                         ->whereNull('deleted_at');
+                 });
+  }
+
   public function hall()
   {
     return $this->belongsTo(Hall::class);

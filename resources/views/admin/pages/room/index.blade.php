@@ -139,68 +139,6 @@
         </div>
       @endif
 
-      @if($form_type == 'edit')
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title">Edit Room</h4>
-          </div>
-
-          <div class="card-body">
-            @include('validate')
-
-            <form action="{{ route('hall-room.update', $room->id) }}" method="POST" enctype="multipart/form-data">
-              @csrf
-              @method('PUT')
-
-              <div class="form-group">
-                <label>Hall Name:</label>
-                <select name="hall_id" id="hall_id" class="form-control">
-                  <option value="">-- Select --</option>
-                  @foreach ($halls as $hall)
-                    @if($hall->status && !$hall->deleted_at)
-                      <option value="{{ $hall->id }}" {{ old('hall_id') == $hall->id ? 'selected' : '' }}>
-                        {{ $hall->name }}
-                      </option>
-                    @endif
-                  @endforeach
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Room No:</label>
-                <input name="name" type="text" value="{{ old('name', $room->name) }}" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label>Photo</label>
-                <br>
-                <img style="max-width:100%;"
-                     id="slider-photo-preview"
-                     src="{{ url('storage/image/room/' . ($room->photo ?? 'default-room.jpg')) }}"
-                     alt="Room image">
-                <br>
-                <input style="display:none;"
-                       name="photo"
-                       type="file"
-                       class="form-control"
-                       id="slider-photo"
-                       accept="image/jpeg,image/png,image/jpg,image/webp">
-                <label for="slider-photo">
-                  <img style="width: 80px; cursor: pointer;"
-                       src="https://icon-library.com/images/image-icon/image-icon-2.jpg"
-                       alt="">
-                </label>
-              </div>
-              <hr>
-
-              <div class="text-right">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      @endif
-
     </div>
   </div>
 @endsection

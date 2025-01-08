@@ -14,23 +14,33 @@ class HallObserver
     //
   }
 
-  /**
-   * Handle status changes and soft deletes
-   */
+  public function updating(Hall $hall)
+  {
+    // Store previous states before deactivation
+    if ($hall->isDirty('status') && $hall->status == false) {
+      // Store room states in temporary table or cache
+      $hall->rooms->each(function($room) {
+        cache()->put("room_state_{$room->id}", $room->status, now()->addDay());
+      });
+    }
+  }
+
   public function updated(Hall $hall)
   {
-    // If hall status changed to false or hall is soft deleted
     if ($hall->isDirty('status') || $hall->isDirty('deleted_at')) {
-      // Deactivate all rooms under this hall
-      $hall->rooms()->update([
-        'status' => false
-      ]);
-
-      // Deactivate all seats under those rooms
-      foreach ($hall->rooms as $room) {
-        $room->seats()->update([
-          'status' => false
-        ]);
+      if (!$hall->status || $hall->deleted_at) {
+        // Deactivate all rooms and their seats
+        $hall->rooms()->update(['status' => false]);
+        foreach ($hall->rooms as $room) {
+          $room->seats()->update(['status' => false]);
+        }
+      } else {
+        // Hall became active - restore previous room states
+        $hall->rooms->each(function($room) {
+          $previousState = cache()->get("room_state_{$room->id}", false);
+          $room->update(['status' => $previousState]);
+          cache()->forget("room_state_{$room->id}");
+        });
       }
     }
   }
