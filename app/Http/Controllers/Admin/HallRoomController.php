@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Room;
 use App\Models\Hall;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class HallRoomController extends Controller
@@ -13,11 +14,11 @@ class HallRoomController extends Controller
    * Display a listing of the resource.
    */
   public function index() {
-
-    /*     $rooms = Room::latest() -> where('trash', false) -> get(); */
-    $rooms = Room::latest() -> get();
-
-    $halls = Hall::latest() -> get();
+    $rooms = Room::latest()->get();
+    $halls = Hall::where('status', true)
+                 ->whereNull('deleted_at')
+                 ->latest()
+                 ->get();
 
     return view('admin.pages.room.index', [
       'form_type' => 'create',
@@ -40,28 +41,37 @@ class HallRoomController extends Controller
   public function store(Request $request)
   {
     // validation
-    $request -> validate([
-      'hall_id'            => 'required',
-      'start'   => 'required|integer|min:1',
-      'end'     => 'required|integer|gte:start',
+    $request->validate([
+      'hall_id' => 'required|exists:halls,id',
+      'start' => 'required|integer|min:1',
+      'end' => 'required|integer|gte:start',
     ]);
 
-    foreach(range($request->start, $request->end) as $item) {
+    try {
+      DB::transaction(function() use ($request) {
+        $hall = Hall::findOrFail($request->hall_id);
 
-      $response[] = [
-        'hall_id'    => $request -> hall_id,
-        'name'    => $item,
-        'created_at' => now(),
-        'updated_at' => now()
-      ];
+        // Create room collection
+        $rooms = collect(range($request->start, $request->end))
+                                       ->map(function($number) use ($hall) {
+                                         return [
+                                           'hall_id' => $hall->id,
+                                           'name' => $number,
+                                           'created_at' => now(),
+                                           'updated_at' => now()
+                                         ];
+                                       });
 
+        // Insert in chunks to prevent memory issues with large ranges
+        foreach ($rooms->chunk(100) as $chunk) {
+          Room::insert($chunk->toArray());
+        }
+      });
+
+      return back()->with('success', 'Rooms added successfully');
+    } catch (\Exception $e) {
+      return back()->with('error', 'Failed to create rooms: ' . $e->getMessage());
     }
-
-    // add new room
-    Room::insert($response);
-
-    // return back
-    return back() -> with('success' , 'Room Added successful');
   }
 
   /**
@@ -76,15 +86,18 @@ class HallRoomController extends Controller
    * Show the form for editing the specified resource.
    */
   public function edit(string $id) {
-
     $room = Room::findOrFail($id);
-
-    $rooms = Room::latest() -> get();
+    $rooms = Room::latest()->get();
+    $halls = Hall::where('status', true)
+                 ->whereNull('deleted_at')
+                 ->latest()
+                 ->get();
 
     return view('admin.pages.room.index', [
       'form_type' => 'edit',
-      'rooms'   => $rooms,
-      'room'    => $room,
+      'room' => $room,
+      'rooms' => $rooms,
+      'halls' => $halls
     ]);
   }
 
@@ -93,31 +106,20 @@ class HallRoomController extends Controller
    */
   public function update(Request $request, string $id)
   {
-    // get room
-    $room = Room::findOrFail($id);
-
-    // update room
-    $room -> update([
-      'name'             => $request -> name,
+    $request->validate([
+      'hall_id' => 'required|exists:halls,id',
+      'name' => 'required|string',
     ]);
 
-    // return back
-    return back() -> with('success' , 'Room updated successful');
+    $room = Room::findOrFail($id);
+
+    $room->update([
+      'hall_id' => $request->hall_id,
+      'name' => $request->name,
+    ]);
+
+    return back()->with('success', 'Room updated successfully');
   }
-
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(string $id) {
-
-    $room_data = Room::findOrFail($id);
-
-    $room_data -> delete();
-
-    // return with a success message
-    return back() -> with('success-main', $data -> room . ', deleted permanantly');
-  }
-
 
   /*****************************************************************
    * Custom Methods Section
@@ -146,39 +148,49 @@ class HallRoomController extends Controller
   }
 
   /**
-   * Trash update
+   * Display a listing of the trashed rooms.
    */
-  /* public function updateTrash($id) {
+  public function trash()
+  {
+    $rooms = Room::onlyTrashed()->latest()->get();
+    $halls = Hall::latest()->get();
 
-   *   $room_data = Room::findOrfail($id);
-
-   *   if ($room_data -> trash) {
-
-   *     $room_data -> update([
-   *       'trash'    => false
-   *     ]);
-
-   *   } else{
-
-   *     $room_data -> update([
-   *       'trash'    => true
-   *     ]);
-   *   }
-
-   *   // return with a success message
-   *   return back() -> with('success-main', $room_data -> room . ' data moved to Trash');
-   * } */
+    return view('admin.pages.room.trash', [
+      'rooms' => $rooms,
+      'halls' => $halls
+    ]);
+  }
 
   /**
-   * Display Trash Users
+   * Soft delete the specified room.
    */
-  /* public function trashRoom() {
+  public function destroy(string $id)
+  {
+    $room = Room::findOrFail($id);
+    $room->delete(); // This will soft delete
 
-   *   $room_data = Room::latest() -> where('trash', true) -> get();
+    return back()->with('success-main', 'Room moved to trash successfully');
+  }
 
-   *   return view('admin.pages.room.trash', [
-   *     'room_data'      => $room_data,
-   *     'form_type'     => 'trash',
-   *   ]);
-   * } */
+  /**
+   * Restore the specified room from trash.
+   */
+  public function restore($id)
+  {
+    $room = Room::onlyTrashed()->findOrFail($id);
+    $room->restore();
+
+    return back()->with('success-main', 'Room restored successfully');
+  }
+
+  /**
+   * Permanently delete the specified room.
+   */
+  public function forceDelete($id)
+  {
+    $room = Room::onlyTrashed()->findOrFail($id);
+    $room->forceDelete();
+
+    return back()->with('success-main', 'Room permanently deleted');
+  }
 }

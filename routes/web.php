@@ -57,8 +57,9 @@ Route::group(['middleware' => 'admin'], function () {
   // Hall-Room routes
   Route::resource('/hall-room', HallRoomController::class);
   Route::get('/hall-room-status-update/{id}', [HallRoomController::class, 'updateStatus'])->name('room.status.update');
-  Route::get('/hall-room-trash-update/{id}', [HallRoomController::class, 'updateTrash'])->name('room.trash.update');
-  Route::get('/hall-room-trash', [HallRoomController::class, 'trashHall'])->name('hall-room.trash');
+  Route::get('rooms/trash', [HallRoomController::class, 'trash'])->name('hall-room.trash');
+  Route::post('rooms/{id}/restore', [HallRoomController::class, 'restore'])->name('hall-room.restore');
+  Route::delete('rooms/{id}/force-delete', [HallRoomController::class, 'forceDelete'])->name('hall-room.force-delete');
 
   // Hall-Seat routes
   Route::resource('/hall-seat', HallSeatController::class);
@@ -73,11 +74,11 @@ Route::group(['middleware' => 'admin'], function () {
   /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
 });
 
-  /**
-   * Frontend routes
-   */
-  Route::get('/', [FrontendPageController::class, 'showHomePage'])->name('home.page');
-  Route::get('/book', [FrontendPageController::class, 'showBookPage'])->name('book.page');
+/**
+ * Frontend routes
+ */
+Route::get('/', [FrontendPageController::class, 'showHomePage'])->name('home.page');
+Route::get('/book', [FrontendPageController::class, 'showBookPage'])->name('book.page');
 
 Route::controller(HallBookingController::class)->prefix('hall-bookings')->name('hall-booking.')->group(function () {
   Route::get('/', 'index')->name('index');
