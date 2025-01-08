@@ -26,31 +26,69 @@
                 </tr>
               </thead>
               <tbody>
-
                 @forelse ($rooms as $room)
-                  <tr>
-                    <td>{{ $room->hall->name }}</td>
-                    <td>{{ $room -> name }}</td>
-                    <td>{{ $room -> photo }}</td>
-                    <td>{{ $room -> status }}</td>
-                    <td>
-                      <a class="btn btn-sm btn-warning" href="{{ route('hall-room.edit', $room->id) }}">
-                        <i class="fa fa-edit"></i>
-                      </a>
+                  <tr class="{{ (!$room->status || ($room->hall && !$room->hall->status)) ? 'table-warning' : '' }}">
 
-                      <form action="{{ route('hall-room.destroy', $room->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </form>
-                    </td>
+                    @if($room->hall)
+                      <td>
+                        {{ $room->hall->name }}
+                        @if($room->hall->deleted_at)
+                          <span class="badge badge-danger">Hall Trashed</span>
+                        @elseif(!$room->hall->status)
+                          <span class="badge badge-warning">Hall Inactive</span>
+                        @endif
+                      </td>
+
+                      <td>{{ $room->name }}</td>
+
+                      <td>
+                        <img style="width:60px;height:60px;object-fit:cover;"
+                             src="{{ url('storage/image/room/' . ($room->photo ?? 'default-room.jpg')) }}"
+                             alt="">
+                      </td>
+
+                      <!-- Only show edit button if hall is active -->
+                      @if($room->hall && $room->hall->status && !$room->hall->deleted_at)
+                        <td>
+                          @if($room->deleted_at)
+                            <span class="badge badge-danger">Trashed</span>
+                          @else
+                            @if($room -> status )
+                              <span class="badge badge-success">Published</span>
+                              <a class="text-danger" href="{{ route('room.status.update', $room -> id ) }}"><i class="fa fa-times"></i></a>
+                            @else
+                              <span class="badge badge-danger">unpublished</span>
+                              <a class="text-success" href="{{ route('room.status.update', $room -> id ) }}"><i class="fa fa-check"></i></a>
+                            @endif
+                          @endif
+                        </td>
+
+                        <td>
+                          <a class="btn btn-sm btn-warning"
+                             href="{{ route('hall-room.edit', $room->id) }}">
+                            <i class="fa fa-edit"></i>
+                          </a>
+
+                          <form action="{{ route('hall-room.destroy', $room->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </form>
+                        </td>
+                      @else
+                        <td><span class="text-danger">N/A</span></td>
+                        <td><span class="text-danger">N/A</span></td>
+                      @endif
+
+                    @endif
                   </tr>
                 @empty
-
+                  <tr>
+                    <td class="text-center text-danger" colspan="5">No Records Found</td>
+                  </tr>
                 @endforelse
-
               </tbody>
             </table>
           </div>
@@ -74,9 +112,11 @@
                 <select name="hall_id" id="hall_id" class="form-control">
                   <option value="">-- Select --</option>
                   @foreach ($halls as $hall)
-                    <option value="{{ $hall->id }}" {{ old('hall_id') == $hall->id ? 'selected' : '' }}>
-                      {{ $hall->name }}
-                    </option>
+                    @if($hall->status && !$hall->deleted_at)
+                      <option value="{{ $hall->id }}" {{ old('hall_id') == $hall->id ? 'selected' : '' }}>
+                        {{ $hall->name }}
+                      </option>
+                    @endif
                   @endforeach
                 </select>
               </div>
@@ -99,8 +139,7 @@
         </div>
       @endif
 
-      @if( $form_type == 'edit')
-
+      @if($form_type == 'edit')
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">Edit Room</h4>
@@ -109,7 +148,7 @@
           <div class="card-body">
             @include('validate')
 
-            <form action="{{ route('hall-room.update', $room -> id ) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('hall-room.update', $room->id) }}" method="POST" enctype="multipart/form-data">
               @csrf
               @method('PUT')
 
@@ -118,27 +157,38 @@
                 <select name="hall_id" id="hall_id" class="form-control">
                   <option value="">-- Select --</option>
                   @foreach ($halls as $hall)
-                    <option value="{{ $hall->id }}"
-                            {{ ($room->hall_id == $hall->id) ? 'selected' : '' }}>
-                      {{ $hall->name }}
-                    </option>
+                    @if($hall->status && !$hall->deleted_at)
+                      <option value="{{ $hall->id }}" {{ old('hall_id') == $hall->id ? 'selected' : '' }}>
+                        {{ $hall->name }}
+                      </option>
+                    @endif
                   @endforeach
                 </select>
               </div>
 
               <div class="form-group">
                 <label>Room No:</label>
-                <input name="name" type="text" value="{{ $room -> name }}" class="form-control">
+                <input name="name" type="text" value="{{ old('name', $room->name) }}" class="form-control">
               </div>
 
               <div class="form-group">
                 <label>Photo</label>
                 <br>
-                <img style="max-width:100%;" id="slider-photo-preview" src="{{ url('storage/image/room/' . $room -> photo) }}" alt="Room image">
+                <img style="max-width:100%;"
+                     id="slider-photo-preview"
+                     src="{{ url('storage/image/room/' . ($room->photo ?? 'default-room.jpg')) }}"
+                     alt="Room image">
                 <br>
-                <input style="display:none;" name="photo" type="file" class="form-control" id="slider-photo">
+                <input style="display:none;"
+                       name="photo"
+                       type="file"
+                       class="form-control"
+                       id="slider-photo"
+                       accept="image/jpeg,image/png,image/jpg,image/webp">
                 <label for="slider-photo">
-                  <img style="width: 80px; cursor: pointer;" src="https://icon-library.com/images/image-icon/image-icon-2.jpg" alt="">
+                  <img style="width: 80px; cursor: pointer;"
+                       src="https://icon-library.com/images/image-icon/image-icon-2.jpg"
+                       alt="">
                 </label>
               </div>
               <hr>
@@ -146,7 +196,6 @@
               <div class="text-right">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
-
             </form>
           </div>
         </div>

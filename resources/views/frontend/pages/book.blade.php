@@ -147,7 +147,10 @@
                data-room="{{ $room->name }}">
             <div class="room-card">
               <div class="position-relative">
-                <img src="" alt="{{ $room->hall->name }}" class="card-img-top">
+                <img src="{{ route('room.photo', ['filename' => $room->photo ?? 'default-room.jpg']) }}"
+                     alt="{{ $room->hall->name }}"
+                     class="card-img-top"
+                     onerror="this.onerror=null; console.log('Failed to load image:', this.src); this.src='{{ asset('storage/image/room/default-room.jpg') }}';">
                 <span class="availability-badge">
                   {{ $room->seats->count() }} seats available
                 </span>

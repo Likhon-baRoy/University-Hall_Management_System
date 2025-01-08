@@ -15,7 +15,7 @@ class HallSeatController extends Controller
   public function index() {
 
     /*     $seats = Seat::latest() -> where('trash', false) -> get(); */
-    $seats = Seat::latest() -> get();
+    $seats = Seat::with('room')->latest() -> get();
 
     $rooms = Room::latest()->with('hall') -> get();
 
@@ -41,9 +41,21 @@ class HallSeatController extends Controller
   {
     // Validation
     $request->validate([
-      'room_id' => 'required|exists:rooms,id',
-      'start'   => 'required|integer|min:1',
-      'end'     => 'required|integer|gte:start',
+      'room_id' => [
+        'required',
+        'exists:rooms,id',
+        function ($attribute, $value, $fail) {
+          $room = Room::with('hall')->find($value);
+          if (!$room || !$room->status || $room->deleted_at) {
+            $fail('Cannot create seats in an inactive or deleted room.');
+          }
+          if (!$room->hall->status || $room->hall->deleted_at) {
+            $fail('Cannot create seats in a room whose hall is inactive or deleted.');
+          }
+        },
+      ],
+      'start' => 'required|integer|min:1',
+      'end' => 'required|integer|gte:start',
     ]);
 
     // Prepare data for bulk insertion
@@ -75,34 +87,49 @@ class HallSeatController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id) {
-
+  // In HallSeatController.php, modify the edit method:
+  public function edit(string $id)
+  {
     $seat = Seat::findOrFail($id);
+    $rooms = Room::with('hall')
+                 ->where('status', true)
+                 ->whereNull('deleted_at')
+                 ->latest()
+                 ->get();
 
-    $seats = Seat::latest() -> get();
-
-    return view('admin.pages.seat.index', [
-      'form_type' => 'edit',
-      'seats'   => $seats,
-      'seat'    => $seat,
+    // Return the new dedicated edit view
+    return view('admin.pages.seat.edit', [
+      'seat' => $seat,
+      'rooms' => $rooms
     ]);
   }
 
-  /**
-   * Update the specified resource in storage.
-   */
   public function update(Request $request, string $id)
   {
-    // get seat
-    $seat = Seat::findOrFail($id);
-
-    // update seat
-    $seat -> update([
-      'name'             => $request -> name,
+    $request->validate([
+      'room_id' => 'required|exists:rooms,id',
+      'name' => 'required|string',
+      'status' => 'required|boolean'
     ]);
 
-    // return back
-    return back() -> with('success' , 'Seat updated successful');
+    try {
+      $seat = Seat::findOrFail($id);
+
+      $seat->update([
+        'room_id' => $request->room_id,
+        'name' => $request->name,
+        'status' => $request->status
+      ]);
+
+      return redirect()
+            ->route('hall-seat.index')
+            ->with('success', 'Seat updated successfully');
+
+    } catch (\Exception $e) {
+      return back()
+            ->withInput()
+            ->with('error', 'Failed to update seat: ' . $e->getMessage());
+    }
   }
 
   /**

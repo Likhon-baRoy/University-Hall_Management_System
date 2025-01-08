@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Room;
 use App\Models\Hall;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class HallRoomController extends Controller
 {
@@ -14,7 +16,7 @@ class HallRoomController extends Controller
    * Display a listing of the resource.
    */
   public function index() {
-    $rooms = Room::latest()->get();
+    $rooms = Room::with('hall')->latest()->get();  // Add 'with('hall')' to eager load the relationship
     $halls = Hall::where('status', true)
                  ->whereNull('deleted_at')
                  ->latest()
@@ -42,7 +44,16 @@ class HallRoomController extends Controller
   {
     // validation
     $request->validate([
-      'hall_id' => 'required|exists:halls,id',
+      'hall_id' => [
+        'required',
+        'exists:halls,id',
+        function ($attribute, $value, $fail) {
+          $hall = Hall::find($value);
+          if (!$hall || !$hall->status || $hall->deleted_at) {
+            $fail('Cannot create rooms in an inactive or deleted hall.');
+          }
+        },
+      ],
       'start' => 'required|integer|min:1',
       'end' => 'required|integer|gte:start',
     ]);
@@ -57,6 +68,7 @@ class HallRoomController extends Controller
                                          return [
                                            'hall_id' => $hall->id,
                                            'name' => $number,
+                                           'photo' => 'default-room.jpg', // Set a default photo
                                            'created_at' => now(),
                                            'updated_at' => now()
                                          ];
@@ -85,41 +97,66 @@ class HallRoomController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id) {
+  public function edit(string $id)
+  {
     $room = Room::findOrFail($id);
-    $rooms = Room::latest()->get();
     $halls = Hall::where('status', true)
                  ->whereNull('deleted_at')
                  ->latest()
                  ->get();
 
-    return view('admin.pages.room.index', [
-      'form_type' => 'edit',
+    // Return the new dedicated edit view
+    return view('admin.pages.room.edit', [
       'room' => $room,
-      'rooms' => $rooms,
       'halls' => $halls
     ]);
   }
 
-  /**
-   * Update the specified resource in storage.
-   */
   public function update(Request $request, string $id)
   {
     $request->validate([
       'hall_id' => 'required|exists:halls,id',
       'name' => 'required|string',
+      'status' => 'required|boolean',
+      'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
     ]);
 
-    $room = Room::findOrFail($id);
+    try {
+      $room = Room::findOrFail($id);
 
-    $room->update([
-      'hall_id' => $request->hall_id,
-      'name' => $request->name,
-    ]);
+      $data = [
+        'hall_id' => $request->hall_id,
+        'name' => $request->name,
+        'status' => $request->status
+      ];
 
-    return back()->with('success', 'Room updated successfully');
+      if ($request->hasFile('photo')) {
+        // Delete old photo if it exists and isn't the default
+        if ($room->photo && $room->photo !== 'default-room.jpg') {
+          Storage::disk('public')->delete('image/room/' . $room->photo);
+        }
+
+        $photo = $request->file('photo');
+        $filename = time() . '_' . Str::slug(pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME))
+                  . '.' . $photo->getClientOriginalExtension();
+
+        $photo->storeAs('image/room', $filename, 'public');
+        $data['photo'] = $filename;
+      }
+
+      $room->update($data);
+
+      return redirect()
+            ->route('hall-room.index')
+            ->with('success', 'Room updated successfully');
+
+    } catch (\Exception $e) {
+      return back()
+            ->withInput()
+            ->with('error', 'Failed to update room: ' . $e->getMessage());
+    }
   }
+
 
   /*****************************************************************
    * Custom Methods Section

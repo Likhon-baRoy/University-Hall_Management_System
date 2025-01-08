@@ -7,6 +7,7 @@ use App\Models\Room;
 use App\Models\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class HallBookingController extends Controller
 {
@@ -16,6 +17,14 @@ class HallBookingController extends Controller
    */
   public function index(): View
   {
+    // Add this at the start of the index method in HallBookingController
+    $testRoom = Room::first();
+    if ($testRoom) {
+      \Log::info('Room photo path: ' . $testRoom->photo);
+      \Log::info('Storage exists: ' . Storage::disk('public')->exists('image/room/' . $testRoom->photo));
+      \Log::info('Full storage path: ' . Storage::disk('public')->path('image/room/' . $testRoom->photo));
+    }
+
     // Get rooms with available seats, grouped by room
     $rooms = Room::query()
                  ->with(['hall', 'seats' => function($query) {

@@ -96,19 +96,6 @@ class HallController extends Controller
     return back() -> with('success' , 'Hall updated successful');
   }
 
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(string $id) {
-
-    $hall_data = Hall::findOrFail($id);
-
-    $hall_data -> delete();
-
-    // return with a success message
-    return back() -> with('success-main', $data -> hall . ', deleted permanantly');
-  }
-
 
   /*****************************************************************
    * Custom Methods Section
@@ -137,39 +124,47 @@ class HallController extends Controller
   }
 
   /**
-   * Trash update
+   * Display a listing of the trashed halls.
    */
-  /* public function updateTrash($id) {
+  public function trash()
+  {
+    $halls = Hall::onlyTrashed()->latest()->get();
 
-   *   $hall_data = Hall::findOrfail($id);
-
-   *   if ($hall_data -> trash) {
-
-   *     $hall_data -> update([
-   *       'trash'    => false
-   *     ]);
-
-   *   } else{
-
-   *     $hall_data -> update([
-   *       'trash'    => true
-   *     ]);
-   *   }
-
-   *   // return with a success message
-   *   return back() -> with('success-main', $hall_data -> hall . ' data moved to Trash');
-   * } */
+    return view('admin.pages.hall.trash', [
+      'halls' => $halls
+    ]);
+  }
 
   /**
-   * Display Trash Users
+   * Soft delete the specified hall.
    */
-  /* public function trashHall() {
+  public function destroy(string $id)
+  {
+    $hall = Hall::findOrFail($id);
+    $hall->delete(); // This will soft delete
 
-   *   $hall_data = Hall::latest() -> where('trash', true) -> get();
+    return back()->with('success-main', 'Hall moved to trash successfully');
+  }
 
-   *   return view('admin.pages.hall.trash', [
-   *     'hall_data'      => $hall_data,
-   *     'form_type'     => 'trash',
-   *   ]);
-   * } */
+  /**
+   * Restore the specified hall from trash.
+   */
+  public function restore($id)
+  {
+    $hall = Hall::onlyTrashed()->findOrFail($id);
+    $hall->restore();
+
+    return back()->with('success-main', 'Hall restored successfully');
+  }
+
+  /**
+   * Permanently delete the specified hall.
+   */
+  public function forceDelete($id)
+  {
+    $hall = Hall::onlyTrashed()->findOrFail($id);
+    $hall->forceDelete();
+
+    return back()->with('success-main', 'Hall permanently deleted');
+  }
 }

@@ -8,6 +8,9 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <h4 class="card-title">All Halls</h4>
+          <a href="{{ route('hall.trash') }}" class="btn btn-warning">
+            <i class="fa fa-trash"></i> Trash
+          </a>
         </div>
         <div class="card-body">
           @include('validate-main')
@@ -15,11 +18,9 @@
             <table class="table mb-0 data-table-element">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Hall Name</th>
                   <th>For Gender</th>
                   <th>Location</th>
-                  <th>Created At</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -28,11 +29,9 @@
 
                 @forelse ($halls as $item)
                   <tr>
-                    <td>{{ $loop -> index + 1 }}</td>
                     <td>{{ $item -> name }}</td>
                     <td>{{ $item -> gender }}</td>
                     <td>{{ $item -> location }}</td>
-                    <td>{{ $item -> created_at -> diffForHumans() }}</td>
 
                     <td>
                       @if($item -> status )
@@ -46,6 +45,15 @@
 
                     <td>
                       <a class="btn btn-sm btn-warning" href="{{ route('hall.edit', $item -> id ) }}"><i class="fa fa-edit"></i></a>
+
+                      <form action="{{ route('hall.destroy', $item->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </form>
+
                     </td>
 
                   </tr>

@@ -51,8 +51,9 @@ Route::group(['middleware' => 'admin'], function () {
   // Hall routes
   Route::resource('/hall', HallController::class);
   Route::get('/hall-status-update/{id}', [HallController::class, 'updateStatus'])->name('hall.status.update');
-  Route::get('/hall-trash-update/{id}', [HallController::class, 'updateTrash'])->name('hall.trash.update');
-  Route::get('/hall-trash', [HallController::class, 'trashHall'])->name('hall.trash');
+  Route::get('halls/trash', [HallController::class, 'trash'])->name('hall.trash');
+  Route::post('hall/{id}/restore', [HallController::class, 'restore'])->name('hall.restore');
+  Route::delete('hall/{id}/force-delete', [HallController::class, 'forceDelete'])->name('hall.force-delete');
 
   // Hall-Room routes
   Route::resource('/hall-room', HallRoomController::class);
@@ -79,6 +80,7 @@ Route::group(['middleware' => 'admin'], function () {
  */
 Route::get('/', [FrontendPageController::class, 'showHomePage'])->name('home.page');
 Route::get('/book', [FrontendPageController::class, 'showBookPage'])->name('book.page');
+Route::get('room-photos/{filename}', [App\Http\Controllers\PublicFileController::class, 'showRoomPhoto'])->name('room.photo');
 
 Route::controller(HallBookingController::class)->prefix('hall-bookings')->name('hall-booking.')->group(function () {
   Route::get('/', 'index')->name('index');

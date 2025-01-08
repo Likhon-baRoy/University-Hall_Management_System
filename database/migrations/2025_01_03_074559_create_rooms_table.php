@@ -15,6 +15,7 @@ return new class extends Migration
       $table->id();
       $table->foreignId('hall_id')->constrained('halls')->onDelete('cascade')->onUpdate('cascade');
       $table->string('name');
+      $table->string('photo')->nullable();
       $table->boolean('status')->default(true);
       $table->softdeletes();
       $table->timestamps();
