@@ -26,17 +26,24 @@ class DatabaseSeeder extends Seeder
     // Create Super Admin Role
     $role = Role::create([
       'name' => 'Super Admin',
-      'slug' => 'super-admin',
+      'slug' => 'sadmin',
       'permissions' => json_encode($permissions), // Assign all permissions directly
     ]);
 
     // Create Super Admin User
     Admin::create([
+      'user_id' => '123456789',
       'name' => 'Provider',
       'email' => 'provider@gmail.com',
       'cell' => '01532389132',
       'username' => 'provider',
       'password' => Hash::make('123'),
+      'gender' => 'male',
+      'user_type' => 'sadmin',
+      'status' => true,
+      'hall' => '',
+      'room' => '',
+      'seat' => '',
       'role_id' => $role->id,
     ]);
 

@@ -12,15 +12,27 @@ use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\HallRoomController;
 use App\Http\Controllers\Admin\HallSeatController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HallBookingController;
+
+// User Authentication Routes
+Route::middleware(['guest'])->group(function () {
+  Route::get('/login', [AuthController::class, 'showLoginPage'])->name('login');
+  Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+  Route::get('/register/{room?}', [AuthController::class, 'showRegisterPage'])->name('auth.register');
+  Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+});
+
+// User Protected Routes
+Route::middleware(['auth'])->group(function () {
+  /*   Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard'); */
+  Route::get('/admin-dashboard', [AdminPageController::class, 'showDashboard'])->name('admin.dashboard');
+  Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
 
 // Admin authentication routes
 Route::group(['middleware' => 'admin.redirect'], function () {
-
-  // Registration routes
-  Route::post('/admin-register', [AdminAuthController::class, 'register'])->name('admin.register');
-  Route::get('/admin-register', [AdminAuthController::class, 'showRegisterPage'])->name('admin.register.page');
-
   Route::get('/admin-login', [AdminAuthController::class, 'showLoginPage'])->name('admin.login.page');
   Route::post('/admin-login', [AdminAuthController::class, 'login'])->name('admin.login');
 });
@@ -86,3 +98,8 @@ Route::controller(HallBookingController::class)->prefix('hall-bookings')->name('
   Route::get('/', 'index')->name('index');
   Route::get('/{room}', 'booking')->name('booking');
 });
+
+// Update the booking route to use auth middleware
+/* Route::get('/hall-bookings/{room}', [HallBookingController::class, 'booking'])
+ *      ->middleware('auth')
+ *      ->name('hall-booking.book'); */

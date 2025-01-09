@@ -35,7 +35,7 @@
 				<p class="account-subtitle">Access to our dashboard</p>
 
 				<!-- Form -->
-				<form action="{{ route('admin.login') }}" method="POST">
+				<form action="{{ route('login') }}" method="POST">
 				  @csrf
 				  @include('validate')
 				  <div class="form-group">
@@ -57,7 +57,7 @@
                   <span class="span-or">or</span>
                 </div>
 
-                <div class="text-center dont-have">Don't have an account? <a href="{{ route('admin.register.page') }}">Register</a></div>
+                <div class="text-center dont-have">Don't have an account? <a href="{{ route('auth.register') }}">Register</a></div>
 
 			  </div>
             </div>

@@ -17,7 +17,7 @@ return new class extends Migration
       $table->string('gender');
       $table->string('location');
       $table->boolean('status')->default(true);
-      $table->softdeletes();
+      $table->softDeletes();
       $table->timestamps();
     });
   }

@@ -180,7 +180,7 @@
                   </a>
 
                   <!-- Book Now Button -->
-                  <a href="{{ route('hall-booking.booking', ['room' => $room->id]) }}" class="btn btn-success btn-sm">
+                  <a href="{{ route('auth.register', ['room' => $room->id]) }}" class="btn btn-success btn-sm">
                     <i class="fas fa-hotel"></i> Book
                   </a>
 

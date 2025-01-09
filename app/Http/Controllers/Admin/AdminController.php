@@ -16,7 +16,10 @@ class AdminController extends Controller
    */
   public function index() {
     //
-    $all_admin = Admin::latest() -> where('trash', false) -> get();
+    $all_admin = Admin::latest()
+                      ->where('status', true)
+                      ->whereNull('deleted_at')
+                      ->get();
 
     $roles = Role::latest() -> get();
 
@@ -68,7 +71,7 @@ class AdminController extends Controller
     $user -> notify( new AdminAccountInfoNotification( [$user['name'], $pass] ));
 
     return back() -> with('success','Admin user created!');
-    }
+  }
 
   /**
    * Display the specified resource.

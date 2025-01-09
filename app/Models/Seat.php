@@ -12,4 +12,9 @@ class Seat extends Model
   {
     return $this->belongsTo(Room::class);
   }
+
+  public function admin()
+  {
+    return $this->belongsTo(Admin::class);
+  }
 }

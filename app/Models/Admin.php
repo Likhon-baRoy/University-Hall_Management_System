@@ -2,18 +2,35 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Admin extends User
+class Admin extends Authenticatable
 {
-  use Notifiable;
+  use Notifiable, SoftDeletes;
 
-  protected $guarded = []; // empty array mean all column is accessable
+  protected $guard = 'admin';
 
-  // get user role
+  protected $guarded = [];  // Keep your existing mass assignment protection setting
+
+  protected $hidden = [
+    'password',
+    'remember_token',
+  ];
+
+  protected $casts = [
+    'status' => 'boolean',
+    'semester_year' => 'integer',
+  ];
+
+  // Relationship with Role
   public function role() {
-    return $this -> belongsTo(Role::Class, 'role_id', 'id');
+    return $this->belongsTo(Role::class);
+  }
+
+  // Add relationship with Seat if needed
+  public function seats() {
+    return $this->hasMany(Seat::class);
   }
 }

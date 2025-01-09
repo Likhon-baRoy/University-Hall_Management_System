@@ -40,6 +40,13 @@ class HallBookingController extends Controller
       $query->where('status', true);
     }])->findOrFail($id);
 
-    return view('frontend.pages.booking', compact('room'));
+    $bookingData = [
+      'hall' => $room->hall->name,
+      'room_id' => $room->id,
+      'room' => $room->name,
+      'available_seats' => $room->seats->pluck('number')->toArray()
+    ];
+
+    return view('admin.pages.register', compact('bookingData'));
   }
 }
