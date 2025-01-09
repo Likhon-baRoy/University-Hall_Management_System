@@ -80,7 +80,7 @@
         </li>
         <li class="submenu {{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'open active-parent' : '' }}">
           <a href="#" aria-expanded="{{ Request::is('hall*') || Request::is('role*') || Request::is('permission*') ? 'true' : 'false' }}">
-            <i class="fa fa-university"></i> <span> Hall Management</span> <span class="menu-arrow"></span>
+            <i class="fa fa-building"></i> <span> Manage Halls</span> <span class="menu-arrow"></span>
           </a>
           <ul>
             <li><a href="{{ route('hall.index') }}" class="{{ Request::routeIs('hall.index') ? 'active' : '' }}">Halls</a></li>

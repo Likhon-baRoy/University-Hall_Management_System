@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
      .room-card {
        height: 100%;
@@ -152,23 +154,43 @@
                      class="card-img-top"
                      onerror="this.onerror=null; console.log('Failed to load image:', this.src); this.src='{{ asset('storage/image/room/default-room.jpg') }}';">
                 <span class="availability-badge">
-                  {{ $room->seats->count() }} seats available
+                  <i class="bi bi-person-fill"></i> {{ $room->seats->count() }} seats available
                 </span>
               </div>
               <div class="card-body">
-                <h5 class="card-title">Room: {{ $room->name }}</h5>
-                <p class="card-text mb-2">
-                  Hall: {{ $room->hall->name }}<br>
-                  Location: <i>{{ $room->hall->location }}</i>
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-door-open"></i> Room: {{ $room->name }}</span>
+
+                  <!-- Gender Badge (on the right side of Room name) -->
                   <span class="badge {{ strtolower($room->hall->gender) === 'male' ? 'badge-male' : 'badge-female' }}">
                     {{ $room->hall->gender }}
                   </span>
-                  <a href="{{ route('hall-booking.booking', ['room' => $room->id]) }}"
-                     class="btn btn-sm btn-primary">View Details</a>
+                </h5>
+
+                <p class="card-text mb-2">
+                  <i class="bi bi-building"></i> {{ $room->hall->name }}<br>
+                  <i class="bi bi-geo-alt"> <small>{{ $room->hall->location }}</small></i>
+                </p>
+
+                <!-- Attached Buttons -->
+                <div class="btn-group mt-3 w-100" role="group">
+                  <!-- Preview Button -->
+                  <a href="" class="btn btn-warning btn-sm">
+                    <i class="bi bi-eye"></i> Preview
+                  </a>
+
+                  <!-- Book Now Button -->
+                  <a href="{{ route('hall-booking.booking', ['room' => $room->id]) }}" class="btn btn-success btn-sm">
+                    <i class="fas fa-hotel"></i> Book
+                  </a>
+
+                  <!-- Reviews Button -->
+                  <a href="" class="btn btn-primary btn-sm">
+                    <i class="bi bi-star"></i> Reviews
+                  </a>
                 </div>
               </div>
+
             </div>
           </div>
         @endforeach
