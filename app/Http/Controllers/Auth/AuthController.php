@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\Role;
+use App\Models\StudentVerification;
+use App\Models\TeacherVerification;
+use App\Models\StaffVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\VerifiesUniversityMembers;
 
 class AuthController extends Controller
 {
+  use VerifiesUniversityMembers;
+
   // Show Login page
   public function showLoginPage()
   {
@@ -100,19 +107,32 @@ class AuthController extends Controller
     // Start database transaction
     \DB::beginTransaction();
 
-    try {
-      // Create admin user
+    try {  // Add this line to open the try block
+      // Verify university member
+      if (!$this->verifyUniversityMember($request->user_id, $request->email, $request->user_type)) {
+        return back()->withInput()
+                     ->withErrors([
+                       'verification' => 'Invalid user ID or email for the selected user type. Please ensure you are using your official university credentials.'
+                     ]);
+      }
+
+      // Find the appropriate role based on user_type
+      $role = Role::where('slug', $request->user_type)->first();
+
+      if (!$role) {
+        throw new \Exception('Invalid user type or role not found');
+      }
+
+      // Create admin user with role
       $adminData = array_merge($validated, [
         'password' => Hash::make($validated['password']),
         'status' => false,
-        'role_id' => null
+        'role_id' => $role->id
       ]);
 
       \Log::info('Creating admin with data:', array_diff_key($adminData, ['password' => '']));
 
       $admin = Admin::create($adminData);
-
-      \Log::info('Admin created successfully:', ['admin_id' => $admin->id]);
 
       // Handle seat booking if applicable
       if ($request->filled('room_id') && $request->filled('seat')) {
@@ -121,9 +141,9 @@ class AuthController extends Controller
 
       \DB::commit();
 
-      // Log the admin in
       Auth::guard('admin')->login($admin);
-      Auth::guard('admin') -> logout();
+      Auth::guard('admin')->logout();
+
       return redirect()->route('login')
                        ->with('success', 'Registration successful! Your account will be activated after admin review.');
 
@@ -135,112 +155,141 @@ class AuthController extends Controller
       ]);
 
       return back()
-            ->with('error', 'Registration failed. Please try again.')
-            ->withInput();
+                ->with('error', 'Registration failed. Please try again.')
+                ->withInput();
     }
   }
 
-  // Helper method for handling seat booking
-  private function handleSeatBooking(Request $request, Admin $admin)
-  {
-    \Log::info('Handling seat booking:', [
-      'room_id' => $request->room_id,
-      'seat_name' => $request->seat,
-      'admin_id' => $admin->id
-    ]);
+    // Add this new method to verify credentials
+    private function verifyUserCredentials($userType, $userId, $email, $department)
+    {
+      $verificationModel = match($userType) {
+        'student' => StudentVerification::class,
+        'teacher' => TeacherVerification::class,
+        'staff' => StaffVerification::class,
+        default => null
+      };
 
-    $seat = Seat::where([
-      'room_id' => $request->room_id,
-      'name' => $request->seat,  // Changed from 'number' to 'name'
-      'status' => true
-    ])->first();
+      if (!$verificationModel) {
+        return false;
+      }
 
-    if ($seat) {
-      \Log::info('Found seat to book:', ['seat_id' => $seat->id]);
+      $verification = $verificationModel::where([
+        'user_id' => $userId,
+        'email' => $email,
+        'department' => $department,
+        'is_registered' => false
+      ])->first();
 
-      $seat->update([
-        'status' => false,
+      if ($verification) {
+        $verification->update(['is_registered' => true]);
+        return true;
+      }
+
+      return false;
+    }
+
+    // Helper method for handling seat booking
+    private function handleSeatBooking(Request $request, Admin $admin)
+    {
+      \Log::info('Handling seat booking:', [
+        'room_id' => $request->room_id,
+        'seat_name' => $request->seat,
         'admin_id' => $admin->id
       ]);
 
-      \Log::info('Successfully booked seat');
-    } else {
-      \Log::warning('Seat not found or already booked', [
+      $seat = Seat::where([
         'room_id' => $request->room_id,
-        'seat_name' => $request->seat
-      ]);
-    }
-  }
+        'name' => $request->seat,  // Changed from 'number' to 'name'
+        'status' => true
+      ])->first();
 
-  // Helper method for getting booking data
-  private function getBookingData(Request $request)
-  {
-    $defaultData = [
-      'hall' => '',
-      'room_id' => '',
-      'room' => '',
-      'available_seats' => []
-    ];
+      if ($seat) {
+        \Log::info('Found seat to book:', ['seat_id' => $seat->id]);
 
-    // Get room ID from route parameter
-    $roomId = $request->route('room');
-    \Log::info('Attempting to get room data', ['room_id' => $roomId]);
+        $seat->update([
+          'status' => false,
+          'admin_id' => $admin->id
+        ]);
 
-    if (!$roomId) {
-      \Log::info('No room ID provided');
-      return $defaultData;
+        \Log::info('Successfully booked seat');
+      } else {
+        \Log::warning('Seat not found or already booked', [
+          'room_id' => $request->room_id,
+          'seat_name' => $request->seat
+        ]);
+      }
     }
 
-    try {
-      // Find the room with its relationships
-      $room = Room::with([
-        'hall',
-        'seats' => function($query) {
-          $query->where('status', true);
-        }
-      ])->find($roomId);
-
-      // Debug the room query
-      \Log::info('Room query result:', [
-        'room_found' => $room ? 'yes' : 'no',
-        'room_data' => $room,
-        'hall_data' => $room?->hall,
-        'seats_count' => $room?->seats?->count()
-      ]);
-
-      if (!$room) {
-        \Log::error('Room not found', ['room_id' => $roomId]);
-        return $defaultData;
-      }
-
-      if (!$room->hall) {
-        \Log::error('Hall not found for room', ['room_id' => $roomId]);
-        return $defaultData;
-      }
-
-      $data = [
-        'hall' => $room->hall->name,
-        'room_id' => $room->id,
-        'room' => $room->name,
-        'available_seats' => $room->seats->pluck('name')->toArray()
+    // Helper method for getting booking data
+    private function getBookingData(Request $request)
+    {
+      $defaultData = [
+        'hall' => '',
+        'room_id' => '',
+        'room' => '',
+        'available_seats' => []
       ];
 
-      \Log::info('Generated booking data:', $data);
+      // Get room ID from route parameter
+      $roomId = $request->route('room');
+      \Log::info('Attempting to get room data', ['room_id' => $roomId]);
 
-      return $data;
-    } catch (\Exception $e) {
-      \Log::error('Error getting booking data', [
-        'error' => $e->getMessage(),
-        'trace' => $e->getTraceAsString()
-      ]);
-      return $defaultData;
+      if (!$roomId) {
+        \Log::info('No room ID provided');
+        return $defaultData;
+      }
+
+      try {
+        // Find the room with its relationships
+        $room = Room::with([
+          'hall',
+          'seats' => function($query) {
+            $query->where('status', true);
+          }
+        ])->find($roomId);
+
+        // Debug the room query
+        \Log::info('Room query result:', [
+          'room_found' => $room ? 'yes' : 'no',
+          'room_data' => $room,
+          'hall_data' => $room?->hall,
+          'seats_count' => $room?->seats?->count()
+        ]);
+
+        if (!$room) {
+          \Log::error('Room not found', ['room_id' => $roomId]);
+          return $defaultData;
+        }
+
+        if (!$room->hall) {
+          \Log::error('Hall not found for room', ['room_id' => $roomId]);
+          return $defaultData;
+        }
+
+        $data = [
+          'hall' => $room->hall->name,
+          'room_id' => $room->id,
+          'room' => $room->name,
+          'available_seats' => $room->seats->pluck('name')->toArray()
+        ];
+
+        \Log::info('Generated booking data:', $data);
+
+        return $data;
+      } catch (\Exception $e) {
+        \Log::error('Error getting booking data', [
+          'error' => $e->getMessage(),
+          'trace' => $e->getTraceAsString()
+        ]);
+        return $defaultData;
+      }
+    }
+
+    // Handle Admin Logout
+    public function logout()
+    {
+      Auth::guard('admin')->logout();
+      return redirect()->route('login');
     }
   }
-
-  // Handle Admin Logout
-  public function logout()
-  {
-    Auth::guard('admin')->logout();
-    return redirect()->route('login');
-  }
-}
