@@ -10,7 +10,7 @@ return new class extends Migration
   {
     Schema::create('admins', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('role_id')->nullable();
+      $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
       $table->string('name');
       $table->string('user_id')->unique();
       $table->string('username')->unique();

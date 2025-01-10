@@ -33,4 +33,19 @@ class Admin extends Authenticatable
   public function seats() {
     return $this->hasMany(Seat::class);
   }
+
+  // automatically set the role based on user_type
+  protected static function booted()
+  {
+    static::creating(function ($admin) {
+      // If no role_id is set but user_type is present
+      if (!$admin->role_id && $admin->user_type) {
+        // Find the role with matching slug
+        $role = Role::where('slug', $admin->user_type)->first();
+        if ($role) {
+          $admin->role_id = $role->id;
+        }
+      }
+    });
+  }
 }
