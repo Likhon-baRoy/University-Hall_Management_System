@@ -30,6 +30,17 @@ class DatabaseSeeder extends Seeder
       'permissions' => json_encode($permissions), // Assign all permissions directly
     ]);
 
+    // After creating Super Admin role, add these roles
+    $userTypes = ['student', 'teacher', 'staff', 'admin', 'editor', 'author'];
+
+    foreach ($userTypes as $type) {
+      Role::create([
+        'name' => ucfirst($type), // Capitalizes first letter
+        'slug' => $type,
+        'permissions' => json_encode([]), // Start with no permissions
+      ]);
+    }
+
     // Create Super Admin User
     Admin::create([
       'user_id' => '123456789',
@@ -47,29 +58,36 @@ class DatabaseSeeder extends Seeder
       'role_id' => $role->id,
     ]);
 
-    // Create Existing Halls
-    Hall::create([
-      'name' => 'Mokbul Hossain Hall',
-      'gender' => 'male',
-      'location' => 'City Campus, Savar',
-    ]);
+    // Create Halls
+    $halls = [
+      [
+        'name' => 'Mokbul Hossain Hall',
+        'gender' => 'male',
+        'location' => 'City Campus, Savar',
+      ],
+      [
+        'name' => 'Fatema Hall',
+        'gender' => 'female',
+        'location' => 'City Campus, Savar',
+      ],
+      [
+        'name' => 'Mona Hall',
+        'gender' => 'female',
+        'location' => 'Khagan Bazar, Birulia, Savar',
+      ],
+      [
+        'name' => 'Fazlur Rahaman Hall',
+        'gender' => 'male',
+        'location' => 'Khagan Bazar, Birulia, Savar',
+      ],
+    ];
 
-    Hall::create([
-      'name' => 'Fatema Hall',
-      'gender' => 'female',
-      'location' => 'City Campus, Savar',
-    ]);
+    foreach ($halls as $hall) {
+      Hall::create($hall);
+    }
 
-    Hall::create([
-      'name' => 'Mona Hall',
-      'gender' => 'female',
-      'location' => 'Khagan Bazar, Birulia, Savar',
-    ]);
+    // Run the verification seeder
+    $this->call(VerificationTableSeeder::class);
 
-    Hall::create([
-      'name' => 'Fazlur Rahaman Hall',
-      'gender' => 'male',
-      'location' => 'Khagan Bazar, Birulia, Savar',
-    ]);
   }
 }
