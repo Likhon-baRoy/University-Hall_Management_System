@@ -7,7 +7,7 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
-          <h4 class="card-title">All Rooms</h4>
+          <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">All Rooms</h4>
           <a href="{{ route('hall-room.trash') }}" class="btn btn-warning">
             <i class="fa fa-trash"></i> Trash
           </a>
@@ -95,6 +95,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-4">
 
       @if( $form_type == 'create')
