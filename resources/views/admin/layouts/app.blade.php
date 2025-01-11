@@ -24,6 +24,9 @@
 	<!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
 
+    <!-- Custom CSS -->
+    @yield('custom-css')
+
 	<!--[if lt IE 9]>
 	  <script src="admin/assets/js/html5shiv.min.js"></script>
 	  <script src="admin/assets/js/respond.min.js"></script>
@@ -71,6 +74,7 @@
 	<script src="{{asset('admin/assets/js/chart.morris.js')}}"></script>
 
 	<!-- Custom JS -->
+    @yield('custom-js')
 	<script  src="{{asset('admin/assets/js/script.js')}}"></script>
     <script  src="{{asset('custom/admin.js')}}"></script>
 
