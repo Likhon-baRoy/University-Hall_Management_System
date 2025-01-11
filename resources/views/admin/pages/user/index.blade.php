@@ -75,7 +75,7 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <a href="" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add User</a>
             <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">All User Database</h4>
-            <a href="{{ route('admin.trash') }}" class="btn btn-warning"><i class="fa fa-trash"></i> Trash</a>
+            <a href="{{ route('admin-user.trash') }}" class="btn btn-warning"><i class="fa fa-trash"></i> Trash</a>
           </div>
           <div class="card-body">
             @include('validate-main')
@@ -120,7 +120,15 @@
                       <td>
                         <a href="#" class="btn btn-sm btn-info view-profile" data-id="{{ $user->id }}"><i class="fa fa-eye"></i></a>
                         <a href="{{ route('admin-user.edit', $user->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+
+                        <form action="{{ route('admin-user.destroy', $user->id) }}" method="POST" style="display:inline;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fa fa-trash"></i>
+                          </button>
+                        </form>
+
                       </td>
                     </tr>
                   @endif

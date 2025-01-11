@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Trash Users Page')
+@section('title', 'Trashed Users')
 
 @section('main-section')
 
@@ -7,8 +7,8 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
-          <h4 class="card-title">Admin Trash Users</h4>
-          <a href="{{ route('admin-user.index') }}" class="text-success">Published Users <i class="fa fa-arrow-right"></i></a>
+          <h4 class="card-title">Trashed Users</h4>
+          <a href="{{ route('admin-user.index') }}" class="btn btn-primary">Published Users</a>
         </div>
         <div class="card-body">
           @include('validate-main')
@@ -16,8 +16,8 @@
             <table class="table mb-0 data-table-element">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Name</th>
+                  <th>Department</th>
                   <th>Photo</th>
                   <th>Created At</th>
                   <th>Action</th>
@@ -25,31 +25,39 @@
               </thead>
               <tbody>
 
-                @forelse ($all_admin as $item)
+                @forelse ($users as $user)
+                  <tr>
+                    <td>{{$user -> name}}</td>
+                    <td>{{$user -> dept}}</td>
+                    <td>
+                      @if ($user -> photo == 'avatar.png')
+                        <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/img/avatar.png') }}" alt="">
+                      @endif
+                    </td>
+                    <td>{{$user -> created_at}}</td>
+                    <td>
+                      <form action="{{ route('admin-user.restore', $user->id) }}"
+                            method="POST"
+                            style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-info">
+                          <i class="fa fa-undo"></i>
+                        </button>
+                      </form>
 
-                  @if( $item -> name !== 'Provider' )
-                    <tr>
-                      <td>{{$loop -> index + 1}}</td>
-                      <td>{{$item -> name}}</td>
-                      <td>
-                        @if ($item -> photo == 'avatar.png')
-                          <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/img/avatar.png') }}" alt="">
-                        @endif
-                      </td>
-                      <td>{{$item -> created_at}}</td>
-                      <td>
-                        <a class="btn btn-sm btn-info" href="{{ route('admin.trash.update', $item -> id) }}">Restor User</a>
-
-                        <form method="POST" action="{{ route('admin-user.destroy', $item -> id) }}" class="d-inline delete-form">
-                          @csrf
-                          @method('DELETE')
-                          <button class="btn btn-sm btn-danger" type="submit">Delete Permanently</button>
-                        </form>
-
-                      </td>
-                    </tr>
-                  @endif
-
+                      <form action="{{ route('admin-user.force-delete', $user->id) }}"
+                            method="POST"
+                            style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure? This cannot be undone!')">
+                          <i class="fa fa-times"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
                 @empty
                   <tr>
                     <td class="text-center text-danger" colspan="5">No Records Found</td>

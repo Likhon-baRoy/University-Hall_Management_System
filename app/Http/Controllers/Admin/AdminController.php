@@ -109,7 +109,15 @@ class AdminController extends Controller
    */
   public function edit(string $id)
   {
-    //
+    $user = Admin::findOrFail($id);
+
+    $roles = Role::latest() -> get(); // get roles
+
+    // return the new dedicated edit view
+    return view('admin.pages.user.edit', [
+      'user' => $user,
+      'roles' => $roles
+    ]);
   }
 
   /**
@@ -121,17 +129,49 @@ class AdminController extends Controller
   }
 
   /**
-   * Remove the specified resource from storage.
+   * Display a listing of the trashed Users.
+   */
+  public function trash()
+  {
+    $users = Admin::onlyTrashed()->latest()->get();
+
+    return view('admin.pages.user.trash', [
+      'users' => $users,
+    ]);
+  }
+
+  /**
+   * Soft delete the specified User.
    */
   public function destroy(string $id) {
-    // search id to delete
-    $data = Admin::findOrFail($id);
-
-    // delete if found
-    $data -> delete();
+    // search id to trash
+    $user = Admin::findOrFail($id);
+    $user -> delete(); // This will soft delete
 
     // return with a success message
-    return back() -> with('success-main', $data -> name . ', deleted permanantly');
+    return back() -> with('success-main', $user -> name . ', moved to trash successfully');
+  }
+
+  /**
+   * Restore the specified user from trash.
+   */
+  public function restore($id)
+  {
+    $user = Admin::onlyTrashed()->findOrFail($id);
+    $user->restore();
+
+    return back()->with('success-main', 'User restored successfully');
+  }
+
+  /**
+   * Permanently delete the specified user.
+   */
+  public function forceDelete($id)
+  {
+    $user = Admin::onlyTrashed()->findOrFail($id);
+    $user->forceDelete();
+
+    return back()->with('success-main', 'User permanently deleted');
   }
 
   /*****************************************************************
