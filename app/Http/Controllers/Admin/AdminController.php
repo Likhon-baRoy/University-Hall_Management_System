@@ -77,7 +77,31 @@ class AdminController extends Controller
    */
   public function show(string $id)
   {
-    //
+    try {
+      $user = Admin::with('role')->findOrFail($id);
+
+      return response()->json([
+        'id' => $user->id,
+        'name' => $user->name,
+        'user_id' => $user->user_id,
+        'email' => $user->email,
+        'cell' => $user->cell,
+        'gender' => $user->gender,
+        'dept' => $user->dept,
+        'semester' => $user->semester,
+        'semester_year' => $user->semester_year,
+        'hall' => $user->hall,
+        'room' => $user->room,
+        'status' => $user->status,
+        'role' => $user->role,
+        'photo_url' => $user->photo ? asset('storage/img/' . $user->photo) : asset('storage/img/avatar.png')
+      ], 200);
+    } catch (\Exception $e) {
+      return response()->json([
+        'message' => 'Error fetching user data',
+        'error' => $e->getMessage()
+      ], 500);
+    }
   }
 
   /**
