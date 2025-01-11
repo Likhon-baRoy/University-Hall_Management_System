@@ -16,15 +16,14 @@ class AdminController extends Controller
    */
   public function index() {
     //
-    $all_admin = Admin::latest()
-                      ->where('status', true)
-                      ->whereNull('deleted_at')
-                      ->get();
+    $all_user = Admin::latest()
+                     ->whereNull('deleted_at')
+                     ->get();
 
     $roles = Role::latest() -> get();
 
     return view('admin.pages.user.index', [
-      'all_admin'      => $all_admin,
+      'all_user'      => $all_user,
       'form_type'     => 'create',
       'roles'         => $roles
     ]);
