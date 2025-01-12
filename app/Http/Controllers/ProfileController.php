@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -82,18 +83,18 @@ class ProfileController extends Controller
 
       // Handle photo upload if included
       if ($request->hasFile('photo')) {
+        // Delete old photo if it exists and isn't the default
+        if ($user->photo && $user->photo !== 'avatar.png') {
+          Storage::disk('public')->delete('public/img/' . $user->photo);
+        }
+
         $request->validate([
           'photo' => 'image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         $photo = $request->file('photo');
         $filename = time() . '.' . $photo->getClientOriginalExtension();
-        $photo->storeAs('public/img', $filename);
-
-        // Delete old photo if it exists and isn't the default
-        if ($user->photo && $user->photo !== 'avatar.png') {
-          Storage::delete('public/img/' . $user->photo);
-        }
+        $photo->storeAs('img', $filename, 'public');
 
         $user->update(['photo' => $filename]);
       }
