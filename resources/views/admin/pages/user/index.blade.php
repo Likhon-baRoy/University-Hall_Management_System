@@ -184,6 +184,14 @@
                         <div id="userCell"></div>
                       </div>
                     </div>
+                    <!-- New Bio Box -->
+                    <div class="col-12 mb-3">
+                      <div class="info-box p-3 bg-soft-info rounded">
+                        <i class="fa fa-info-circle text-info mr-2"></i>
+                        <label class="font-weight-bold mb-1">Bio</label>
+                        <div id="userBio" class="text-break"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -206,6 +214,10 @@
                     <label class="text-muted">Department</label>
                     <div id="userDept" class="font-weight-bold"></div>
                   </div>
+                  <div class="detail-item mb-3">
+                    <label class="text-muted">Birth Date</label>
+                    <div id="userDob" class="font-weight-bold"></div>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <div class="detail-item mb-3">
@@ -217,6 +229,10 @@
                     <div class="font-weight-bold">
                       <span id="userHall"></span> - <span id="userRoom"></span>
                     </div>
+                  </div>
+                  <div class="detail-item mb-3">
+                    <label class="text-muted">Address</label>
+                    <div id="userAddress" style="font-weight: 500;"></div>
                   </div>
                   <div class="detail-item mb-3">
                     <label class="text-muted">Account Status</label>
@@ -277,10 +293,13 @@
            $('#userDept').text(response.dept || 'N/A');
            $('#userSemester').text(
              (response.semester ? response.semester + ' ' : '') +
-                     (response.semester_year || 'N/A')
+           (response.semester_year || 'N/A')
            );
            $('#userHall').text(response.hall || 'N/A');
            $('#userRoom').text(response.room || 'N/A');
+           $('#userBio').text(response.bio || 'No bio available');
+           $('#userAddress').text(response.address || 'Address not provided');
+           $('#userDob').text(response.dob || 'Birth date not provided');
            $('#userStatus').html(response.status ?
                                  '<span class="badge badge-success"><i class="fa fa-check-circle"></i> Active</span>' :
                                  '<span class="badge badge-danger"><i class="fa fa-ban"></i> Blocked</span>'

@@ -92,6 +92,9 @@ class AdminController extends Controller
         'semester_year' => $user->semester_year,
         'hall' => $user->hall,
         'room' => $user->room,
+        'dob' => $user->dob,
+        'address' => $user->address,
+        'bio' => $user->bio,
         'status' => $user->status,
         'role' => $user->role,
         'photo_url' => $user->photo ? asset('storage/img/' . $user->photo) : asset('storage/img/avatar.png')
