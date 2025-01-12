@@ -74,17 +74,4 @@
       </div>
     </div>
   </div>
-
-  @push('scripts')
-  <script>
-   // Preview uploaded image
-   document.getElementById('room-photo-input').addEventListener('change', function(e) {
-     const preview = document.getElementById('room-photo-preview');
-     const file = e.target.files[0];
-     if (file) {
-       preview.src = URL.createObjectURL(file);
-     }
-   });
-  </script>
-  @endpush
 @endsection
