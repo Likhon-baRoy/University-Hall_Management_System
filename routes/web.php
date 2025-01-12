@@ -85,6 +85,8 @@ Route::group(['middleware' => 'admin'], function () {
 
   // user profile routes
   Route::resource('/profile', ProfileController::class);
+  Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+  Route::put('/profile/update-photo', [ProfileController::class, 'updatePhoto'])->name('profile.update-photo');
   /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
 });
 
