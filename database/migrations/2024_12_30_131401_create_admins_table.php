@@ -19,14 +19,14 @@ return new class extends Migration
       $table->string('password');
       $table->enum('user_type', ['student', 'teacher', 'staff', 'admin', 'sadmin', 'editor', 'author']);
       $table->enum('gender', ['male', 'female', 'other']);
-      $table->string('dept')->nullable();  // Changed from dept to department to match form
+      $table->string('dept')->nullable(); // department
       $table->enum('semester_type', ['trimester', 'bi-semester'])->nullable();
       $table->enum('semester', ['summer', 'fall', 'winter'])->nullable();
       $table->year('semester_year')->nullable();
-      $table->string('hall');  // Changed from hall to hall_name to match form
+      $table->string('hall');
       $table->string('room');
       $table->string('seat')->nullable();
-      $table->string('dob')->nullable();
+      $table->string('dob')->nullable(); // Data-of_Birth
       $table->string('address')->nullable();
       $table->text('bio')->nullable();
       $table->string('photo')->default('avatar.png');
