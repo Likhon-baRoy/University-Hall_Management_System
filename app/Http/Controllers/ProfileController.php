@@ -16,7 +16,7 @@ class ProfileController extends Controller
    */
   public function index() {
     $user = Auth::guard('admin')->user();
-    return view('admin.pages.profile', compact('user'));
+    return view('admin.pages.profile.index', compact('user'));
   }
 
   /**
@@ -110,26 +110,27 @@ class ProfileController extends Controller
    */
   public function updatePassword(Request $request)
   {
-    $request->validate([
-      'current_password' => 'required',
-      'password' => 'required|string|min:8|confirmed',
+    // check old password
+    if ( !(password_verify($request -> old_pass, Auth::guard('admin') -> user() -> password)) ) {
+      return back() -> with('danger', 'User old password didn\'t match');
+    }
+
+    //new password confirmation
+    if ( $request -> pass != $request -> pass_confirmation) {
+      return back() -> with('warning', 'Password confirmation failed');
+    }
+
+    // find the user data
+    $data = Admin::findOrFail(Auth::guard('admin') -> user() -> id);
+
+    // Update new password
+    $data -> update([
+      'password' => Hash::make($request -> pass)
     ]);
 
-    $user = Auth::guard('admin')->user();
+    Auth::guard('admin') -> logout();
 
-    if (!Hash::check($request->current_password, $user->password)) {
-      return back()->with('error', 'Current password is incorrect');
-    }
-
-    try {
-      $user->update([
-        'password' => Hash::make($request->password)
-      ]);
-
-      return redirect()->back()->with('success', 'Password changed successfully!');
-    } catch (\Exception $e) {
-      return redirect()->back()->with('error', 'Error changing password. Please try again.');
-    }
+    return redirect() -> route('login') -> with('success', 'user password changed successfully');
   }
 
   /**
