@@ -110,27 +110,36 @@ class ProfileController extends Controller
    */
   public function updatePassword(Request $request)
   {
-    // check old password
-    if ( !(password_verify($request -> old_pass, Auth::guard('admin') -> user() -> password)) ) {
-      return back() -> with('danger', 'User old password didn\'t match');
-    }
-
-    //new password confirmation
-    if ( $request -> pass != $request -> pass_confirmation) {
-      return back() -> with('warning', 'Password confirmation failed');
-    }
-
-    // find the user data
-    $data = Admin::findOrFail(Auth::guard('admin') -> user() -> id);
-
-    // Update new password
-    $data -> update([
-      'password' => Hash::make($request -> pass)
+    $request->validate([
+      'old_pass' => ['required'],
+      'pass' => ['required', 'min:8', 'confirmed'],
+    ], [
+      'old_pass.required' => 'The old password field is required.',
+      'pass.required' => 'The new password field is required.',
+      'pass.min' => 'The new password must be at least 8 characters.',
+      'pass.confirmed' => 'The password confirmation does not match.',
     ]);
 
-    Auth::guard('admin') -> logout();
+    // Check if old password matches
+    if (!password_verify($request->old_pass, Auth::guard('admin')->user()->password)) {
+      return redirect()
+            ->route('profile.index', ['tab' => 'password'])
+            ->withErrors(['old_pass' => 'Your old password is incorrect.'])
+            ->withInput();
+    }
 
-    return redirect() -> route('login') -> with('success', 'user password changed successfully');
+    // Update password
+    $data = Admin::findOrFail(Auth::guard('admin')->user()->id);
+    $data->update([
+      'password' => Hash::make($request->pass),
+    ]);
+
+    // Log out admin after password update
+    Auth::guard('admin')->logout();
+
+    // Redirect back to login
+    return redirect()->route('login')
+                     ->with('success', 'Password changed successfully. Please login with your new password.');
   }
 
   /**

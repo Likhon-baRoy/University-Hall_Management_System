@@ -31,19 +31,27 @@
         </div>
 
         <div class="profile-menu">
+
+          <!-- Determine active tab based on query parameter -->
+          @php
+          $activeTab = request('tab', 'about'); // Prioritize URL parameter
+          @endphp
+
           <ul class="nav nav-tabs nav-tabs-solid">
             <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#per_details_tab">About</a>
+              <a class="nav-link {{ $activeTab == 'about' ? 'active' : '' }}"
+                 href="{{ route('profile.index', ['tab' => 'about']) }}">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#password_tab">Password</a>
+              <a class="nav-link {{ $activeTab == 'password' ? 'active' : '' }}"
+                 href="{{ route('profile.index', ['tab' => 'password']) }}">Password</a>
             </li>
           </ul>
         </div>
 
         <div class="tab-content profile-tab-cont">
           <!-- Personal Details Tab -->
-          <div class="tab-pane fade show active" id="per_details_tab">
+          <div class="tab-pane fade {{ $activeTab == 'about' ? 'show active' : '' }}" id="per_details_tab">
             <div class="row">
               <div class="col-lg-6">
                 <div class="card">
@@ -123,28 +131,43 @@
           <!-- /Personal Details Tab -->
 
           <!-- Change Password Tab -->
-          <div class="tab-pane fade" id="password_tab">
+          <div class="tab-pane fade {{ $activeTab == 'password' ? 'show active' : '' }}" id="password_tab">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Change Password</h5>
                 <div class="row">
                   <div class="col-md-10 col-lg-6">
-                    @include('validate-main')
                     <form action="{{ route('profile.update-password') }}" method="POST">
                       @csrf
+                      <input type="hidden" name="tab" value="password">
+                      @if($errors->any())
+                        <div class="alert alert-danger">
+                          <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                            @endforeach
+                          </ul>
+                        </div>
+                      @endif
                       <div class="form-group">
-					    <label>Old Password</label>
-					    <input name="old_pass" type="password" class="form-control">
-					  </div>
-					  <div class="form-group">
-					    <label>New Password</label>
-					    <input id="new_pass" name="pass" type="password" class="form-control">
-					  </div>
-					  <div class="form-group">
-					    <label>Confirm Password</label>
-					    <input name="pass_confirmation" type="password" class="form-control">
-					  </div>
-					  <button class="btn btn-primary" type="submit">Update Password</button>
+                        <label>Old Password</label>
+                        <input name="old_pass" type="password" class="form-control @error('old_pass') is-invalid @enderror">
+                        @error('old_pass')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                      </div>
+                      <div class="form-group">
+                        <label>New Password</label>
+                        <input name="pass" type="password" class="form-control @error('pass') is-invalid @enderror">
+                        @error('pass')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                      </div>
+                      <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input name="pass_confirmation" type="password" class="form-control">
+                      </div>
+                      <button class="btn btn-primary" type="submit">Update Password</button>
                     </form>
                   </div>
                 </div>
@@ -156,12 +179,9 @@
       </div>
     </div>
   </div>
-
-  <!--    modal edit view in a separate file -->
   @include('admin.pages.profile.edit')
-
 @endsection
 
 @section('custom-js')
-  <script  src="{{asset('custom/profile-edit-modal.js')}}"></script>
+  <script src="{{ asset('custom/profile-edit-modal.js') }}"></script>
 @endsection
