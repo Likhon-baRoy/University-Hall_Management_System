@@ -50,7 +50,13 @@
                   @csrf
                   @include('validate')
 
-		          <!-- Name -->
+                  @if ($errors->has('hall'))
+                    <div class="alert alert-danger">
+                      {{ $errors->first('hall') }}
+                    </div>
+                  @endif
+
+                  <!-- Name -->
                   <div class="form-group mb-3">
                     <input class="form-control" type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required>
                   </div>

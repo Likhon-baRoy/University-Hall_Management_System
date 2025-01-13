@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('halls', function (Blueprint $table) {
       $table->id();
       $table->string('name');
-      $table->string('gender');
+      $table->enum('gender', ['male', 'female', 'other']);
       $table->string('location');
       $table->boolean('status')->default(true);
       $table->softDeletes();

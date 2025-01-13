@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Hall;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Role;
@@ -101,37 +102,52 @@ class AuthController extends Controller
         'seat' => $request->has('room_id') ? 'required|string' : 'nullable|string',
       ]);
 
-      // Now verify university credentials
-      if (!$this->verifyUniversityMember($request->user_id, $request->email, $request->user_type)) {
+      // Get hall ID for verification
+      $hall = Hall::where('name', $request->hall)
+                  ->firstOrFail();
+
+      // Now verify university credentials including gender match
+      if (!$this->verifyUniversityMember(
+        $request->user_id,
+        $request->email,
+        $request->user_type,
+        $hall->id
+      )) {
         throw ValidationException::withMessages([
-          'credentials' => ['Invalid university credentials. Please ensure you are using your official university ID and email.']
+          'credentials' => ['Verification failed. Please check your credentials.']
         ]);
       }
 
       \DB::beginTransaction();
 
-      // Find the appropriate role
-      $role = Role::where('slug', $request->user_type)->firstOrFail();
+      try {
+        // Find the appropriate role
+        $role = Role::where('slug', $request->user_type)->firstOrFail();
 
-      // Create admin user
-      $adminData = array_merge($validated, [
-        'password' => Hash::make($validated['password']),
-        'status' => false,
-        'role_id' => $role->id
-      ]);
+        // Create admin user
+        $adminData = array_merge($validated, [
+          'password' => Hash::make($validated['password']),
+          'status' => false,
+          'role_id' => $role->id
+        ]);
 
-      $admin = Admin::create($adminData);
+        $admin = Admin::create($adminData);
 
-      // Handle seat booking if applicable
-      if ($request->filled('room_id') && $request->filled('seat')) {
-        $this->handleSeatBooking($request, $admin);
+        // Handle seat booking if applicable
+        if ($request->filled('room_id') && $request->filled('seat')) {
+          $this->handleSeatBooking($request, $admin);
+        }
+
+        \DB::commit();
+
+        return redirect()
+                    ->route('login')
+                    ->with('success', 'Registration successful! Your account will be activated after admin review.');
+
+      } catch (\Exception $e) {
+        \DB::rollBack();
+        throw $e;
       }
-
-      \DB::commit();
-
-      return redirect()
-->route('login')
-->with('success', 'Registration successful! Your account will be activated after admin review.');
 
     } catch (ValidationException $e) {
       Log::warning('Validation failed:', [
@@ -141,19 +157,18 @@ class AuthController extends Controller
       ]);
 
       return back()
-->withErrors($e->errors())
-->withInput();
+                ->withErrors($e->errors())
+                ->withInput();
 
     } catch (\Exception $e) {
-      \DB::rollBack();
       Log::error('Registration failed:', [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString()
       ]);
 
       return back()
-->withErrors(['error' => 'Registration failed. Please try again.'])
-->withInput();
+                ->withErrors(['error' => 'Registration failed. Please try again.'])
+                ->withInput();
     }
   }
 

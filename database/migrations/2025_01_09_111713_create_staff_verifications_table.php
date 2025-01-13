@@ -16,6 +16,7 @@ return new class extends Migration
       $table->string('user_id')->unique();
       $table->string('email')->unique();
       $table->string('department');
+      $table->enum('gender', ['male', 'female', 'other']);
       $table->boolean('is_registered')->default(false);
       $table->timestamps();
     });
