@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\VerifiesUniversityMembers;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -75,62 +77,48 @@ class AuthController extends Controller
   // Handle Admin Registration with role validation
   public function register(Request $request)
   {
-    // Log the incoming request data
-    \Log::info('Registration attempt:', [
-      'request_data' => $request->all()
+    Log::info('Registration attempt:', [
+      'request_data' => $request->except('password')
     ]);
 
-    // Validate the request
-    $validated = $request->validate([
-      'name' => 'required|string|max:255',
-      'user_id' => 'required|string|unique:admins',
-      'username' => 'required|string|unique:admins',
-      'email' => 'required|string|email|unique:admins',
-      'cell' => 'required|string|unique:admins',
-      'password' => 'required|string|min:8|confirmed',
-      'user_type' => 'required|in:student,teacher,staff',
-      'gender' => 'required|in:male,female,other',
-      'dept' => 'required|string',
-      'semester_type' => 'required|in:trimester,bi-semester',
-      'semester' => 'required|in:summer,fall,winter',
-      'semester_year' => 'required|integer|digits:4',
-      'hall' => 'required|string',
-      'room' => 'required|string',
-      'seat' => $request->has('room_id') ? 'required|string' : 'nullable|string',
-      'dob' => 'nullable|string',
-      'address' => 'nullable|string',
-      'bio' => 'nullable|string'
-    ]);
+    try {
+      // First validate the basic form data
+      $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'user_id' => 'required|string|unique:admins',
+        'username' => 'required|string|unique:admins',
+        'email' => 'required|string|email|unique:admins',
+        'cell' => 'required|string|unique:admins',
+        'password' => 'required|string|min:8|confirmed',
+        'user_type' => 'required|in:student,teacher,staff',
+        'gender' => 'required|in:male,female,other',
+        'dept' => 'required|string',
+        'semester_type' => 'required|in:trimester,bi-semester',
+        'semester' => 'required|in:summer,fall,winter',
+        'semester_year' => 'required|integer|digits:4',
+        'hall' => 'required|string',
+        'room' => 'required|string',
+        'seat' => $request->has('room_id') ? 'required|string' : 'nullable|string',
+      ]);
 
-    \Log::info('Validation passed:', ['validated_data' => $validated]);
-
-    // Start database transaction
-    \DB::beginTransaction();
-
-    try {  // Add this line to open the try block
-      // Verify university member
+      // Now verify university credentials
       if (!$this->verifyUniversityMember($request->user_id, $request->email, $request->user_type)) {
-        return back()->withInput()
-                     ->withErrors([
-                       'verification' => 'Invalid user ID or email for the selected user type. Please ensure you are using your official university credentials.'
-                     ]);
+        throw ValidationException::withMessages([
+          'credentials' => ['Invalid university credentials. Please ensure you are using your official university ID and email.']
+        ]);
       }
 
-      // Find the appropriate role based on user_type
-      $role = Role::where('slug', $request->user_type)->first();
+      \DB::beginTransaction();
 
-      if (!$role) {
-        throw new \Exception('Invalid user type or role not found');
-      }
+      // Find the appropriate role
+      $role = Role::where('slug', $request->user_type)->firstOrFail();
 
-      // Create admin user with role
+      // Create admin user
       $adminData = array_merge($validated, [
         'password' => Hash::make($validated['password']),
         'status' => false,
         'role_id' => $role->id
       ]);
-
-      \Log::info('Creating admin with data:', array_diff_key($adminData, ['password' => '']));
 
       $admin = Admin::create($adminData);
 
@@ -141,155 +129,164 @@ class AuthController extends Controller
 
       \DB::commit();
 
-      Auth::guard('admin')->login($admin);
-      Auth::guard('admin')->logout();
+      return redirect()
+->route('login')
+->with('success', 'Registration successful! Your account will be activated after admin review.');
 
-      return redirect()->route('login')
-                       ->with('success', 'Registration successful! Your account will be activated after admin review.');
+    } catch (ValidationException $e) {
+      Log::warning('Validation failed:', [
+        'errors' => $e->errors(),
+        'user_type' => $request->user_type ?? 'not provided',
+        'user_id' => $request->user_id ?? 'not provided'
+      ]);
+
+      return back()
+->withErrors($e->errors())
+->withInput();
 
     } catch (\Exception $e) {
       \DB::rollBack();
-      \Log::error('Registration failed:', [
+      Log::error('Registration failed:', [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString()
       ]);
 
       return back()
-                ->with('error', 'Registration failed. Please try again.')
-                ->withInput();
+->withErrors(['error' => 'Registration failed. Please try again.'])
+->withInput();
     }
   }
 
-    // Add this new method to verify credentials
-    private function verifyUserCredentials($userType, $userId, $email, $department)
-    {
-      $verificationModel = match($userType) {
-        'student' => StudentVerification::class,
-        'teacher' => TeacherVerification::class,
-        'staff' => StaffVerification::class,
-        default => null
-      };
+  // Add this new method to verify credentials
+  private function verifyUserCredentials($userType, $userId, $email, $department)
+  {
+    $verificationModel = match($userType) {
+      'student' => StudentVerification::class,
+      'teacher' => TeacherVerification::class,
+      'staff' => StaffVerification::class,
+      default => null
+    };
 
-      if (!$verificationModel) {
-        return false;
-      }
-
-      $verification = $verificationModel::where([
-        'user_id' => $userId,
-        'email' => $email,
-        'department' => $department,
-        'is_registered' => false
-      ])->first();
-
-      if ($verification) {
-        $verification->update(['is_registered' => true]);
-        return true;
-      }
-
+    if (!$verificationModel) {
       return false;
     }
 
-    // Helper method for handling seat booking
-    private function handleSeatBooking(Request $request, Admin $admin)
-    {
-      \Log::info('Handling seat booking:', [
-        'room_id' => $request->room_id,
-        'seat_name' => $request->seat,
+    $verification = $verificationModel::where([
+      'user_id' => $userId,
+      'email' => $email,
+      'department' => $department,
+      'is_registered' => false
+    ])->first();
+
+    if ($verification) {
+      $verification->update(['is_registered' => true]);
+      return true;
+    }
+
+    return false;
+  }
+
+  // Helper method for handling seat booking
+  private function handleSeatBooking(Request $request, Admin $admin)
+  {
+    \Log::info('Handling seat booking:', [
+      'room_id' => $request->room_id,
+      'seat_name' => $request->seat,
+      'admin_id' => $admin->id
+    ]);
+
+    $seat = Seat::where([
+      'room_id' => $request->room_id,
+      'name' => $request->seat,  // Changed from 'number' to 'name'
+      'status' => true
+    ])->first();
+
+    if ($seat) {
+      \Log::info('Found seat to book:', ['seat_id' => $seat->id]);
+
+      $seat->update([
+        'status' => false,
         'admin_id' => $admin->id
       ]);
 
-      $seat = Seat::where([
+      \Log::info('Successfully booked seat');
+    } else {
+      \Log::warning('Seat not found or already booked', [
         'room_id' => $request->room_id,
-        'name' => $request->seat,  // Changed from 'number' to 'name'
-        'status' => true
-      ])->first();
-
-      if ($seat) {
-        \Log::info('Found seat to book:', ['seat_id' => $seat->id]);
-
-        $seat->update([
-          'status' => false,
-          'admin_id' => $admin->id
-        ]);
-
-        \Log::info('Successfully booked seat');
-      } else {
-        \Log::warning('Seat not found or already booked', [
-          'room_id' => $request->room_id,
-          'seat_name' => $request->seat
-        ]);
-      }
-    }
-
-    // Helper method for getting booking data
-    private function getBookingData(Request $request)
-    {
-      $defaultData = [
-        'hall' => '',
-        'room_id' => '',
-        'room' => '',
-        'available_seats' => []
-      ];
-
-      // Get room ID from route parameter
-      $roomId = $request->route('room');
-      \Log::info('Attempting to get room data', ['room_id' => $roomId]);
-
-      if (!$roomId) {
-        \Log::info('No room ID provided');
-        return $defaultData;
-      }
-
-      try {
-        // Find the room with its relationships
-        $room = Room::with([
-          'hall',
-          'seats' => function($query) {
-            $query->where('status', true);
-          }
-        ])->find($roomId);
-
-        // Debug the room query
-        \Log::info('Room query result:', [
-          'room_found' => $room ? 'yes' : 'no',
-          'room_data' => $room,
-          'hall_data' => $room?->hall,
-          'seats_count' => $room?->seats?->count()
-        ]);
-
-        if (!$room) {
-          \Log::error('Room not found', ['room_id' => $roomId]);
-          return $defaultData;
-        }
-
-        if (!$room->hall) {
-          \Log::error('Hall not found for room', ['room_id' => $roomId]);
-          return $defaultData;
-        }
-
-        $data = [
-          'hall' => $room->hall->name,
-          'room_id' => $room->id,
-          'room' => $room->name,
-          'available_seats' => $room->seats->pluck('name')->toArray()
-        ];
-
-        \Log::info('Generated booking data:', $data);
-
-        return $data;
-      } catch (\Exception $e) {
-        \Log::error('Error getting booking data', [
-          'error' => $e->getMessage(),
-          'trace' => $e->getTraceAsString()
-        ]);
-        return $defaultData;
-      }
-    }
-
-    // Handle Admin Logout
-    public function logout()
-    {
-      Auth::guard('admin')->logout();
-      return redirect()->route('login');
+        'seat_name' => $request->seat
+      ]);
     }
   }
+
+  // Helper method for getting booking data
+  private function getBookingData(Request $request)
+  {
+    $defaultData = [
+      'hall' => '',
+      'room_id' => '',
+      'room' => '',
+      'available_seats' => []
+    ];
+
+    // Get room ID from route parameter
+    $roomId = $request->route('room');
+    \Log::info('Attempting to get room data', ['room_id' => $roomId]);
+
+    if (!$roomId) {
+      \Log::info('No room ID provided');
+      return $defaultData;
+    }
+
+    try {
+      // Find the room with its relationships
+      $room = Room::with([
+        'hall',
+        'seats' => function($query) {
+          $query->where('status', true);
+        }
+      ])->find($roomId);
+
+      // Debug the room query
+      \Log::info('Room query result:', [
+        'room_found' => $room ? 'yes' : 'no',
+        'room_data' => $room,
+        'hall_data' => $room?->hall,
+        'seats_count' => $room?->seats?->count()
+      ]);
+
+      if (!$room) {
+        \Log::error('Room not found', ['room_id' => $roomId]);
+        return $defaultData;
+      }
+
+      if (!$room->hall) {
+        \Log::error('Hall not found for room', ['room_id' => $roomId]);
+        return $defaultData;
+      }
+
+      $data = [
+        'hall' => $room->hall->name,
+        'room_id' => $room->id,
+        'room' => $room->name,
+        'available_seats' => $room->seats->pluck('name')->toArray()
+      ];
+
+      \Log::info('Generated booking data:', $data);
+
+      return $data;
+    } catch (\Exception $e) {
+      \Log::error('Error getting booking data', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+      return $defaultData;
+    }
+  }
+
+  // Handle Admin Logout
+  public function logout()
+  {
+    Auth::guard('admin')->logout();
+    return redirect()->route('login');
+  }
+}
