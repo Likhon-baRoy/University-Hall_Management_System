@@ -12,4 +12,8 @@ class Role extends Model {
   protected $casts = [
     'permissions' => 'array',  // Automatically casts JSON to an array
   ];
+
+  public function admins() {
+    return $this->hasMany(Admin::class);
+  }
 }

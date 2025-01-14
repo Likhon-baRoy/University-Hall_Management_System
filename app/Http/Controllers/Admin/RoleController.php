@@ -14,10 +14,10 @@ class RoleController extends Controller
    * Display a listing of the resource.
    */
   public function index() {
-    // get latest role
-    $roles = Role::latest() -> get();
-    // get latest permission from Permission table
-    $permissions = Permission::latest() -> get();
+    // get latest roles with admins
+    $roles = Role::with('admins')->latest()->get();
+    // get latest permissions from Permission table
+    $permissions = Permission::latest()->get();
 
     return view('admin.pages.user.role.index', [
       'roles'        => $roles,
