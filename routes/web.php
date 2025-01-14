@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\HallRoomController;
 use App\Http\Controllers\Admin\HallSeatController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HallBookingController;
+use App\Http\Controllers\ProblemController;
 
 // User Authentication Routes
 Route::middleware(['guest'])->group(function () {
@@ -88,6 +89,26 @@ Route::group(['middleware' => 'admin'], function () {
   Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
   Route::put('/profile/update-photo', [ProfileController::class, 'updatePhoto'])->name('profile.update-photo');
   /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
+
+});
+
+// Problem Management Routes
+Route::prefix('problems')->name('problems.')->middleware(['auth:admin'])->group(function() {
+  // Specific routes first
+  Route::get('/trashed', [ProblemController::class, 'trashed'])->name('trashed');
+  Route::delete('/{problem}/trash', [ProblemController::class, 'trash'])->name('trash');
+  Route::post('/{id}/restore', [ProblemController::class, 'restore'])->name('restore');
+  Route::delete('/{id}/force-delete', [ProblemController::class, 'forceDelete'])->name('force-delete');
+
+  // Then the more generic CRUD routes
+  Route::get('/', [ProblemController::class, 'index'])->name('index');
+  Route::get('/create', [ProblemController::class, 'create'])->name('create');
+  Route::post('/', [ProblemController::class, 'store'])->name('store');
+  Route::get('/{problem}', [ProblemController::class, 'show'])->name('show');
+  Route::put('/{problem}', [ProblemController::class, 'update'])->name('update');
+  Route::post('/{problem}/respond', [ProblemController::class, 'respond'])->name('respond');
+  Route::post('/{problem}/close', [ProblemController::class, 'close'])->name('close');
+
 });
 
 /**

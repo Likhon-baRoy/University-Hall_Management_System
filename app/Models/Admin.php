@@ -22,6 +22,7 @@ class Admin extends Authenticatable
   protected $casts = [
     'status' => 'boolean',
     'semester_year' => 'integer',
+    'posts_count_reset_at' => 'datetime'
   ];
 
   // Relationship with Role
@@ -47,5 +48,9 @@ class Admin extends Authenticatable
         }
       }
     });
+  }
+
+  public function reports() {
+    return $this->hasMany(Report::class);
   }
 }

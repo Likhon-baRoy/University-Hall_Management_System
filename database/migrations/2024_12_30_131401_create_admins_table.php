@@ -31,8 +31,10 @@ return new class extends Migration
       $table->text('bio')->nullable();
       $table->string('photo')->default('avatar.png');
       $table->boolean('status')->default(false);
+      $table->integer('daily_problem_posts')->default(0); // Added to give limit user in problem posting
+      $table->timestamp('posts_count_reset_at')->nullable();
       $table->rememberToken();  // Added for authentication
-      $table->softDeletes();  // Changed from softdeletes() to softDeletes()
+      $table->softDeletes();
       $table->timestamps();
     });
   }
