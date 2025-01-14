@@ -32,7 +32,6 @@
                     <td>{{$per -> slug}}</td>
                     <td>{{$per -> created_at -> diffForHumans()}}</td>
                     <td>
-                      <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                       <a class="btn btn-sm btn-warning" href="{{ route('permission.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
 
                       <form method="POST" action="{{ route('permission.destroy', $per -> id) }}" class="d-inline delete-form">

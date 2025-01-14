@@ -40,9 +40,8 @@
                         @endforelse
                       </ul>
                     </td>
-                    <td class="text-center">{{ $per->users ? $per->users->count() : 0 }}</td> <!-- Count of users -->
+                    <td class="text-center">{{ $per->admins ? $per->admins->count() : 0 }}</td> <!-- Count of admins -->
                     <td>
-                      <a class="btn btn-sm btn-info" href="#"><i class="fa fa-eye"></i></a>
                       <a class="btn btn-sm btn-warning" href="{{ route('role.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
 
                       <form method="POST" action="{{ route('role.destroy', $per -> id) }}" class="d-inline delete-form">
