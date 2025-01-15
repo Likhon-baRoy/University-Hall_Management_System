@@ -72,7 +72,6 @@
             $('.select-haq-icon-input').val(icon_name);
             $('#select-icon').modal('hide');
 
-
         });
 
     });

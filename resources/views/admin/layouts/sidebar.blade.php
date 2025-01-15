@@ -22,7 +22,7 @@
         </li>
         <li class="submenu {{ Request::is('problems*') ? 'open active-parent' : '' }}">
           <a href="#" aria-expanded="{{ Request::is('problems*') ? 'true' : 'false' }}">
-            <i class="fe fe-alert-circle"></i> <span>Problems</span> <span class="menu-arrow"></span>
+            <i class="fe fe-warning"></i> <span>Problems</span> <span class="menu-arrow"></span>
           </a>
           <ul>
             @if(in_array('problems', $permissions ?? []))
@@ -118,6 +118,17 @@
           </li>
         @endif
 
+        <!-- Notice Options -->
+        @if (in_array('Notices', isset($permissions) ? $permissions : []))
+          <li class="submenu {{ Request::is('admin/notices*') ? 'open active-parent' : '' }}">
+            <a href="#"><i class="fe fe-document"></i> <span>Notices</span> <span class="menu-arrow"></span></a>
+            <ul>
+              <li><a href="{{ route('admin.notices.index') }}" class="{{ Request::routeIs('admin.notices.index') ? 'active' : '' }}">All Notices</a></li>
+              <li><a href="{{ route('admin.notices.create') }}" class="{{ Request::routeIs('admin.notices.create') ? 'active' : '' }}">Add Notice</a></li>
+              <li><a href="{{ route('admin.notices.trashed') }}" class="{{ Request::routeIs('admin.notices.trashed') ? 'active' : '' }}">Trash</a></li>
+            </ul>
+          </li>
+        @endif
       </ul>
     </div>
   </div>

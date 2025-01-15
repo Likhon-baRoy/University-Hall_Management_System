@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\HallSeatController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HallBookingController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NoticeController as FrontendNoticeController;
+use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
 
 // User Authentication Routes
 Route::middleware(['guest'])->group(function () {
@@ -40,6 +43,18 @@ Route::group(['middleware' => 'admin.redirect'], function () {
 
 // Admin page routes
 Route::group(['middleware' => 'admin'], function () {
+
+  /**
+   * Admin panel header notifications
+   */
+  // Add these notification routes inside the admin group
+  Route::controller(NotificationController::class)->group(function() {
+    Route::get('/notifications', 'index')->name('notifications.index');
+    Route::post('/notifications/{id}/mark-as-read', 'markAsRead')->name('notifications.mark-read');
+    Route::post('/notifications/mark-all-read', 'markAllAsRead')->name('notifications.mark-all-read');
+    Route::get('/notifications/count', 'getUnreadCount')->name('notifications.count');
+  });
+
   Route::get('/admin-dashboard', [AdminPageController::class, 'showDashboard'])->name('admin.dashboard');
   Route::get('/admin-logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
@@ -90,6 +105,25 @@ Route::group(['middleware' => 'admin'], function () {
   Route::put('/profile/update-photo', [ProfileController::class, 'updatePhoto'])->name('profile.update-photo');
   /*   Route::get('/show-profile/{id}', [ ProfileController::class, 'showProfile' ]) -> name('show.profile'); */
 
+  // Add these routes with your other admin routes inside admin middleware group
+  Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    // Notice Management Routes
+    Route::controller(AdminNoticeController::class)->prefix('notices')->name('notices.')->group(function() {
+      Route::get('/', 'index')->name('index');
+      Route::get('/create', 'create')->name('create');
+      Route::post('/', 'store')->name('store');
+      Route::post('/{notice}/toggle-status', 'toggleStatus')->name('toggle-status');
+      Route::get('/{notice}/edit', 'edit')->name('edit');
+      Route::put('/{notice}', 'update')->name('update');
+      Route::delete('/{notice}', 'destroy')->name('destroy');
+      Route::get('/trashed', 'trashed')->name('trashed');
+      Route::delete('/{notice}/trash', 'trash')->name('trash');
+      Route::post('/{id}/restore', 'restore')->name('restore');
+      Route::delete('/{id}/force-delete', 'forceDelete')->name('force-delete');
+      Route::get('/status-update/{id}', 'updateStatus')->name('status.update');
+    });
+  });
+
 });
 
 // Problem Management Routes
@@ -121,6 +155,12 @@ Route::get('room-photos/{filename}', [App\Http\Controllers\PublicFileController:
 Route::controller(HallBookingController::class)->prefix('hall-bookings')->name('hall-booking.')->group(function () {
   Route::get('/', 'index')->name('index');
   Route::get('/{room}', 'booking')->name('booking');
+});
+
+// Frontend Notice Routes (add these with your other public routes)
+Route::controller(FrontendNoticeController::class)->prefix('notices')->name('notices.')->group(function() {
+  Route::get('/', 'index')->name('index');
+  Route::get('/{notice}', 'show')->name('show');
 });
 
 // Update the booking route to use auth middleware
