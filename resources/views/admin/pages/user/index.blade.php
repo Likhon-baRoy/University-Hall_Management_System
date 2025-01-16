@@ -75,7 +75,7 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <a href="" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add User</a>
             <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">All User Database</h4>
-            <a href="{{ route('admin-user.trash') }}" class="btn btn-warning"><i class="fa fa-trash"></i> Trash</a>
+            <a href="{{ route('admin-user.trash') }}" class="btn btn-warning"><i class="fa-solid fa-trash-can"></i> Trash</a>
           </div>
           <div class="card-body">
             @include('validate-main')
@@ -125,7 +125,7 @@
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="fa fa-trash"></i>
+                            <i class="fa-solid fa-trash-can"></i>
                           </button>
                         </form>
 

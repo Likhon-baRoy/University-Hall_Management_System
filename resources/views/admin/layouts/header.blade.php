@@ -33,73 +33,51 @@
   <ul class="nav user-menu">
 
     <!-- Notifications -->
+    {{-- resources/views/admin/layouts/header.blade.php --}}
     <li class="nav-item dropdown noti-dropdown">
       <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-        <i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+        <i class="fe fe-bell"></i>
+        <span class="badge badge-pill" id="notification-count">
+          {{ Auth::guard('admin')->user()->unreadNotifications()->count() ?? 0 }}
+        </span>
       </a>
       <div class="dropdown-menu notifications">
         <div class="topnav-dropdown-header">
           <span class="notification-title">Notifications</span>
-          <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+          <a href="javascript:void(0)" class="clear-noti" id="mark-all-read"> Clear All </a>
         </div>
         <div class="noti-content">
           <ul class="notification-list">
-            <li class="notification-message">
-              <a href="#">
-                <div class="media">
-                  <span class="avatar avatar-sm">
-                    <img class="avatar-img rounded-circle" alt="User Image" src="admin/assets/img/doctors/doctor-thumb-01.jpg">
-                  </span>
+            @foreach(Auth::guard('admin')->user()->notifications()->latest()->take(5)->get() as $notification)
+              <li class="notification-message {{ $notification->read_at ? '' : 'unread' }}">
+                <a href="{{ isset($notification->data['problem_id']) ? route('problems.show', $notification->data['problem_id']) : '#' }}"
+                   data-notification-id="{{ $notification->id }}">
+                  <div class="media">
+                    <span class="avatar avatar-sm">
+                      <img class="avatar-img rounded-circle" alt="User Image"
+                           src="{{ isset($notification->data['user_photo']) ?
+                                   url('storage/img/' . $notification->data['user_photo']) :
+                                   url('storage/img/avatar.png') }}">
+                    </span>
                   <div class="media-body">
-                    <p class="noti-details"><span class="noti-title">Dr. Ruby Perrin</span> Schedule <span class="noti-title">her appointment</span></p>
-                    <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                    <p class="noti-details">
+                      <span class="noti-title">{{ $notification->data['message'] }}</span>
+                      {{ $notification->data['title'] }}
+                    </p>
+                    <p class="noti-time">
+                      <span class="notification-time">
+                        {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                      </span>
+                    </p>
+                    </div>
                   </div>
-                </div>
-              </a>
-            </li>
-            <li class="notification-message">
-              <a href="#">
-                <div class="media">
-                  <span class="avatar avatar-sm">
-                    <img class="avatar-img rounded-circle" alt="User Image" src="admin/assets/img/patients/patient1.jpg">
-                  </span>
-                  <div class="media-body">
-                    <p class="noti-details"><span class="noti-title">Charlene Reed</span> has booked her appointment to <span class="noti-title">Dr. Ruby Perrin</span></p>
-                    <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li class="notification-message">
-              <a href="#">
-                <div class="media">
-                  <span class="avatar avatar-sm">
-                    <img class="avatar-img rounded-circle" alt="User Image" src="admin/assets/img/patients/patient2.jpg">
-                  </span>
-                  <div class="media-body">
-                    <p class="noti-details"><span class="noti-title">Travis Trimble</span> sent a amount of $210 for his <span class="noti-title">appointment</span></p>
-                    <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li class="notification-message">
-              <a href="#">
-                <div class="media">
-                  <span class="avatar avatar-sm">
-                    <img class="avatar-img rounded-circle" alt="User Image" src="admin/assets/img/patients/patient3.jpg">
-                  </span>
-                  <div class="media-body">
-                    <p class="noti-details"><span class="noti-title">Carl Kelly</span> send a message <span class="noti-title"> to his doctor</span></p>
-                    <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-                  </div>
-                </div>
-              </a>
-            </li>
+                </a>
+              </li>
+            @endforeach
           </ul>
         </div>
         <div class="topnav-dropdown-footer">
-          <a href="#">View all Notifications</a>
+          <a href="{{ route('notifications.index') }}">View all Notifications</a>
         </div>
       </div>
     </li>

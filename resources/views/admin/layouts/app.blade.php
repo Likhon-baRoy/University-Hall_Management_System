@@ -1,94 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-  <title>@yield('title', 'Title Undefined')</title>
+  <head>
+    <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>@yield('title', 'Title Undefined')</title>
 
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="{{ asset('admin/assets/img/favicon.png') }}">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('admin/assets/img/favicon.png') }}">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.css') }}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}">
 
-  <!-- Fontawesome CSS -->
-  <link rel="stylesheet" href="{{ asset('admin/assets/css/font-awesome.min.css') }}">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 
-  <!-- Feathericon CSS -->
-  <link rel="stylesheet" href="{{ asset('admin/assets/css/feathericon.min.css') }}">
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-  <link rel="stylesheet" href="{{ asset('admin/assets/plugins/morris/morris.css') }}">
+    <!-- Fontawesome CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
+      <!-- Feathericon CSS -->
+      <link rel="stylesheet" href="{{ asset('admin/assets/css/feathericon.min.css') }}">
 
-  <!-- Custom CSS -->
-  @yield('custom-css')
+      <!-- Morris CSS -->
+      <link rel="stylesheet" href="{{ asset('admin/assets/plugins/morris/morris.css') }}">
 
-  <!--[if lt IE 9]>
-    <script src="admin/assets/js/html5shiv.min.js"></script>
-    <script src="admin/assets/js/respond.min.js"></script>
-  <![endif]-->
-</head>
-<body>
+      <!-- Main CSS -->
+      <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
 
-  <!-- SVG template for Sidebar submenus -->
-  <template id="commit-node-icon">
-    <svg aria-hidden="true" focusable="false" class="Octicon-sc-9kayk9-0" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;">
-      <path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"></path>
-    </svg>
-  </template>
+      <!-- Custom CSS -->
+      @yield('custom-css')
 
-  <!-- Main Wrapper -->
-  <div class="main-wrapper">
+      <!--[if lt IE 9]>
+        <script src="admin/assets/js/html5shiv.min.js"></script>
+        <script src="admin/assets/js/respond.min.js"></script>
+      <![endif]-->
+  </head>
 
-    @include('admin.layouts.header')
-    @include('admin.layouts.sidebar')
+  <body>
 
-    <!-- Page Wrapper -->
-    <div class="page-wrapper">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
 
-      <div class="content container-fluid">
+      @include('admin.layouts.header')
+      @include('admin.layouts.sidebar')
 
-        {{-- main section --}}
-        @section('main-section')
-        @show
-
+      <!-- Page Wrapper -->
+      <div class="page-wrapper">
+        <div class="content container-fluid">
+          {{-- Main Section --}}
+          @section('main-section')
+          @show
+        </div>
       </div>
+      <!-- /Page Wrapper -->
+
     </div>
-    <!-- /Page Wrapper -->
+    <!-- /Main Wrapper -->
 
-  </div>
-  <!-- /Main Wrapper -->
 
-  @stack('scripts')
-  <!-- jQuery -->
-  <script src="{{asset('admin/assets/js/jquery-3.2.1.min.js')}}"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- Bootstrap Core JS -->
-  <script src="{{asset('admin/assets/js/popper.min.js')}}"></script>
-  <script src="{{asset('admin/assets/js/bootstrap.min.js')}}"></script>
+    <!-- Bootstrap Core JS -->
+    <script src="{{ asset('admin/assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap.min.js') }}"></script>
 
-  <!-- Searching JavaScript -->
-  <script type="text/javascript" src="{{ asset('https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js')}}"></script>
+    <!-- Slimscroll JS -->
+    <script src="{{ asset('admin/assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
-  <!-- Slimscroll JS -->
-  <script src="{{asset('admin/assets/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+    <!-- Morris Charts JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
-  <script src="{{asset('admin/assets/plugins/raphael/raphael.min.js')}}"></script>
-  <script src="{{asset('admin/assets/plugins/morris/morris.min.js')}}"></script>
-  <script src="{{asset('admin/assets/js/chart.morris.js')}}"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-  <!-- Custom JS -->
-  @yield('custom-js')
-  <script src="{{asset('admin/assets/js/script.js')}}"></script>
-  <script src="{{asset('admin/assets/js/notifications.js')}}"></script>
-  <script src="{{asset('custom/admin.js')}}"></script>
-  <script src="{{asset('custom/notice.js')}}"></script>
-</body>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{{ asset('admin/assets/js/script.js') }}"></script>
+    <!-- <script src="{{ asset('admin/assets/js/notifications.js') }}"></script> -->
+    <script src="{{ asset('custom/admin.js') }}"></script>
+    <script src="{{ asset('custom/notice.js') }}"></script>
+
+    @stack('scripts')
+  </body>
+
 </html>

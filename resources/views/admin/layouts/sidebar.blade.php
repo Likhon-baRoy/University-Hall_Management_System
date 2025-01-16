@@ -1,3 +1,10 @@
+<!-- SVG template for Sidebar submenus -->
+<template id="commit-node-icon">
+  <svg aria-hidden="true" focusable="false" class="Octicon-sc-9kayk9-0" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;">
+    <path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"></path>
+  </svg>
+</template>
+
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-inner slimscroll">
@@ -28,13 +35,13 @@
             @if(in_array('problems', $permissions ?? []))
               {{-- Admin View --}}
               <li><a href="{{ route('problems.index') }}" class="{{ Request::routeIs('problems.index') ? 'active' : '' }}">
-                <span class="icon"></span> All Problems
+                <span class="icon"></span> All Posts
               </a></li>
               <li><a href="{{ route('problems.index') }}?status=pending" class="{{ Request::routeIs('problems.index') && request('status') == 'pending' ? 'active' : '' }}">
-                <span class="icon"></span> Pending Problems
+                <span class="icon"></span> Pending Posts
               </a></li>
               <li><a href="{{ route('problems.trashed') }}" class="{{ Request::routeIs('problems.trashed') ? 'active' : '' }}">
-                <span class="icon"></span> Trash
+                <span class="icon"></span> Trashed Posts
               </a></li>
             @else
               {{-- User View --}}

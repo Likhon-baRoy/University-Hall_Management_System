@@ -62,13 +62,13 @@
                         <div class="d-flex">
                           <a href="{{ Storage::url($notice->file_path) }}"
                              class="btn btn-sm btn-info me-2" target="_blank">
-                            <i class="fe fe-eye"></i>
+                            <i class="fa fa-eye"></i>
                           </a>
                           <form action="{{ route('admin.notices.trash', $notice) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">
-                              <i class="fe fe-trash"></i>
+                              <i class="fa-solid fa-trash-can"></i>
                             </button>
                           </form>
                         </div>

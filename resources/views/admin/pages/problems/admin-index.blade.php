@@ -73,10 +73,11 @@
                 <option value="other" {{ request('issue_type') == 'other' ? 'selected' : '' }}>Other</option>
               </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <button type="submit" class="btn btn-primary">Filter</button>
               <a href="{{ route('problems.index') }}" class="btn btn-secondary">Reset</a>
             </div>
+            <a href="{{ route('problems.trashed') }}" class="btn btn-warning justify-content-between align-items-center"><i class="fa fa-trash"></i> Trash</a>
           </form>
         </div>
 
@@ -129,9 +130,7 @@
                     class="d-inline">
                 @csrf
                 @method('DELETE')
-                <button type="submit"
-                        class="btn btn-sm btn-danger"
-                        onclick="return confirm('Are you sure you want to move this problem to trash?')">
+                <button type="submit" class="btn btn-sm btn-danger">
                   <i class="fa fa-trash"></i>
                 </button>
               </form>

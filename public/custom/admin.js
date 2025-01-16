@@ -1,39 +1,40 @@
-(function($){
-    $(document).ready(function() {
+(function ($) {
+    $(document).ready(function () {
 
-        // Existing code...
+        // Check if DataTables is loaded before initializing
+        if ($.fn.DataTable) {
+            $('.data-table-element').DataTable();
+        } else {
+            console.error("DataTables plugin is not loaded.");
+        }
 
-        //delete btn alert
-        $('.delete-form').submit(function(e){
-            let conf = confirm('Are you Sure ?');
-            if (conf) {
-                return true;
-            } else {
+        // Delete button confirmation
+        $('.delete-form').submit(function (e) {
+            let conf = confirm('Are you sure?');
+            if (!conf) {
                 e.preventDefault();
             }
         });
 
-        $('.data-table-element').DataTable();
-
-        // photo preview management
-        $('#photo-preview').change(function(e){
+        // Photo preview management
+        $('#photo-preview').change(function (e) {
             const photo_url = URL.createObjectURL(e.target.files[0]);
             $('#make-photo-preview').attr('src', photo_url);
         });
 
-        // add-new-slider-button
+        // Add new slider button
         let btn_no = 1;
-        $('#add-new-slider-button').click(function(e){
+        $('#add-new-slider-button').click(function (e) {
             e.preventDefault();
             $('.slider-btn-opt').append(`
                 <div class="btn-opt-area">
-                    <span>Button #${ btn_no }</span>
+                    <span>Button #${btn_no}</span>
                     <span class="badge badge-danger remove-btn" style="margin-left:300px;cursor:pointer;">remove</span>
                     <input class="form-control" name="btn_title[]" type="text" placeholder="Button Title">
                     <input class="form-control" name="btn_link[]" type="text" placeholder="Button Link">
                     <select class="form-control" name="btn_type[]">
-                        <option value="btn-light-out"> default </option>
-                        <option value="btn-color btn-full"> Red </option>
+                        <option value="btn-light-out">default</option>
+                        <option value="btn-color btn-full">Red</option>
                     </select>
                     <hr />
                 </div>
@@ -41,19 +42,19 @@
             btn_no++;
         });
 
-        // remove btn
-        $(document).on('click', '.remove-btn', function(){
+        // Remove button
+        $(document).on('click', '.remove-btn', function () {
             $(this).closest('.btn-opt-area').remove();
         });
 
-        // icon select
-        $('button.show-icon').click(function(e){
+        // Icon select modal
+        $('button.show-icon').click(function (e) {
             e.preventDefault();
             $('#select-icon').modal('show');
         });
 
-        // select icon
-        $('.select-icon-haq .preview-icon code').click(function(){
+        // Select icon
+        $('.select-icon-haq .preview-icon code').click(function () {
             let icon_name = $(this).html();
             $('.select-haq-icon-input').val(icon_name);
             $('#select-icon').modal('hide');
@@ -65,9 +66,8 @@
             return template.content.cloneNode(true);
         }
 
-        $('.submenu li a .icon').each(function() {
+        $('.submenu li a .icon').each(function () {
             $(this).append(getCommitNodeIcon());
         });
-
     });
 })(jQuery);
