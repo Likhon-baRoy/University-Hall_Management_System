@@ -1,15 +1,14 @@
-// this jQuery is created for giving alert pop-up confirmation whenever delete button is pressed
 (function($){
     $(document).ready(function() {
 
+        // Existing code...
+
         //delete btn alert
         $('.delete-form').submit(function(e){
-
-            let conf =confirm('Are you Sure ?');
-
+            let conf = confirm('Are you Sure ?');
             if (conf) {
                 return true;
-            }else{
+            } else {
                 e.preventDefault();
             }
         });
@@ -18,20 +17,15 @@
 
         // photo preview management
         $('#photo-preview').change(function(e){
-
             const photo_url = URL.createObjectURL(e.target.files[0]);
             $('#make-photo-preview').attr('src', photo_url);
-
-
         });
 
         // add-new-slider-button
         let btn_no = 1;
         $('#add-new-slider-button').click(function(e){
             e.preventDefault();
-
             $('.slider-btn-opt').append(`
-
                 <div class="btn-opt-area">
                     <span>Button #${ btn_no }</span>
                     <span class="badge badge-danger remove-btn" style="margin-left:300px;cursor:pointer;">remove</span>
@@ -42,37 +36,38 @@
                         <option value="btn-color btn-full"> Red </option>
                     </select>
                     <hr />
-
                 </div>
-
             `);
             btn_no++;
         });
 
-
         // remove btn
         $(document).on('click', '.remove-btn', function(){
-
             $(this).closest('.btn-opt-area').remove();
-
         });
 
         // icon select
         $('button.show-icon').click(function(e){
             e.preventDefault();
-
             $('#select-icon').modal('show');
-
         });
 
-        // select iocn
+        // select icon
         $('.select-icon-haq .preview-icon code').click(function(){
-
             let icon_name = $(this).html();
             $('.select-haq-icon-input').val(icon_name);
             $('#select-icon').modal('hide');
+        });
 
+        // Append SVG icons to submenu items
+        function getCommitNodeIcon() {
+            const template = document.getElementById('commit-node-icon');
+            return template.content.cloneNode(true);
+        }
+
+        $('.submenu li a .icon').each(function() {
+            $(this).append(getCommitNodeIcon());
         });
 
     });
-})(jQuery)
+})(jQuery);

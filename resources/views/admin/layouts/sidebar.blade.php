@@ -28,21 +28,21 @@
             @if(in_array('problems', $permissions ?? []))
               {{-- Admin View --}}
               <li><a href="{{ route('problems.index') }}" class="{{ Request::routeIs('problems.index') ? 'active' : '' }}">
-                All Problems
+                <span class="icon"></span> All Problems
               </a></li>
               <li><a href="{{ route('problems.index') }}?status=pending" class="{{ Request::routeIs('problems.index') && request('status') == 'pending' ? 'active' : '' }}">
-                Pending Problems
+                <span class="icon"></span> Pending Problems
               </a></li>
               <li><a href="{{ route('problems.trashed') }}" class="{{ Request::routeIs('problems.trashed') ? 'active' : '' }}">
-                Trash
+                <span class="icon"></span> Trash
               </a></li>
             @else
               {{-- User View --}}
               <li><a href="{{ route('problems.index') }}" class="{{ Request::routeIs('problems.index') ? 'active' : '' }}">
-                My Problems
+                <span class="icon"></span> My Problems
               </a></li>
               <li><a href="{{ route('problems.create') }}" class="{{ Request::routeIs('problems.create') ? 'active' : '' }}">
-                Report Problem
+                <span class="icon"></span> Report Problem
               </a></li>
             @endif
           </ul>
@@ -69,9 +69,9 @@
               <i class="fe fe-document"></i> <span> Posts</span> <span class="menu-arrow"></span>
             </a>
             <ul>
-              <li><a href="  " class="{{ Request::is('posts') ? 'active' : '' }}">All Posts</a></li>
-              <li><a href="  " class="{{ Request::is('posts/categories') ? 'active' : '' }}">Categories</a></li>
-              <li><a href="  " class="{{ Request::is('posts/tag') ? 'active' : '' }}">Tag</a></li>
+              <li><a href="  " class="{{ Request::is('posts') ? 'active' : '' }}"><span class="icon"></span> All Posts</a></li>
+              <li><a href="  " class="{{ Request::is('posts/categories') ? 'active' : '' }}"><span class="icon"></span> Categories</a></li>
+              <li><a href="  " class="{{ Request::is('posts/tag') ? 'active' : '' }}"><span class="icon"></span> Tag</a></li>
             </ul>
           </li>
         @endif
@@ -94,9 +94,9 @@
               <i class="fa fa-university" style="font-size: 18px;"></i> <span> Manage Halls</span> <span class="menu-arrow"></span>
             </a>
             <ul>
-              <li><a href="{{ route('hall.index') }}" class="{{ Request::routeIs('hall.index') ? 'active' : '' }}">Halls</a></li>
-              <li><a href="{{ route('hall-room.index') }}" class="{{ Request::routeIs('hall-room.index') ? 'active' : '' }}">Rooms</a></li>
-              <li><a href="{{ route('hall-seat.index') }}" class="{{ Request::routeIs('hall-seat.index') ? 'active' : '' }}">Seats</a></li>
+              <li><a href="{{ route('hall.index') }}" class="{{ Request::routeIs('hall.index') ? 'active' : '' }}"><span class="icon"></span> Halls</a></li>
+              <li><a href="{{ route('hall-room.index') }}" class="{{ Request::routeIs('hall-room.index') ? 'active' : '' }}"><span class="icon"></span> Rooms</a></li>
+              <li><a href="{{ route('hall-seat.index') }}" class="{{ Request::routeIs('hall-seat.index') ? 'active' : '' }}"><span class="icon"></span> Seats</a></li>
             </ul>
           </li>
         @endif
@@ -111,9 +111,9 @@
               <i class="fe fe-check-verified"></i> <span> Admin User</span> <span class="menu-arrow"></span>
             </a>
             <ul>
-              <li><a href="{{ route('admin-user.index') }}" class="{{ Request::routeIs('admin-user.index') ? 'active' : '' }}">Users</a></li>
-              <li><a href="{{ route('role.index') }}" class="{{ Request::routeIs('role.index') ? 'active' : '' }}">Role</a></li>
-              <li><a href="{{ route('permission.index') }}" class="{{ Request::routeIs('permission.index') ? 'active' : '' }}">Permission</a></li>
+              <li><a href="{{ route('admin-user.index') }}" class="{{ Request::routeIs('admin-user.index') ? 'active' : '' }}"><span class="icon"></span> Users</a></li>
+              <li><a href="{{ route('role.index') }}" class="{{ Request::routeIs('role.index') ? 'active' : '' }}"><span class="icon"></span> Role</a></li>
+              <li><a href="{{ route('permission.index') }}" class="{{ Request::routeIs('permission.index') ? 'active' : '' }}"><span class="icon"></span> Permission</a></li>
             </ul>
           </li>
         @endif
@@ -123,9 +123,9 @@
           <li class="submenu {{ Request::is('admin/notices*') ? 'open active-parent' : '' }}">
             <a href="#"><i class="fe fe-document"></i> <span>Notices</span> <span class="menu-arrow"></span></a>
             <ul>
-              <li><a href="{{ route('admin.notices.index') }}" class="{{ Request::routeIs('admin.notices.index') ? 'active' : '' }}">All Notices</a></li>
-              <li><a href="{{ route('admin.notices.create') }}" class="{{ Request::routeIs('admin.notices.create') ? 'active' : '' }}">Add Notice</a></li>
-              <li><a href="{{ route('admin.notices.trashed') }}" class="{{ Request::routeIs('admin.notices.trashed') ? 'active' : '' }}">Trash</a></li>
+              <li><a href="{{ route('admin.notices.index') }}" class="{{ Request::routeIs('admin.notices.index') ? 'active' : '' }}"><span class="icon"></span> All Notices</a></li>
+              <li><a href="{{ route('admin.notices.create') }}" class="{{ Request::routeIs('admin.notices.create') ? 'active' : '' }}"><span class="icon"></span> Add Notice</a></li>
+              <li><a href="{{ route('admin.notices.trashed') }}" class="{{ Request::routeIs('admin.notices.trashed') ? 'active' : '' }}"><span class="icon"></span> Trash</a></li>
             </ul>
           </li>
         @endif
