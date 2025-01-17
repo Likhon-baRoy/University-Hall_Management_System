@@ -30,6 +30,12 @@ Route::middleware(['guest'])->group(function () {
   // Add these routes in web.php inside the guest middleware group
   Route::post('/send-otp', [OtpController::class, 'sendOtp']);
   Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
+
+  // Password Reset Routes
+  Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+  Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+  Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+  Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
 // User Protected Routes

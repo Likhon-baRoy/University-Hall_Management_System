@@ -50,7 +50,9 @@
 				</form>
 				<!-- /Form -->
 
-				<div class="text-center forgotpass"><a href="forgot-password.html">Forgot Password?</a></div>
+				<div class="text-center forgotpass">
+                  <a href="{{ route('password.request') }}">Forgot Password?</a>
+                </div>
 
                 <div class="login-or">
                   <span class="or-line"></span>
