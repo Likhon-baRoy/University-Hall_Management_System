@@ -3,6 +3,7 @@
 
   <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Registration Page</title>
 
@@ -71,9 +72,20 @@
                     <input class="form-control" type="text" name="username" placeholder="Username" value="{{ old('username') }}" required>
                   </div>
 
-                  <!-- Email -->
+                  <!-- Email with OTP -->
                   <div class="form-group mb-3">
-                    <input class="form-control" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                    <div class="input-group">
+                      <input class="form-control" type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}" required>
+                      <button type="button" class="btn btn-secondary" id="sendOtpBtn">Send OTP</button>
+                    </div>
+                    <div id="otpTimer" class="text-muted small mt-1" style="display: none;">
+                      Time remaining: <span id="timer">5:00</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group mb-3">
+                    <input class="form-control" type="text" name="otp" id="otpInput" placeholder="Enter OTP" readonly required>
+                    <div class="invalid-feedback" id="otpError"></div>
                   </div>
 
                   <!-- Cell -->
@@ -242,6 +254,7 @@
     <script src="{{ asset('admin/assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/script.js') }}"></script>
+    <script src="{{ asset('custom/otp.js') }}" defer></script>
 
     <!-- Custom jQuery -->
     <script>

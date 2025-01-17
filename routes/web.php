@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\HallRoomController;
 use App\Http\Controllers\Admin\HallSeatController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\HallBookingController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\NotificationController;
@@ -25,6 +26,10 @@ Route::middleware(['guest'])->group(function () {
   Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
   Route::get('/register/{room?}', [AuthController::class, 'showRegisterPage'])->name('auth.register');
   Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+  // Add these routes in web.php inside the guest middleware group
+  Route::post('/send-otp', [OtpController::class, 'sendOtp']);
+  Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 });
 
 // User Protected Routes
