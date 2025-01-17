@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Problem;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Notifications\NewProblemNotification;
+use App\Notifications\ProblemResponseNotification;
 
 class ProblemController extends Controller
 {
@@ -120,33 +124,55 @@ class ProblemController extends Controller
   }
 
   /**
-   * Admin response to problem
+   * Admin response to problem with notification
    */
   public function respond(Request $request, Problem $problem)
   {
-    $user = Auth::guard('admin')->user();
-    $permissions = json_decode($user->role->permissions ?? '[]');
+    try {
+      $user = Auth::guard('admin')->user();
+      $permissions = json_decode($user->role->permissions ?? '[]');
 
-    // Verify admin permissions
-    if (!in_array('problems', $permissions)) {
+      if (!in_array('problems', $permissions)) {
+        return redirect()->back()
+                         ->with('error', 'You do not have permission to respond to problems.');
+      }
+
+      $request->validate([
+        'admin_response' => 'required|string',
+        'status' => 'required|in:in_progress,resolved,closed'
+      ]);
+
+      $problem->update([
+        'admin_response' => $request->admin_response,
+        'status' => $request->status,
+        'handled_by' => $user->id,
+        'admin_responded_at' => now()
+      ]);
+
+      try {
+        $problem->user->notify(new ProblemResponseNotification($problem, $request->admin_response));
+        Log::info('Response notification sent to user', [
+          'problem_id' => $problem->id,
+          'user_id' => $problem->user->id
+        ]);
+      } catch (\Exception $e) {
+        Log::error('Failed to send response notification', [
+          'problem_id' => $problem->id,
+          'error' => $e->getMessage()
+        ]);
+      }
+
+      return redirect()->route('problems.show', $problem)
+                       ->with('success', 'Response added successfully');
+
+    } catch (\Exception $e) {
+      Log::error('Error responding to problem', [
+        'problem_id' => $problem->id,
+        'error' => $e->getMessage()
+      ]);
       return redirect()->back()
-                       ->with('error', 'You do not have permission to respond to problems.');
+                       ->with('error', 'An error occurred while responding to the problem.');
     }
-
-    $request->validate([
-      'admin_response' => 'required|string',
-      'status' => 'required|in:in_progress,resolved,closed'
-    ]);
-
-    $problem->update([
-      'admin_response' => $request->admin_response,
-      'status' => $request->status,
-      'handled_by' => $user->id,
-      'admin_responded_at' => now()
-    ]);
-
-    return redirect()->route('problems.show', $problem)
-                     ->with('success', 'Response added successfully');
   }
 
   /**
@@ -195,42 +221,74 @@ class ProblemController extends Controller
   }
 
   /**
-   * Store a new problem with daily limit check
+   * Store a new problem with daily limit check and proper notification
    */
   public function store(Request $request)
   {
-    $user = Auth::guard('admin')->user();
+    try {
+      $user = Auth::guard('admin')->user();
 
-    // Check daily post limit
-    if (!$this->checkDailyPostLimit($user)) {
+      // Check daily post limit
+      if (!$this->checkDailyPostLimit($user)) {
+        return redirect()->route('problems.index')
+                         ->with('error', 'You have reached your daily limit for reporting problems.');
+      }
+
+      // Validate and create problem
+      $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'issue_type' => 'required|in:hall,room,seat,other',
+        'location' => 'required|string|max:255',
+        'priority' => 'required|in:low,medium,high,urgent',
+      ]);
+
+      $problem = Problem::create([
+        'user_id' => $user->id,
+        'title' => $request->title,
+        'description' => $request->description,
+        'issue_type' => $request->issue_type,
+        'location' => $request->location,
+        'priority' => $request->priority,
+        'status' => 'pending'
+      ]);
+
+      // Increment user's daily post count
+      $user->increment('daily_problem_posts');
+
+      // Get all admins with problem management permission
+      $admins = Admin::whereHas('role', function($query) {
+        $query->whereJsonContains('permissions', 'problems');
+      })->get();
+
+      Log::info('Sending notifications to admins', [
+        'admins_count' => $admins->count(),
+        'problem_id' => $problem->id
+      ]);
+
+      // Send notifications to all eligible admins
+      foreach($admins as $admin) {
+        try {
+          $admin->notify(new NewProblemNotification($problem));
+        } catch (\Exception $e) {
+          Log::error('Failed to send notification to admin', [
+            'admin_id' => $admin->id,
+            'error' => $e->getMessage()
+          ]);
+        }
+      }
+
+      return redirect()->route('problems.show', $problem)
+                       ->with('success', 'Problem reported successfully!');
+
+    } catch (\Exception $e) {
+      Log::error('Error creating problem', [
+        'error' => $e->getMessage(),
+        'user_id' => $user->id ?? null
+      ]);
       return redirect()->route('problems.index')
-                       ->with('error', 'You have reached your daily limit for reporting problems.');
+                       ->with('error', 'An error occurred while creating the problem.');
     }
-
-    // Validate and create problem as before
-    $request->validate([
-      'title' => 'required|string|max:255',
-      'description' => 'required|string',
-      'issue_type' => 'required|in:hall,room,seat,other',
-      'location' => 'required|string|max:255',
-      'priority' => 'required|in:low,medium,high,urgent',
-    ]);
-
-    $problem = Problem::create([
-      'user_id' => $user->id,
-      'title' => $request->title,
-      'description' => $request->description,
-      'issue_type' => $request->issue_type,
-      'location' => $request->location,
-      'priority' => $request->priority,
-      'status' => 'pending'
-    ]);
-
-    // Increment user's daily post count
-    $user->increment('daily_problem_posts');
-
-    return redirect()->route('problems.show', $problem)
-                     ->with('success', 'Problem reported successfully!');
   }
 
   /**
