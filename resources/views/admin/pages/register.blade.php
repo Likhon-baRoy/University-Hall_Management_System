@@ -169,7 +169,7 @@
                                {{ isset($bookingData['hall']) ? 'readonly' : '' }}>
                         <!-- Debug info -->
                         @if(config('app.debug'))
-                          <small class="text-muted">Current value: {{ $bookingData['hall'] ?? 'none' }}</small>
+                          <small class="text-muted">{{ $bookingData['hall'] ?? 'none' }}</small>
                         @endif
                       </div>
                     </div>
@@ -184,7 +184,7 @@
                         <input type="hidden" name="room_id" value="{{ $bookingData['room_id'] ?? '' }}">
                         <!-- Debug info -->
                         @if(config('app.debug'))
-                          <small class="text-muted">Current value: {{ $bookingData['room'] ?? 'none' }}</small>
+                          <small class="text-muted">Room No: {{ $bookingData['room'] ?? 'none' }}</small>
                         @endif
                       </div>
                     </div>

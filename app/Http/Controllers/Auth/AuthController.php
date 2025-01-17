@@ -142,7 +142,7 @@ class AuthController extends Controller
 
         return redirect()
                     ->route('login')
-                    ->with('success', 'Registration successful! Your account will be activated after admin review.');
+                    ->with('success', 'Registration successful! Your account will not activate until you pay.');
 
       } catch (\Exception $e) {
         \DB::rollBack();

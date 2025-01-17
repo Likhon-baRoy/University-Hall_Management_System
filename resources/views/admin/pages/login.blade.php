@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Doccure - Login</title>
+    <title>City Universit Hall Portall - Login</title>
 
 	<!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('admin/assets/img/favicon.png')}}">
@@ -57,7 +57,7 @@
                   <span class="span-or">or</span>
                 </div>
 
-                <div class="text-center dont-have">Don't have an account? <a href="{{ route('auth.register') }}">Register</a></div>
+                <div class="text-center dont-have">Don't have a seat in hall? <a href="{{ route('hall-booking.index') }}">Book Now</a></div>
 
 			  </div>
             </div>
