@@ -143,9 +143,8 @@ class AuthController extends Controller
 
         \DB::commit();
 
-        return redirect()
-                    ->route('login')
-                    ->with('success', 'Registration successful! Your account will not activate until you pay.');
+        return redirect() ->route('login')
+                          ->with('success', 'Registration successful! Your account will not activate until you pay.');
 
       } catch (\Exception $e) {
         \DB::rollBack();
@@ -159,9 +158,8 @@ class AuthController extends Controller
         'user_id' => $request->user_id ?? 'not provided'
       ]);
 
-      return back()
-                ->withErrors($e->errors())
-                ->withInput();
+      return back() ->withErrors($e->errors())
+                    ->withInput();
 
     } catch (\Exception $e) {
       Log::error('Registration failed:', [
@@ -169,9 +167,8 @@ class AuthController extends Controller
         'trace' => $e->getTraceAsString()
       ]);
 
-      return back()
-                ->withErrors(['error' => 'Registration failed. Please try again.'])
-                ->withInput();
+      return back() ->withErrors(['error' => 'Registration failed. Please try again.'])
+                    ->withInput();
     }
   }
 

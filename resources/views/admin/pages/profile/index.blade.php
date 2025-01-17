@@ -19,7 +19,7 @@
             <div class="col ml-md-n2 profile-user-info">
               <h4 class="user-name mb-0">{{ $user->name }}</h4>
               <h6 class="text-muted">{{ $user->email }}</h6>
-              <div class="user-Location"><i class="fa fa-map-marker"></i> {{ $user->address ?: 'No address provided' }}</div>
+              <div class="user-Location"><i class="fa-solid fa-location-dot"></i> {{ $user->address ?: 'No address provided' }}</div>
               <div class="about-text">{{ $user->bio ?: 'No bio available' }}</div>
             </div>
             <div class="col-auto profile-btn">
@@ -58,27 +58,27 @@
                   <div class="card-body">
                     <h5 class="card-title d-flex justify-content-between">
                       <span>Basic Information</span>
-                    </h5>
+                    </h5><hr>
                     <div class="detail-section">
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Full Name</p>
-                        <p class="col-sm-8">{{ $user->name }}</p>
+                        <p class="col-sm-8">: {{ $user->name }}</p>
                       </div>
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Email</p>
-                        <p class="col-sm-8">{{ $user->email }}</p>
+                        <p class="col-sm-8">: {{ $user->email }}</p>
                       </div>
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Phone</p>
-                        <p class="col-sm-8">{{ $user->cell }}</p>
+                        <p class="col-sm-8">: {{ $user->cell }}</p>
                       </div>
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Date of Birth</p>
-                        <p class="col-sm-8">{{ $user->dob ?: 'Not provided' }}</p>
+                        <p class="col-sm-8">: {{ $user->dob ?: 'Not provided' }}</p>
                       </div>
                       <div class="row">
                         <p class="col-sm-4 text-muted mb-0">Gender</p>
-                        <p class="col-sm-8">{{ ucfirst($user->gender) }}</p>
+                        <p class="col-sm-8">: {{ ucfirst($user->gender) }}</p>
                       </div>
                     </div>
                   </div>
@@ -90,27 +90,27 @@
                   <div class="card-body">
                     <h5 class="card-title d-flex justify-content-between">
                       <span>Academic Information</span>
-                    </h5>
+                    </h5><hr>
                     <div class="detail-section">
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">User Type</p>
-                        <p class="col-sm-8">{{ ucfirst($user->user_type) }}</p>
+                        <p class="col-sm-8">: {{ ucfirst($user->user_type) }}</p>
                       </div>
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Department</p>
-                        <p class="col-sm-8">{{ $user->dept ?: 'Not assigned' }}</p>
+                        <p class="col-sm-8">: {{ $user->dept ?: 'Not assigned' }}</p>
                       </div>
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Hall</p>
-                        <p class="col-sm-8">{{ $user->hall }}</p>
+                        <p class="col-sm-8">: {{ $user->hall }}</p>
                       </div>
                       <div class="row mb-3">
                         <p class="col-sm-4 text-muted mb-0">Room</p>
-                        <p class="col-sm-8">{{ $user->room }}</p>
+                        <p class="col-sm-8">: {{ $user->room }}</p>
                       </div>
                       <div class="row">
                         <p class="col-sm-4 text-muted mb-0">Seat</p>
-                        <p class="col-sm-8">{{ $user->seat ?: 'Not assigned' }}</p>
+                        <p class="col-sm-8">: {{ $user->seat ?: 'Not assigned' }}</p>
                       </div>
                     </div>
                   </div>
