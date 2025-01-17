@@ -137,18 +137,11 @@
                 <h5 class="card-title">Change Password</h5>
                 <div class="row">
                   <div class="col-md-10 col-lg-6">
+                    @include('validate')
                     <form action="{{ route('profile.update-password') }}" method="POST">
                       @csrf
                       <input type="hidden" name="tab" value="password">
-                      @if($errors->any())
-                        <div class="alert alert-danger">
-                          <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                              <li>{{ $error }}</li>
-                            @endforeach
-                          </ul>
-                        </div>
-                      @endif
+
                       <div class="form-group">
                         <label>Old Password</label>
                         <input name="old_pass" type="password" class="form-control @error('old_pass') is-invalid @enderror">
