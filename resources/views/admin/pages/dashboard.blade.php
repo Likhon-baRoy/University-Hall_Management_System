@@ -90,7 +90,7 @@
           <div class="dash-widget-info">
             <h6 class="text-muted">Available Seats</h6>
             <div class="progress progress-sm">
-              <div class="progress-bar bg-warning" style="width: {{ ($available_seats / $total_seats) * 100 }}%"></div>
+              <div class="progress-bar bg-warning" style="width: {{ ($total_seats > 0 ? ($available_seats / $total_seats) * 100 : 0 ) }}%"></div>
             </div>
           </div>
         </div>

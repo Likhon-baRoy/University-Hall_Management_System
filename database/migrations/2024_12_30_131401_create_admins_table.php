@@ -23,8 +23,8 @@ return new class extends Migration
       $table->enum('semester_type', ['trimester', 'bi-semester'])->nullable();
       $table->enum('semester', ['summer', 'fall', 'winter'])->nullable();
       $table->year('semester_year')->nullable();
-      $table->string('hall');
-      $table->string('room');
+      $table->string('hall')->nullable();
+      $table->string('room')->nullable();
       $table->string('seat')->nullable();
       $table->string('dob')->nullable(); // Data-of_Birth
       $table->string('address')->nullable();

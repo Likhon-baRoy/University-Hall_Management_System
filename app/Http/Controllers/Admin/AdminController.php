@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Role;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -34,7 +35,16 @@ class AdminController extends Controller
    */
   public function create()
   {
-    //
+    $roles = Role::where('slug', '!=', 'student')
+                 ->where('slug', '!=', 'teacher')
+                 ->where('slug', '!=', 'staff')
+                 ->where('slug', '!=', 'sadmin')
+                 ->latest()
+                 ->get();
+
+    return view('admin.pages.user.create', [
+      'roles' => $roles
+    ]);
   }
 
   /**
@@ -42,34 +52,37 @@ class AdminController extends Controller
    */
   public function store(Request $request) {
     // Data Validation
-    $request -> validate([
+    $request->validate([
       'role'        => ['required'], // Ensure the role field is selected
       'name'        => ['required'],
       'email'       => 'required|email|unique:admins',
       'cell'        => ['required', 'starts_with:01,8801,+8801', 'regex:/^\+?[0-9]{11,15}$/', 'unique:admins'], // Regex for phone number validation
       'username'    => ['required', 'unique:admins', 'min:4', 'max:10'],
+      'user_id'     => 'required|string|unique:admins', // Ensure user_id is required
     ], [
       'role.required' => 'Please select a role.', // Custom error message
     ]);
 
-    // genarete random password
+    // Generate random password
     $pass_string = str_shuffle('qwertyuiopasdfghjklzxcvbnm0123456789ABCDEFGHIJKLMNOPQRSTWXYZ');
-    $pass = substr($pass_string, 3, 6); // now take string from position: 3 to 9, 6 digit
+    $pass = substr($pass_string, 3, 6); // Now take string from position: 3 to 9, 6 digit
 
-    // store data
+    // Store data
     $user = Admin::create([
-      'role_id'   => $request -> role,
-      'name'      => $request -> name,
-      'email'     => $request -> email,
-      'cell'      => $request -> cell,
-      'username'  => $request -> username,
+      'user_id'   => $request->user_id,
+      'role_id'   => $request->role,
+      'name'      => $request->name,
+      'email'     => $request->email,
+      'cell'      => $request->cell,
+      'username'  => $request->username,
       'password'  => Hash::make($pass),
+      'status' => '1'
     ]);
 
-    // send notification to user email
-    $user -> notify( new AdminAccountInfoNotification( [$user['name'], $pass] ));
+    // Send notification to user email
+    $user->notify(new AdminAccountInfoNotification([$user['name'], $pass]));
 
-    return back() -> with('success','Admin user created!');
+    return back()->with('success', 'Admin user created!');
   }
 
   /**

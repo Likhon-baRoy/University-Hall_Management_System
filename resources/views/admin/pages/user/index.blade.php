@@ -73,7 +73,7 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <a href="" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add User</a>
+            <a href="{{ route('admin-user.create') }}" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add User</a>
             <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">All User Database</h4>
             <a href="{{ route('admin-user.trash') }}" class="btn btn-warning"><i class="fa-solid fa-trash-can"></i> Trash</a>
           </div>
