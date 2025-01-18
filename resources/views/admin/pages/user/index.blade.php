@@ -107,7 +107,7 @@
                       <td>{{ ucfirst($user->gender) }}</td>
                       <td>{{ $user->dept }}</td>
                       <td>{{ ucfirst($user->semester) }} {{ $user->semester_year }}</td>
-                      <td><img src="{{ asset('storage/img/'.$user->photo) }}" width="40"></td>
+                      <td><img src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}" width="40"></td>
                       <td>
                         @if($user -> status)
                           <span class="badge badge-success">Active User</span>
@@ -254,77 +254,77 @@
 
 @endsection
 
-@section('custom-js')
-  <script>
-   $(document).ready(function() {
-     $('.view-profile').click(function(e) {
-       e.preventDefault();
-       var userId = $(this).data('id');
+@push('scripts')
+<script>
+ $(document).ready(function() {
+   $('.view-profile').click(function(e) {
+     e.preventDefault();
+     var userId = $(this).data('id');
 
-       // Reset modal content first
-       $('.profile-header, .profile-details').hide();
-       $('#userProfileModal .modal-body').prepend(
-         '<div class="text-center loading-spinner py-5">' +
-         '<i class="fa fa-spinner fa-spin fa-3x text-primary"></i>' +
-         '<p class="mt-2 text-muted">Loading profile...</p>' +
-         '</div>'
-       );
-       $('#userProfileModal').modal('show');
+     // Reset modal content first
+     $('.profile-header, .profile-details').hide();
+     $('#userProfileModal .modal-body').prepend(
+       '<div class="text-center loading-spinner py-5">' +
+       '<i class="fa fa-spinner fa-spin fa-3x text-primary"></i>' +
+       '<p class="mt-2 text-muted">Loading profile...</p>' +
+       '</div>'
+     );
+     $('#userProfileModal').modal('show');
 
-       // Fetch user data
-       $.ajax({
-         url: "{{ route('admin-user.show', ':id') }}".replace(':id', userId),
-         type: 'GET',
-         dataType: 'json',
-         success: function(response) {
-           // Remove loading spinner
-           $('.loading-spinner').remove();
-           $('.profile-header, .profile-details').fadeIn();
+     // Fetch user data
+     $.ajax({
+       url: "{{ route('admin-user.show', ':id') }}".replace(':id', userId),
+       type: 'GET',
+       dataType: 'json',
+       success: function(response) {
+         // Remove loading spinner
+         $('.loading-spinner').remove();
+         $('.profile-header, .profile-details').fadeIn();
 
-           // Update modal content with user data
-           $('#userPhoto').attr('src', response.photo_url);
-           $('#userName').text(response.name);
-           $('#userRole').text(response.role.name);
-           $('#userId').text(response.user_id || 'N/A');
-           $('#userEmail').text(response.email);
-           $('#userCell').text(response.cell);
-           $('#userGender').text(response.gender ?
-                                 (response.gender.charAt(0).toUpperCase() + response.gender.slice(1)) : 'N/A');
-           $('#userDept').text(response.dept || 'N/A');
-           $('#userSemester').text(
-             (response.semester ? response.semester + ' ' : '') +
-           (response.semester_year || 'N/A')
-           );
-           $('#userHall').text(response.hall || 'N/A');
-           $('#userRoom').text(response.room || 'N/A');
-           $('#userBio').text(response.bio || 'No bio available');
-           $('#userAddress').text(response.address || 'Address not provided');
-           $('#userDob').text(response.dob || 'Birth date not provided');
-           $('#userStatus').html(response.status ?
-                                 '<span class="badge badge-success"><i class="fa fa-check-circle"></i> Active</span>' :
-                                 '<span class="badge badge-danger"><i class="fa fa-ban"></i> Blocked</span>'
-           );
+         // Update modal content with user data
+         $('#userPhoto').attr('src', response.photo_url);
+         $('#userName').text(response.name);
+         $('#userRole').text(response.role.name);
+         $('#userId').text(response.user_id || 'N/A');
+         $('#userEmail').text(response.email);
+         $('#userCell').text(response.cell);
+         $('#userGender').text(response.gender ?
+                               (response.gender.charAt(0).toUpperCase() + response.gender.slice(1)) : 'N/A');
+         $('#userDept').text(response.dept || 'N/A');
+         $('#userSemester').text(
+           (response.semester ? response.semester + ' ' : '') +
+              (response.semester_year || 'N/A')
+         );
+         $('#userHall').text(response.hall || 'N/A');
+         $('#userRoom').text(response.room || 'N/A');
+         $('#userBio').text(response.bio || 'No bio available');
+         $('#userAddress').text(response.address || 'Address not provided');
+         $('#userDob').text(response.dob || 'Birth date not provided');
+         $('#userStatus').html(response.status ?
+                               '<span class="badge badge-success"><i class="fa fa-check-circle"></i> Active</span>' :
+                               '<span class="badge badge-danger"><i class="fa fa-ban"></i> Blocked</span>'
+         );
 
-           // Update edit profile button href
-           $('#editProfileBtn').attr('href', "{{ route('admin-user.edit', ':id') }}".replace(':id', userId));
-         },
-         error: function(xhr) {
-           // Remove loading spinner
-           $('.loading-spinner').remove();
+         // Update edit profile button href
+         $('#editProfileBtn').attr('href', "{{ route('admin-user.edit', ':id') }}".replace(':id', userId));
+       },
+       error: function(xhr) {
+         // Remove loading spinner
+         $('.loading-spinner').remove();
 
-           // Show error message
-           $('#userProfileModal .modal-body').html(
-             '<div class="alert alert-danger m-4">' +
-             '<i class="fa fa-exclamation-triangle mr-2"></i>' +
-             'Error loading user data. Status: ' + xhr.status +
-             '<br>Message: ' + (xhr.responseJSON?.message || 'Unknown error') +
-             '</div>'
-           );
+         // Show error message
+         $('#userProfileModal .modal-body').html(
+           '<div class="alert alert-danger m-4">' +
+           '<i class="fa fa-exclamation-triangle mr-2"></i>' +
+           'Error loading user data. Status: ' + xhr.status +
+           '<br>Message: ' + (xhr.responseJSON?.message || 'Unknown error') +
+           '</div>'
+         );
 
-           console.error('Ajax error:', xhr);
-         }
-       });
+         console.error('Ajax error:', xhr);
+       }
      });
    });
-  </script>
-@endsection
+ });
+</script>
+@endpush

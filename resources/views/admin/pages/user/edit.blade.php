@@ -33,16 +33,6 @@
           <input name="cell" type="text" value="{{ $user->cell }}" class="form-control">
         </div>
         <div class="form-group">
-          <label>User Type</label>
-          <select name="user_type" class="form-control">
-            @foreach(['student', 'teacher', 'staff', 'admin', 'sadmin', 'editor', 'author'] as $type)
-              <option value="{{ $type }}" {{ $user->user_type == $type ? 'selected' : '' }}>
-                {{ ucfirst($type) }}
-              </option>
-            @endforeach
-          </select>
-        </div>
-        <div class="form-group">
           <label>Gender</label>
           <select name="gender" class="form-control">
             @foreach(['male', 'female', 'other'] as $gender)
@@ -64,8 +54,18 @@
         </div>
         <div class="form-group">
           <label>Photo</label>
-          <input name="photo" type="file" class="form-control">
-          <img src="{{ asset('storage/img/'.$user->photo) }}" width="60" class="mt-2">
+          <div class="mb-3">
+            <img id="make-photo-preview"
+                 src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}"
+                 alt="Profile Picture"
+                 style="max-width: 100%; max-height: 200px; object-fit: cover;">
+          </div>
+          <input type="file"
+                 name="photo"
+                 class="form-control"
+                 id="photo-preview"
+                 accept="image/jpeg,image/png,image/jpg,image/webp">
+          <small class="text-muted">Leave empty to keep current photo</small>
         </div>
         <div class="text-right">
           <button type="submit" class="btn btn-primary">Update</button>

@@ -110,7 +110,7 @@ class AdminController extends Controller
         'bio' => $user->bio,
         'status' => $user->status,
         'role' => $user->role,
-        'photo_url' => $user->photo ? asset('storage/img/' . $user->photo) : asset('storage/img/avatar.png')
+        'photo_url' => $user->photo ? asset('storage/image/profile/' . $user->photo) : asset('storage/image/profile/avatar.png')
       ], 200);
     } catch (\Exception $e) {
       return response()->json([
@@ -141,7 +141,50 @@ class AdminController extends Controller
    */
   public function update(Request $request, string $id)
   {
-    //
+    // Find the user
+    $user = Admin::findOrFail($id);
+
+    // Data Validation
+    $request->validate([
+      'role_id'     => ['required', 'exists:roles,id'], // Ensure the role exists in the roles table
+      'name'        => ['required'],
+      'email'       => 'required|email|unique:admins,email,' . $id,
+      'cell'        => ['required', 'starts_with:01,8801,+8801', 'regex:/^\+?[0-9]{11,15}$/', 'unique:admins,cell,' . $id],
+      'username'    => ['required', 'unique:admins,username,' . $id, 'min:4', 'max:10'],
+      'user_id'     => 'required|string|unique:admins,user_id,' . $id,
+      'photo'       => 'nullable|image|max:2048',
+    ], [
+      'role_id.required' => 'Please select a role.',
+    ]);
+
+    // Fetch the selected role
+    $role = Role::findOrFail($request->role_id);
+
+    // Update user data
+    $user->update([
+      'user_id'   => $request->user_id,
+      'role_id'   => $role->id,
+      'name'      => $request->name,
+      'email'     => $request->email,
+      'cell'      => $request->cell,
+      'username'  => $request->username,
+      'user_type' => $role->slug, // Set user_type dynamically
+      'gender'    => $request->gender,
+    ]);
+
+    // Handle photo upload if provided
+    if ($request->hasFile('photo')) {
+      // Delete the old photo if it exists
+      if ($user->photo && file_exists(public_path('storage/image/profile/' . $user->photo))) {
+        unlink(public_path('storage/image/profile/' . $user->photo));
+      }
+
+      // Store new photo
+      $path = $request->file('photo')->store('image/profile', 'public');
+      $user->update(['photo' => basename($path)]);
+    }
+
+    return redirect()->route('admin-user.index')->with('success', 'Admin user updated successfully!');
   }
 
   /**
