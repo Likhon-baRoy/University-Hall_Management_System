@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use App\Models\Role;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -15,18 +14,36 @@ class AdminController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index() {
-    //
-    $all_user = Admin::latest()
-                     ->whereNull('deleted_at')
-                     ->get();
-
-    $roles = Role::latest() -> get();
+  public function index(Request $request)
+  {
+    // Using with() for eager loading to avoid N+1 query problem
+    $users = Admin::with('role')  // Eager load the role relationship
+                  ->whereNull('deleted_at')
+                  ->whereHas('role', function($query) {
+                    $query->whereIn('slug', ['student', 'teacher', 'staff']);
+                  })
+                  ->latest()
+                  ->get();
 
     return view('admin.pages.user.index', [
-      'all_user'      => $all_user,
-      'form_type'     => 'create',
-      'roles'         => $roles
+      'users' => $users,
+      'roles' => Role::latest()->get(),
+    ]);
+  }
+
+  public function adminIndex(Request $request)
+  {
+    $users = Admin::with('role')  // Eager load the role relationship
+                  ->whereNull('deleted_at')
+                  ->whereHas('role', function($query) {
+                    $query->whereNotIn('slug', ['student', 'teacher', 'staff']);
+                  })
+                  ->latest()
+                  ->get();
+
+    return view('admin.pages.user.adminIndex', [
+      'users' => $users,
+      'roles' => Role::latest()->get(),
     ]);
   }
 

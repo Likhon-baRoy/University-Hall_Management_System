@@ -89,8 +89,6 @@
                     <th>Role</th>
                     <th>Cell</th>
                     <th>Gender</th>
-                    <th>Dept</th>
-                    <th>Semester</th>
                     <th>Photo</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -105,8 +103,6 @@
                         <td>{{ $user->role->name }}</td>
                         <td>{{ $user->cell }}</td>
                         <td>{{ ucfirst($user->gender) }}</td>
-                        <td>{{ $user->dept }}</td>
-                        <td>{{ ucfirst($user->semester) }} {{ $user->semester_year }}</td>
                         <td><img src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}" width="40"></td>
                         <td>
                           @if($user -> status)
@@ -134,7 +130,7 @@
                     @endif
                   @empty
                     <tr>
-                      <td class="text-center text-danger" colspan="10">No Records Found</td>
+                      <td class="text-center text-danger" colspan="8">No Records Found</td>
                     </tr>
                   @endforelse
                 </tbody>

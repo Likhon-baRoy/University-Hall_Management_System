@@ -118,12 +118,14 @@
               <i class="fe fe-check-verified"></i> <span> Admin User</span> <span class="menu-arrow"></span>
             </a>
             <ul>
-              <li><a href="{{ route('admin-user.index') }}" class="{{ Request::routeIs('admin-user.index') ? 'active' : '' }}"><span class="icon"></span> Users</a></li>
-              <li><a href="{{ route('role.index') }}" class="{{ Request::routeIs('role.index') ? 'active' : '' }}"><span class="icon"></span> Role</a></li>
-              <li><a href="{{ route('permission.index') }}" class="{{ Request::routeIs('permission.index') ? 'active' : '' }}"><span class="icon"></span> Permission</a></li>
+              <li><a href="{{ route('admin-user.index') }}" class="{{ Request::routeIs('admin-user.index') ? 'active' : '' }}" aria-current="{{ Request::routeIs('admin-user.index') ? 'page' : '' }}"><span class="icon"></span> Residents</a></li>
+              <li><a href="{{ route('admin-user.admin') }}" class="{{ Request::routeIs('admin-user.admin') ? 'active' : '' }}" aria-current="{{ Request::routeIs('admin-user.admin') ? 'page' : '' }}"><span class="icon"></span> Admins</a></li>
+              <li><a href="{{ route('role.index') }}" class="{{ Request::routeIs('role.index') ? 'active' : '' }}" aria-current="{{ Request::routeIs('role.index') ? 'page' : '' }}"><span class="icon"></span> Role</a></li>
+              <li><a href="{{ route('permission.index') }}" class="{{ Request::routeIs('permission.index') ? 'active' : '' }}" aria-current="{{ Request::routeIs('permission.index') ? 'page' : '' }}"><span class="icon"></span> Permission</a></li>
             </ul>
           </li>
         @endif
+
 
         <!-- Notice Options -->
         @if (in_array('Notices', isset($permissions) ? $permissions : []))

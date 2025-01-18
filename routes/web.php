@@ -76,7 +76,12 @@ Route::group(['middleware' => 'admin'], function () {
   Route::resource('/role', RoleController::class);
 
   // Admin routes
+  // Admin-specific route should come first
+  Route::get('admin-user/admin', [AdminController::class, 'adminIndex'])->name('admin-user.admin');
+  // Then the resource route
   Route::resource('/admin-user', AdminController::class);
+  // Route for viewing admin users only
+  Route::get('admin-user/admin', [AdminController::class, 'adminIndex'])->name('admin-user.admin');
   Route::get('/admin-user-status-update/{id}', [AdminController::class, 'updateStatus'])->name('admin.status.update');
   Route::get('user/trash', [AdminController::class, 'trash'])->name('admin-user.trash');
   Route::post('user/{id}/restore', [AdminController::class, 'restore'])->name('admin-user.restore');
