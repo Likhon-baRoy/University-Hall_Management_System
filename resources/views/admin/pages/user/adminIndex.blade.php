@@ -74,7 +74,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <a href="{{ route('admin-user.create') }}" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add User</a>
-            <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">All User Database</h4>
+            <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">Admin Users</h4>
             <a href="{{ route('admin-user.trash') }}" class="btn btn-warning"><i class="fa-solid fa-trash-can"></i> Trash</a>
           </div>
           <div class="card-body">
