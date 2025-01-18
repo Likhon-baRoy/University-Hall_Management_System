@@ -1,6 +1,6 @@
 <?php
 // app/Http/Middleware/RedirectIfAuthenticated.php
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Admin;
 
 use Closure;
 use Illuminate\Http\Request;
