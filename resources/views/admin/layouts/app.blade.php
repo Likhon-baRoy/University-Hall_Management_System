@@ -20,24 +20,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- Fontawesome CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
 
-      <!-- Feathericon CSS -->
-      <link rel="stylesheet" href="{{ asset('admin/assets/css/feathericon.min.css') }}">
+    <!-- Feathericon CSS -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/feathericon.min.css') }}">
 
-      <!-- Morris CSS -->
-      <link rel="stylesheet" href="{{ asset('admin/assets/plugins/morris/morris.css') }}">
+    <!-- Morris CSS -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/plugins/morris/morris.css') }}">
 
-      <!-- Main CSS -->
-      <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
 
-      <!-- Custom CSS -->
-      @yield('custom-css')
+    <!-- Custom CSS -->
+    @yield('custom-css')
 
-      <!--[if lt IE 9]>
-        <script src="admin/assets/js/html5shiv.min.js"></script>
-        <script src="admin/assets/js/respond.min.js"></script>
-      <![endif]-->
+    <!--[if lt IE 9]>
+      <script src="admin/assets/js/html5shiv.min.js"></script>
+      <script src="admin/assets/js/respond.min.js"></script>
+    <![endif]-->
   </head>
 
   <body>
@@ -78,6 +79,7 @@
 
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>

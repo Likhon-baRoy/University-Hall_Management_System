@@ -1,6 +1,5 @@
 (function ($) {
     $(document).ready(function () {
-
         // Check if DataTables is loaded before initializing
         if ($.fn.DataTable) {
             $('.data-table-element').DataTable();
@@ -8,12 +7,25 @@
             console.error("DataTables plugin is not loaded.");
         }
 
-        // Delete button confirmation
-        $('.delete-form').submit(function (e) {
-            let conf = confirm('Are you sure?');
-            if (!conf) {
-                e.preventDefault();
-            }
+        // Delete button confirmation with SweetAlert
+        $(document).on('submit', '.delete-form', function(e) {
+            e.preventDefault();
+            const form = $(this);
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will permanently delete the application. This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
         });
 
         // Photo preview management
