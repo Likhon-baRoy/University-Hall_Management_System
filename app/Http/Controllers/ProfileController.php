@@ -85,7 +85,7 @@ class ProfileController extends Controller
       if ($request->hasFile('photo')) {
         // Delete old photo if it exists and isn't the default
         if ($user->photo && $user->photo !== 'avatar.png') {
-          Storage::disk('public')->delete('public/img/' . $user->photo);
+          Storage::disk('public')->delete('public/image/profile/' . $user->photo);
         }
 
         $request->validate([
@@ -94,7 +94,7 @@ class ProfileController extends Controller
 
         $photo = $request->file('photo');
         $filename = time() . '.' . $photo->getClientOriginalExtension();
-        $photo->storeAs('img', $filename, 'public');
+        $photo->storeAs('image/profile', $filename, 'public');
 
         $user->update(['photo' => $filename]);
       }
