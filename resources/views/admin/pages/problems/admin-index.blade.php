@@ -96,56 +96,56 @@
                   <th>Status</th>
                   <th>Created</th>
                   <th>Action</th>
-</tr>
-      </thead>
-      <tbody>
-        @forelse($problems as $problem)
-          <tr>
-            <td>{{ $loop->index + 1 }}</td>
-            <td>{{ $problem->user->name }}</td>
-            <td>{{ $problem->title }}</td>
-            <td>{{ ucfirst($problem->issue_type) }}</td>
-            <td>{{ $problem->location }}</td>
-            <td>
-              <span class="badge badge-{{ $problem->priority === 'urgent' ? 'danger' :
-                                          ($problem->priority === 'high' ? 'warning' :
-                                            ($problem->priority === 'medium' ? 'info' : 'success')) }}">
-                {{ ucfirst($problem->priority) }}
-              </span>
-            </td>
-            <td>
-              <span class="badge badge-{{ $problem->status === 'pending' ? 'warning' :
-                                          ($problem->status === 'in_progress' ? 'info' :
-                                            ($problem->status === 'resolved' ? 'success' : 'secondary')) }}">
-                {{ ucfirst(str_replace('_', ' ', $problem->status)) }}
-              </span>
-            </td>
-            <td>{{ $problem->created_at->diffForHumans() }}</td>
-            <td>
-              <a href="{{ route('problems.show', $problem) }}" class="btn btn-sm btn-info">
-                <i class="fa fa-eye"></i>
-              </a>
-              <form action="{{ route('problems.trash', $problem) }}"
-                    method="POST"
-                    class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger">
-                  <i class="fa fa-trash"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
-        @empty
-          <tr>
-            <td colspan="9" class="text-center">No problems found</td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
-  {{ $problems->links() }}
-</div>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse($problems as $problem)
+                  <tr>
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td>{{ $problem->user?->name ?? 'N/A' }}</td>
+                    <td>{{ $problem->title ?? 'No Title' }}</td>
+                    <td>{{ ucfirst($problem->issue_type ?? 'N/A') }}</td>
+                    <td>{{ $problem->location ?? 'No Location' }}</td>
+                    <td>
+                      <span class="badge badge-{{ $problem->priority === 'urgent' ? 'danger' :
+                                                  ($problem->priority === 'high' ? 'warning' :
+                                                    ($problem->priority === 'medium' ? 'info' : 'success')) }}">
+                        {{ ucfirst($problem->priority ?? 'low') }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge badge-{{ $problem->status === 'pending' ? 'warning' :
+                                                  ($problem->status === 'in_progress' ? 'info' :
+                                                    ($problem->status === 'resolved' ? 'success' : 'secondary')) }}">
+                        {{ ucfirst(str_replace('_', ' ', $problem->status ?? 'unknown')) }}
+                      </span>
+                    </td>
+                    <td>{{ $problem->created_at ? $problem->created_at->diffForHumans() : 'N/A' }}</td>
+                    <td>
+                      <a href="{{ route('problems.show', $problem) }}" class="btn btn-sm btn-info">
+                        <i class="fa fa-eye"></i>
+                      </a>
+                      <form action="{{ route('problems.trash', $problem) }}"
+                            method="POST"
+                            class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="9" class="text-center">No problems found</td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+          {{ $problems->links() }}
+        </div>
       </div>
     </div>
   </div>
