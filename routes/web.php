@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\HallBookingController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\SeatApplicationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NoticeController as FrontendNoticeController;
 use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
@@ -140,6 +141,26 @@ Route::group(['middleware' => 'admin'], function () {
     });
   });
 
+  // In web.php or your routes file
+  /*   Route::get('/applications', [SeatApplicationController::class, 'adminIndex'])->name('applications.index'); */
+  /*   Route::get('/application', [SeatApplicationController::class, 'userIndex'])->name('application.index'); */
+});
+// Seat Applications Routes
+Route::prefix('applications')->name('applications.')->middleware(['auth:admin'])->group(function () {
+  Route::get('/', [SeatApplicationController::class, 'adminIndex'])->name('index');
+  Route::get('/my-applications', [SeatApplicationController::class, 'userIndex'])->name('user.index');
+  Route::get('/create', [SeatApplicationController::class, 'create'])->name('create');
+  Route::post('/', [SeatApplicationController::class, 'store'])->name('store');
+  Route::get('/archive', [SeatApplicationController::class, 'archive'])->name('archive');
+  Route::get('/{application}', [SeatApplicationController::class, 'show'])->name('show');
+  Route::post('/{application}/process', [SeatApplicationController::class, 'process'])->name('process');
+
+  // Update the destroy route for seat cancellation
+  Route::delete('/{application}/cancel', [SeatApplicationController::class, 'destroy'])
+       ->name('cancel');  // This will make the full route name 'applications.cancel'
+  Route::delete('/{application}/force-delete', [SeatApplicationController::class, 'forceDelete'])
+       ->name('force-delete')
+       ->withTrashed();  // This is important to allow finding soft deleted models
 });
 
 // Problem Management Routes

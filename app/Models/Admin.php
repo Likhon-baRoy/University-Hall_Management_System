@@ -36,6 +36,46 @@ class Admin extends Authenticatable
     return $this->hasMany(Seat::class);
   }
 
+  public function assignedSeat()
+  {
+    return $this->belongsTo(Seat::class, 'seat');
+  }
+
+  public function assignSeat(Seat $seat)
+  {
+    // First clear any existing assignments
+    if ($this->seat) {
+      $currentSeat = $this->assignedSeat;
+      if ($currentSeat) {
+        $currentSeat->update(['status' => true]);
+      }
+    }
+
+    // Assign new seat
+    $this->seat = $seat->id;
+    $this->save();
+
+    // Update seat status
+    $seat->update(['status' => false]);
+
+    return true;
+  }
+
+  public function clearSeat()
+  {
+    if ($this->seat) {
+      $currentSeat = $this->assignedSeat;
+      if ($currentSeat) {
+        $currentSeat->update(['status' => true]);
+      }
+    }
+
+    $this->seat = null;
+    $this->save();
+
+    return true;
+  }
+
   // automatically set the role based on user_type
   protected static function booted()
   {
