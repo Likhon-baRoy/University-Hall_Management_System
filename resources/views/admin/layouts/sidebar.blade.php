@@ -55,31 +55,30 @@
           </ul>
         </li>
 
+        <!-- Add these menu items where appropriate in your sidebar -->
+
+        <!-- For admins to see all applications -->
+        @if (in_array('Applications', $permissions ?? []))
+          <li class="{{ Request::is('applications*') ? 'active' : '' }}">
+            <a href="{{ route('applications.index') }}">
+              <i class="fe fe-bug"></i> <span>Applications</span>
+            </a>
+          </li>
+        @else
+          <!-- For users to see their own applications -->
+          <li class="{{ Request::is('application*') ? 'active' : '' }}">
+            <a href="{{ route('applications.user.index') }}">
+              <i class="fe fe-bug"></i> <span>Application</span>
+            </a>
+          </li>
+        @endif
+
+
+
         <!-- Slider -->
         @if (in_array('Slider', isset($permissions) ? $permissions : []))
           <li class="{{ Request::is('slider*') ? 'active' : '' }}">
             <a href="{{ route('slider.index') }}"><i class="fe fe-desktop"></i> <span>Slider</span></a>
-          </li>
-        @endif
-
-        <!-- Testimonials -->
-        @if (in_array('Testimonials', isset($permissions) ? $permissions : []))
-          <li class="{{ Request::is('testimonials*') ? 'active' : '' }}">
-            <a href="  "><i class="fe fe-commenting"></i> <span>Testimonials</span></a>
-          </li>
-        @endif
-
-        <!-- Posts -->
-        @if (in_array('Posts', isset($permissions) ? $permissions : []))
-          <li class="submenu {{ Request::is('posts*') ? 'open active-parent' : '' }}">
-            <a href="#" aria-expanded="{{ Request::is('posts*') ? 'true' : 'false' }}">
-              <i class="fe fe-document"></i> <span> Posts</span> <span class="menu-arrow"></span>
-            </a>
-            <ul>
-              <li><a href="  " class="{{ Request::is('posts') ? 'active' : '' }}"><span class="icon"></span> All Posts</a></li>
-              <li><a href="  " class="{{ Request::is('posts/categories') ? 'active' : '' }}"><span class="icon"></span> Categories</a></li>
-              <li><a href="  " class="{{ Request::is('posts/tag') ? 'active' : '' }}"><span class="icon"></span> Tag</a></li>
-            </ul>
           </li>
         @endif
 
