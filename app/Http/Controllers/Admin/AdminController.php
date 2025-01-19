@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
 use App\Models\Admin;
+use App\Models\Seat;
+use App\Models\StudentVerification;
+use App\Models\TeacherVerification;
+use App\Models\StaffVerification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -245,9 +249,29 @@ class AdminController extends Controller
   public function forceDelete($id)
   {
     $user = Admin::onlyTrashed()->findOrFail($id);
-    $user->forceDelete();
 
-    return back()->with('success-main', 'User permanently deleted');
+    // Reset all seats associated with this user
+    Seat::where('admin_id', $user->id)
+        ->update(['status' => true, 'admin_id' => null]);
+
+    // Reset verification status based on user type
+    switch($user->user_type) {
+      case 'student':
+        StudentVerification::where('user_id', $user->user_id)
+                           ->update(['is_registered' => false]);
+        break;
+      case 'teacher':
+        TeacherVerification::where('user_id', $user->user_id)
+                           ->update(['is_registered' => false]);
+        break;
+      case 'staff':
+        StaffVerification::where('user_id', $user->user_id)
+                         ->update(['is_registered' => false]);
+        break;
+    }
+
+    $user->forceDelete();
+    return back()->with('success-main', 'User permanently deleted, seats reactivated, and verification status reset');
   }
 
   /*****************************************************************
