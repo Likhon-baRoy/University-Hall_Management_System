@@ -30,9 +30,7 @@
                     <td>{{$user -> name}}</td>
                     <td>{{$user -> dept}}</td>
                     <td>
-                      @if ($user -> photo == 'avatar.png')
-                        <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/img/avatar.png') }}" alt="">
-                      @endif
+                      <img style="width: 60px; height:60px; object-fit:cover" src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}" alt="">
                     </td>
                     <td>{{$user -> created_at}}</td>
                     <td>

@@ -56,8 +56,8 @@
                     <span class="avatar avatar-sm">
                       <img class="avatar-img rounded-circle" alt="User Image"
                            src="{{ isset($notification->data['user_photo']) ?
-                                   url('storage/img/' . $notification->data['user_photo']) :
-                                   url('storage/img/avatar.png') }}">
+                                   url('storage/image/profile/' . $notification->data['user_photo']) :
+                                   url('storage/image/profile/avatar.png') }}">
                     </span>
                   <div class="media-body">
                     <p class="noti-details">
@@ -86,12 +86,12 @@
     <!-- User Menu -->
     <li class="nav-item dropdown has-arrow">
       <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-        <span class="user-img"><img class="rounded-circle" src="{{ url('storage/img/' . Auth::guard('admin')?->user()?->photo) }}" width="31" alt="Ryan Taylor"></span>
+        <span class="user-img"><img class="rounded-circle" src="{{ url('storage/image/profile/' . Auth::guard('admin')?->user()?->photo) }}" width="31" alt="Ryan Taylor"></span>
       </a>
       <div class="dropdown-menu">
         <div class="user-header">
           <div class="avatar avatar-sm">
-            <img src="{{ url('storage/img/' . Auth::guard('admin')?->user()?->photo) }}" alt="User Image" class="avatar-img rounded-circle">
+            <img src="{{ url('storage/image/profile/' . Auth::guard('admin')?->user()?->photo) }}" alt="User Image" class="avatar-img rounded-circle">
           </div>
           <div class="user-text">
             <h6>{{ Auth::guard('admin')?->user()?->name }}</h6>

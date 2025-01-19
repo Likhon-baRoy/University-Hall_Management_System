@@ -17,7 +17,7 @@
           <div class="text-center mb-4">
             <div class="profile-photo-container">
               <img id="make-photo-preview"
-                   src="{{ asset('storage/img/' . ($user->photo ?? 'avatar.png')) }}"
+                   src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}"
                    alt="Profile Photo" class="rounded-circle profile-photo"
                    style="width: 120px; height: 120px; object-fit: cover;">
                 <input type="file" style="display:none;"

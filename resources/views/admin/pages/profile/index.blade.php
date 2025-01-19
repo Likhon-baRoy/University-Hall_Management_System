@@ -13,7 +13,7 @@
           <div class="row align-items-center">
             <div class="col-auto profile-photo-container">
               <img class="rounded-circle" alt="User Image"
-                   src="{{ url('storage/img/' . ($user->photo ?? 'avatar.png')) }}"
+                   src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}"
                    style="max-width: 100%; max-height: 200px; object-fit: cover;">
             </div>
             <div class="col ml-md-n2 profile-user-info">
