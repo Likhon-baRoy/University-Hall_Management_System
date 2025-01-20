@@ -37,7 +37,7 @@
                       <form method="POST" action="{{ route('permission.destroy', $per -> id) }}" class="d-inline delete-form">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                        <button class="btn btn-sm btn-danger" type="submit"><i class="fa-solid fa-trash-can"></i></button>
                       </form>
                     </td>
                   </tr>

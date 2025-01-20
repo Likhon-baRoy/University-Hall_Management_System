@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
   public function run(): void
   {
     // Create Permissions
-    $permissions = ['Slider', 'Admins', 'Settings', 'Posts', 'problems', 'Applications', 'Notices'];
+    $permissions = ['Slider', 'Admins', 'Settings', 'Problems', 'Applications', 'Notices', 'Transaction', 'Meals', 'Fields'];
 
     foreach ($permissions as $permission) {
       Permission::create([
