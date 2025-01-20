@@ -35,46 +35,43 @@ class SlideController extends Controller
   public function store(Request $request)
   {
     // validation
-    $request -> validate([
-      'hall'    => 'required',
-      'room'    => 'required',
-      'seat'    => 'required',
-      'gender'  => 'required',
-      'photo'   => 'required',
+    $request->validate([
+      'title' => 'required',
+      'subtitle' => 'required',
+      'description' => 'required',
+      'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    // btn management
+    // Button management
     $buttons = [];
-
-    for( $i = 0; $i < count($request -> btn_title) ; $i++ ){
-      array_push($buttons, [
-        'btn_title' => $request -> btn_title[$i],
-        'btn_link'  => $request -> btn_link[$i],
-        'btn_type'  =>  $request -> btn_type[$i],
-      ]);
+    if($request->has('btn_title')) {
+      for($i = 0; $i < count($request->btn_title); $i++) {
+        array_push($buttons, [
+          'btn_title' => $request->btn_title[$i],
+          'btn_link' => $request->btn_link[$i],
+          'btn_type' => $request->btn_type[$i],
+        ]);
+      }
     }
 
-    // slider image manage
-    if( $request -> hasFile('photo') ){
-
-      $img = $request -> file('photo');
-      $file_name = md5(time().rand()) .'.'. $img -> getClientOriginalExtension();
-
-      $img->move(storage_path('app/public/sliders'), $file_name);
+    // Upload photo
+    $fileName = null;
+    if($request->hasFile('photo')) {
+      $file = $request->file('photo');
+      $fileName = md5(time().rand()) .'.'. $file->getClientOriginalExtension();
+      $file->move(storage_path('app/public/image/slider'), $fileName);
     }
 
-    // add new slide
+    // Create slider
     Slider::create([
-      'hall'     => $request -> hall,
-      'room'     => $request -> room,
-      'seat'     => $request -> seat,
-      'gender'   => $request -> gender,
-      'photo'    => $file_name,
-      'btns'     => json_encode($buttons)
+      'title' => $request->title,
+      'subtitle' => $request->subtitle,
+      'description' => $request->description,
+      'photo' => $fileName,
+      'btns' => json_encode($buttons)
     ]);
 
-    // return back
-    return back() -> with('success' , 'Slide Added successful');
+    return back()->with('success', 'Slide added successfully');
   }
 
   /**
@@ -106,44 +103,72 @@ class SlideController extends Controller
    */
   public function update(Request $request, string $id)
   {
-    // get slider
+    // Get slider
     $slider = Slider::findOrFail($id);
 
-    // btn management
-    $buttons = [];
-
-    for( $i = 0; $i < count($request -> btn_title) ; $i++ ){
-      array_push($buttons, [
-        'btn_title' => $request -> btn_title[$i],
-        'btn_link'  => $request -> btn_link[$i],
-        'btn_type'  =>  $request -> btn_type[$i],
-      ]);
-    }
-
-    // update slider
-    $slider -> update([
-      'hall'     => $request -> hall,
-      'room'     => $request -> room,
-      'seat'     => $request -> seat,
-      'gender'   => $request -> gender,
-      'btns'     => json_encode($buttons)
+    // Validation
+    $request->validate([
+      'title' => 'required',
+      'subtitle' => 'required',
+      'description' => 'required',
+      'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    // return back
-    return back() -> with('success' , 'Slide updated successful');
+    // Button management
+    $buttons = [];
+    if($request->has('btn_title')) {
+      for($i = 0; $i < count($request->btn_title); $i++) {
+        array_push($buttons, [
+          'btn_title' => $request->btn_title[$i],
+          'btn_link' => $request->btn_link[$i],
+          'btn_type' => $request->btn_type[$i],
+        ]);
+      }
+    }
+
+    // Handle photo update
+    $fileName = $slider->photo;
+    if($request->hasFile('photo')) {
+      // Delete old photo
+      $oldPhotoPath = storage_path('app/public/image/slider/' . $slider->photo);
+      if(file_exists($oldPhotoPath)) {
+        unlink($oldPhotoPath);
+      }
+
+      // Upload new photo
+      $file = $request->file('photo');
+      $fileName = md5(time().rand()) .'.'. $file->getClientOriginalExtension();
+      $file->move(storage_path('app/public/image/slider'), $fileName);
+    }
+
+    // Update slider
+    $slider->update([
+      'title' => $request->title,
+      'subtitle' => $request->subtitle,
+      'description' => $request->description,
+      'photo' => $fileName,
+      'btns' => json_encode($buttons)
+    ]);
+
+    return back()->with('success', 'Slide updated successfully');
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id) {
+  public function destroy(string $id)
+  {
+    $slider = Slider::findOrFail($id);
 
-    $slider_data = Slider::findOrFail($id);
+    // Delete photo from storage
+    $photoPath = storage_path('app/public/image/slider/' . $slider->photo);
+    if(file_exists($photoPath)) {
+      unlink($photoPath);
+    }
 
-    $slider_data -> delete();
+    $slider->delete();
 
-    // return with a success message
-    return back() -> with('success-main', $data -> hall . ', deleted permanantly');
+    return back()->with('success-main', 'Slider deleted permanently');
   }
 
 

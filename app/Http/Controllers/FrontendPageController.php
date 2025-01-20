@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Slider;
 use Illuminate\Http\Request;
 
 class FrontendPageController extends Controller {
@@ -9,7 +10,11 @@ class FrontendPageController extends Controller {
    * show Home Page
    */
   public function showHomePage() {
-    return view('frontend.pages.home');
+    $sliders = Slider::where('status', true ) -> latest() -> get();
+
+    return view('frontend.pages.home', [
+      'sliders'       => $sliders
+    ]);
   }
 
   public function showBookPage() {

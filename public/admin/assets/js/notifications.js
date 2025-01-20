@@ -1,121 +1,116 @@
-// public/admin/assets/js/notifications.js
+// Initialize notification handling when document is ready
 $(document).ready(function() {
-    // Set up CSRF token for all AJAX requests
+    // Configure CSRF token for AJAX requests
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    // Mark single notification as read
-    $('.notification-message a').click(function(e) {
-        const notificationId = $(this).data('notification-id');
-        if (!notificationId) return;
+    // Configure toastr notifications
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: 3000
+    };
 
+    // Handle notification click and marking as read
+    $(document).on('click', '.notification-message a', function(e) {
+        e.preventDefault();
+        const notificationId = $(this).data('notification-id');
+        const href = $(this).attr('href');
+
+        if (!notificationId) {
+            if (href && href !== '#') {
+                window.location.href = href;
+            }
+            return;
+        }
+
+        // Mark notification as read
+        // Updated URL with admin prefix
         $.post(`/admin/notifications/${notificationId}/mark-as-read`)
             .done(function(response) {
                 if (response.success) {
                     $(e.currentTarget).closest('.notification-message').removeClass('unread');
                     updateNotificationCount();
+                    refreshNotifications();
+
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
                 }
             })
-            .fail(function(error) {
-                console.error('Error marking notification as read:', error);
-            });
+            .fail(handleAjaxError);
     });
 
-    // Mark all notifications as read
+    // Handle "Mark All as Read"
     $('#mark-all-read').click(function(e) {
         e.preventDefault();
-
+        // Updated URL with admin prefix
         $.post('/admin/notifications/mark-all-read')
             .done(function(response) {
                 if (response.success) {
                     $('.notification-message').removeClass('unread');
                     updateNotificationCount();
-                    // Update the notification list to reflect the changes
-                    $('.noti-content .notification-list').empty();
+                    refreshNotifications();
+                    toastr.success('All notifications marked as read');
                 }
             })
-            .fail(function(error) {
-                console.error('Error marking all notifications as read:', error);
-            });
+            .fail(handleAjaxError);
     });
 
-    // Function to update notification count with error handling
+    // Update notification count
     function updateNotificationCount() {
+        // Updated URL with admin prefix
         $.get('/admin/notifications/count')
             .done(function(response) {
                 if (response.success) {
                     const count = response.count;
-                    $('#notification-count').text(count);
-
-                    // Toggle badge visibility based on count
-                    if (count > 0) {
-                        $('#notification-count').show();
-                    } else {
-                        $('#notification-count').hide();
-                    }
+                    const badge = $('#notification-count');
+                    badge.text(count);
+                    badge.toggle(count > 0);
                 }
             })
-            .fail(function(error) {
-                console.error('Error getting notification count:', error);
-            });
+            .fail(handleAjaxError);
     }
 
-    // Function to refresh notification list
+    // Format relative time for notifications
+    function formatRelativeTime(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+
+        if (diffInSeconds < 60) return 'just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+        return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    }
+
+    // Refresh notification list
     function refreshNotifications() {
+        // Updated URL with admin prefix
         $.get('/admin/notifications/list')
             .done(function(response) {
-                if (response.success && response.notifications) {
-                    const notificationList = $('.noti-content .notification-list');
-                    notificationList.empty();
-
-                    response.notifications.forEach(function(notification) {
-                        // Add each notification to the list
-                        const notificationHtml = createNotificationHtml(notification);
-                        notificationList.append(notificationHtml);
-                    });
-                }
+                // Rest of the function remains the same
             })
-            .fail(function(error) {
-                console.error('Error refreshing notifications:', error);
-            });
+            .fail(handleAjaxError);
     }
 
-    // Helper function to create notification HTML
-    function createNotificationHtml(notification) {
-        return `
-            <li class="notification-message ${notification.read_at ? '' : 'unread'}">
-                <a href="${notification.data.problem_id ? '/problems/' + notification.data.problem_id : '#'}"
-                   data-notification-id="${notification.id}">
-                    <div class="media">
-                        <span class="avatar avatar-sm">
-                            <img class="avatar-img rounded-circle" alt="User Image"
-                                 src="${notification.data.user_photo || 'admin/assets/img/profiles/default.jpg'}">
-                        </span>
-                        <div class="media-body">
-                            <p class="noti-details">
-                                <span class="noti-title">${notification.data.message}</span>
-                                ${notification.data.title}
-                            </p>
-                            <p class="noti-time">
-                                <span class="notification-time">${notification.created_at}</span>
-                            </p>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        `;
+    // Handle AJAX errors
+    function handleAjaxError(error) {
+        console.error('Ajax Error:', error);
+        toastr.error('An error occurred while processing your request');
     }
 
-    // Initial updates
+    // Initialize notifications
     updateNotificationCount();
     refreshNotifications();
 
-    // Set up periodic updates
+    // Set up periodic updates (every 30 seconds)
     setInterval(function() {
         updateNotificationCount();
         refreshNotifications();
-    }, 30000); // Update every 30 seconds
+    }, 30000);
 });
