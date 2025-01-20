@@ -86,7 +86,7 @@
 
     <!-- Custom JS -->
     <script src="{{ asset('admin/assets/js/script.js') }}"></script>
-    <!-- <script src="{{ asset('admin/assets/js/notifications.js') }}"></script> -->
+    <script src="{{ asset('admin/assets/js/notifications.js') }}"></script>
     <script src="{{ asset('custom/admin.js') }}"></script>
     <script src="{{ asset('custom/notice.js') }}"></script>
 

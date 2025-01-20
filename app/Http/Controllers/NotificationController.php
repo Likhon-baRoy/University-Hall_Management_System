@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
+  /**
+   * Display notifications index page
+   */
   public function index()
   {
     try {
@@ -17,15 +20,81 @@ class NotificationController extends Controller
       return view('admin.notifications.index', compact('notifications'));
     } catch (\Exception $e) {
       Log::error('Error in notification index: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error loading notifications');
+      return response()->json([
+        'success' => false,
+        'message' => 'Error loading notifications'
+      ], 500);
     }
   }
 
+  /**
+   * Get recent notifications list
+   */
+  public function list()
+  {
+    try {
+      $user = Auth::guard('admin')->user();
+
+      if (!$user) {
+        return response()->json([
+          'success' => false,
+          'message' => 'User not authenticated'
+        ], 401);
+      }
+
+      $notifications = $user->notifications()
+                            ->latest()
+                            ->take(5)
+                            ->get()
+                            ->map(function($notification) {
+                              return [
+                                'id' => $notification->id,
+                                'read_at' => $notification->read_at,
+                                'created_at' => $notification->created_at->toISOString(),
+                                'data' => array_merge($notification->data, [
+                                  'user_photo' => $notification->data['user_photo'] ?? 'avatar.png',
+                                  'message' => $notification->data['message'] ?? 'New notification'
+                                ])
+                              ];
+                            });
+
+      return response()->json([
+        'success' => true,
+        'notifications' => $notifications
+      ]);
+    } catch (\Exception $e) {
+      Log::error('Error getting notifications list: ' . $e->getMessage());
+      return response()->json([
+        'success' => false,
+        'message' => 'Error loading notifications'
+      ], 500);
+    }
+  }
+
+  /**
+   * Mark a notification as read
+   */
   public function markAsRead($id)
   {
     try {
       $user = Auth::guard('admin')->user();
-      $notification = $user->notifications()->findOrFail($id);
+
+      if (!$user) {
+        return response()->json([
+          'success' => false,
+          'message' => 'User not authenticated'
+        ], 401);
+      }
+
+      $notification = $user->notifications()->where('id', $id)->first();
+
+      if (!$notification) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Notification not found'
+        ], 404);
+      }
+
       $notification->markAsRead();
 
       return response()->json([
@@ -41,10 +110,21 @@ class NotificationController extends Controller
     }
   }
 
+  /**
+   * Mark all notifications as read
+   */
   public function markAllAsRead()
   {
     try {
       $user = Auth::guard('admin')->user();
+
+      if (!$user) {
+        return response()->json([
+          'success' => false,
+          'message' => 'User not authenticated'
+        ], 401);
+      }
+
       $user->unreadNotifications->markAsRead();
 
       return response()->json([
@@ -60,10 +140,14 @@ class NotificationController extends Controller
     }
   }
 
+  /**
+   * Get unread notification count
+   */
   public function getUnreadCount()
   {
     try {
       $user = Auth::guard('admin')->user();
+
       if (!$user) {
         return response()->json([
           'success' => false,

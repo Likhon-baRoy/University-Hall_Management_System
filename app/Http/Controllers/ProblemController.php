@@ -7,6 +7,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewProblemNotification;
 use App\Notifications\ProblemResponseNotification;
 
@@ -115,6 +116,14 @@ class ProblemController extends Controller
         'admin_responded_at' => now()
       ]);
 
+      // Notify the problem owner
+      $problemOwner = $problem->user; // Assuming `user` is a relationship in the `Problem` model
+      $problemOwner->notify(new ProblemResponseNotification(
+        $problem,
+        $request->admin_response,
+        $user->name
+      ));
+
       return redirect()->route('problems.show', $problem)
                        ->with('success', 'Problem updated successfully!');
     } catch (\Exception $e) {
@@ -122,6 +131,7 @@ class ProblemController extends Controller
                        ->with('error', 'Error updating problem: ' . $e->getMessage());
     }
   }
+
 
   /**
    * Admin response to problem with notification
@@ -256,27 +266,12 @@ class ProblemController extends Controller
       // Increment user's daily post count
       $user->increment('daily_problem_posts');
 
-      // Get all admins with problem management permission
-      $admins = Admin::whereHas('role', function($query) {
+      // Notify all eligible admins
+      Admin::whereHas('role', function ($query) {
         $query->whereJsonContains('permissions', 'problems');
-      })->get();
-
-      Log::info('Sending notifications to admins', [
-        'admins_count' => $admins->count(),
-        'problem_id' => $problem->id
-      ]);
-
-      // Send notifications to all eligible admins
-      foreach($admins as $admin) {
-        try {
-          $admin->notify(new NewProblemNotification($problem));
-        } catch (\Exception $e) {
-          Log::error('Failed to send notification to admin', [
-            'admin_id' => $admin->id,
-            'error' => $e->getMessage()
-          ]);
-        }
-      }
+      })->chunk(100, function ($admins) use ($problem) {
+        Notification::send($admins, new NewProblemNotification($problem));
+      });
 
       return redirect()->route('problems.show', $problem)
                        ->with('success', 'Problem reported successfully!');

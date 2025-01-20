@@ -33,47 +33,49 @@
   <ul class="nav user-menu">
 
     <!-- Notifications -->
-    {{-- resources/views/admin/layouts/header.blade.php --}}
     <li class="nav-item dropdown noti-dropdown">
       <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
         <i class="fe fe-bell"></i>
         <span class="badge badge-pill" id="notification-count">
-          {{ Auth::guard('admin')->user()->unreadNotifications()->count() ?? 0 }}
+          {{ Auth::guard('admin')->user()->unreadNotifications->count() }}
         </span>
       </a>
       <div class="dropdown-menu notifications">
         <div class="topnav-dropdown-header">
           <span class="notification-title">Notifications</span>
-          <a href="javascript:void(0)" class="clear-noti" id="mark-all-read"> Clear All </a>
+          <a href="javascript:void(0)" class="clear-noti" id="mark-all-read">Clear All</a>
         </div>
         <div class="noti-content">
           <ul class="notification-list">
-            @foreach(Auth::guard('admin')->user()->notifications()->latest()->take(5)->get() as $notification)
+            @forelse(Auth::guard('admin')->user()->notifications()->latest()->take(5)->get() as $notification)
               <li class="notification-message {{ $notification->read_at ? '' : 'unread' }}">
                 <a href="{{ isset($notification->data['problem_id']) ? route('problems.show', $notification->data['problem_id']) : '#' }}"
                    data-notification-id="{{ $notification->id }}">
                   <div class="media">
                     <span class="avatar avatar-sm">
                       <img class="avatar-img rounded-circle" alt="User Image"
-                           src="{{ isset($notification->data['user_photo']) ?
-                                   url('storage/image/profile/' . $notification->data['user_photo']) :
-                                   url('storage/image/profile/avatar.png') }}">
+                           src="{{ asset('storage/image/profile/' . ($notification->data['user_photo'] ?? 'avatar.png')) }}">
                     </span>
-                  <div class="media-body">
-                    <p class="noti-details">
-                      <span class="noti-title">{{ $notification->data['message'] }}</span>
-                      {{ $notification->data['title'] }}
-                    </p>
-                    <p class="noti-time">
-                      <span class="notification-time">
-                        {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
-                      </span>
-                    </p>
+                    <div class="media-body">
+                      <p class="noti-details">
+                        <span class="noti-title">{{ $notification->data['message'] }}</span>
+                      </p>
+                      <p class="noti-time">
+                        <span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                      </p>
                     </div>
                   </div>
                 </a>
               </li>
-            @endforeach
+            @empty
+              <li class="notification-message">
+                <div class="media">
+                  <div class="media-body">
+                    <p class="noti-details text-center">No new notifications</p>
+                  </div>
+                </div>
+              </li>
+            @endforelse
           </ul>
         </div>
         <div class="topnav-dropdown-footer">

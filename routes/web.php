@@ -54,18 +54,18 @@ Route::group(['middleware' => 'admin.redirect'], function () {
 });
 
 // Admin page routes
-Route::group(['middleware' => 'admin'], function () {
-
-  /**
-   * Admin panel header notifications
-   */
-  // Add these notification routes inside the admin group
+Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
   Route::controller(NotificationController::class)->group(function() {
     Route::get('/notifications', 'index')->name('notifications.index');
     Route::post('/notifications/{id}/mark-as-read', 'markAsRead')->name('notifications.mark-read');
     Route::post('/notifications/mark-all-read', 'markAllAsRead')->name('notifications.mark-all-read');
     Route::get('/notifications/count', 'getUnreadCount')->name('notifications.count');
+    Route::get('/notifications/list', 'list')->name('notifications.list');
   });
+});
+
+// Admin page routes
+Route::group(['middleware' => 'admin'], function () {
 
   Route::get('/admin-dashboard', [AdminPageController::class, 'showDashboard'])->name('admin.dashboard');
   Route::get('/admin-logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
