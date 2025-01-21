@@ -15,7 +15,6 @@
             <table class="table mb-0 data-table-element">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Name</th>
                   <th>Slug</th>
                   <th>Permissions</th>
@@ -26,32 +25,31 @@
               <tbody>
 
                 @forelse ($roles as $per)
+                  @if( $per -> slug !== 'super-admin' )
+                    <tr>
+                      <td>{{$per -> name}}</td>
+                      <td>{{$per -> slug}}</td>
+                      <td>
+                        <ul style="list-style: none; padding-left: 0px;">
+                          @forelse( json_decode($per -> permissions ?? '[]') as $item )
+                            <li><i class="fa fa-angle-right"></i> {{ $item }}</li>
+                          @empty
+                            <li> No permission found! </li>
+                          @endforelse
+                        </ul>
+                      </td>
+                      <td class="text-center">{{ $per->admins ? $per->admins->count() : 0 }}</td> <!-- Count of admins -->
+                      <td>
+                        <a class="btn btn-sm btn-warning" href="{{ route('role.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
 
-                  <tr>
-                    <td>{{$loop -> index + 1}}</td>
-                    <td>{{$per -> name}}</td>
-                    <td>{{$per -> slug}}</td>
-                    <td>
-                      <ul style="list-style: none; padding-left: 0px;">
-                        @forelse( json_decode($per -> permissions ?? '[]') as $item )
-                          <li><i class="fa fa-angle-right"></i> {{ $item }}</li>
-                        @empty
-                          <li> No permission found! </li>
-                        @endforelse
-                      </ul>
-                    </td>
-                    <td class="text-center">{{ $per->admins ? $per->admins->count() : 0 }}</td> <!-- Count of admins -->
-                    <td>
-                      <a class="btn btn-sm btn-warning" href="{{ route('role.edit', $per -> id) }} "><i class="fa fa-edit"></i></a>
-
-                      <form method="POST" action="{{ route('role.destroy', $per -> id) }}" class="d-inline delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
-                      </form>
-                    </td>
-                  </tr>
-
+                        <form method="POST" action="{{ route('role.destroy', $per -> id) }}" class="d-inline delete-form">
+                          @csrf
+                          @method('DELETE')
+                          <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endif
                 @empty
                   <tr>
                     <td class="text-center text-danger" colspan="6">No Records Found</td>
