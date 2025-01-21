@@ -59,7 +59,7 @@ class AdminController extends Controller
     $roles = Role::where('slug', '!=', 'student')
                  ->where('slug', '!=', 'teacher')
                  ->where('slug', '!=', 'staff')
-                 ->where('slug', '!=', 'sadmin')
+                 ->where('slug', '!=', 'super-admin')
                  ->latest()
                  ->get();
 
