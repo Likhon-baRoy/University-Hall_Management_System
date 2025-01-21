@@ -84,9 +84,9 @@
 
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th>User ID</th>
                     <th>Name</th>
-                    <th>Role</th>
+                    <th>User Type</th>
                     <th>Cell</th>
                     <th>Gender</th>
                     <th>Photo</th>
@@ -96,12 +96,18 @@
                 </thead>
                 <tbody>
                   @forelse ($users as $user)
-                    @if( $user -> name !== 'Provider' )
+                    @if($user->role->slug !== 'super-admin')
                       <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $user->user_id }}</td>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->role->name }}</td>
-                        <td>{{ $user->cell }}</td>
+                        <td>
+                          <span class="badge badge-{{ $user->role->name === 'Admin' ? 'info' :
+                                                      ($user->role->name === 'Editor' ? 'warning' :
+                                                        ($user->role->name === 'Author' ? 'success' : 'secondary')) }}">
+                            {{ $user->role->name ?? 'N/A' }}
+                          </span>
+                        </td>
+                        <td>{{ $user->email }}</td>
                         <td>{{ ucfirst($user->gender) }}</td>
                         <td><img src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}" width="40"></td>
                         <td>

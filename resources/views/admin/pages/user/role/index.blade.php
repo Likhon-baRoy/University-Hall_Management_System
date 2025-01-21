@@ -25,7 +25,7 @@
               <tbody>
 
                 @forelse ($roles as $per)
-                  @if( $per -> slug !== 'super-admin' )
+                  @if($per->slug !== 'super-admin')
                     <tr>
                       <td>{{$per -> name}}</td>
                       <td>{{$per -> slug}}</td>

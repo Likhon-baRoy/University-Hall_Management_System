@@ -73,7 +73,6 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <a href="{{ route('admin-user.create') }}" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add User</a>
             <h4 class="card-title text-center" style="flex-grow: 1; color: #007bff;">Hall Residents</h4>
             <a href="{{ route('admin-user.trash') }}" class="btn btn-warning"><i class="fa-solid fa-trash-can"></i> Trash</a>
           </div>
@@ -84,13 +83,12 @@
 
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th>User ID</th>
                     <th>Name</th>
-                    <th>Role</th>
-                    <th>Cell</th>
-                    <th>Gender</th>
+                    <th>User Type</th>
                     <th>Dept</th>
-                    <th>Semester</th>
+                    <th>Hall Name</th>
+                    <th>Room</th>
                     <th>Photo</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -98,15 +96,20 @@
                 </thead>
                 <tbody>
                   @forelse ($users as $user)
-                    @if( $user -> name !== 'Provider' )
+                    @if($user->role->slug !== 'super-admin')
                       <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $user->user_id }}</td>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->role->name }}</td>
-                        <td>{{ $user->cell }}</td>
-                        <td>{{ ucfirst($user->gender) }}</td>
+                        <td>
+                          <span class="badge badge-{{ $user->role->name === 'Student' ? 'info' :
+                                                      ($user->role->name === 'Teacher' ? 'warning' :
+                                                        ($user->role->name === 'Staff' ? 'success' : 'secondary')) }}">
+                            {{ $user->role->name ?? 'N/A' }}
+                          </span>
+                        </td>
                         <td>{{ $user->dept }}</td>
-                        <td>{{ ucfirst($user->semester) }} {{ $user->semester_year }}</td>
+                        <td>{{ $user->hall }}</td>
+                        <td>{{ $user->room }}</td>
                         <td><img src="{{ url('storage/image/profile/' . ($user->photo ?? 'avatar.png')) }}" width="40"></td>
                         <td>
                           @if($user -> status)
