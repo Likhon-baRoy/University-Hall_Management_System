@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\AdminAccountInfoNotification;
+use App\Notifications\StatusUpdateNotification;
 
 class AdminController extends Controller
 {
@@ -280,23 +281,27 @@ class AdminController extends Controller
   /**
    * Status update
    */
-  public function updateStatus($id) {
-    // catch data
-    $data = Admin::findOrFail($id);
+  public function updateStatus($id)
+  {
+    try {
+      // Find the admin user
+      $data = Admin::findOrFail($id);
 
-    // change status
-    if ($data -> status) {
-      $data -> update([
-        'status' => false
+      // Update status
+      $newStatus = !$data->status;
+      $data->update([
+        'status' => $newStatus
       ]);
-    } else {
-      $data -> update([
-        'status' => true
-      ]);
+
+      // Send notification
+      $data->notify(new StatusUpdateNotification($newStatus, $data->name));
+
+      // Return with success message
+      return back()->with('success-main', $data->name . ' status update successful');
+
+    } catch (\Exception $e) {
+      return back()->with('error', 'Error updating status: ' . $e->getMessage());
     }
-
-    // return with a success message
-    return back() -> with('success-main', $data -> name . ' status update successful');
   }
 
   /**
