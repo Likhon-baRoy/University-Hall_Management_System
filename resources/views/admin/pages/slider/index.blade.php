@@ -16,7 +16,7 @@
             <table class="table mb-0 data-table-element">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th>S.N.</th>
                   <th>Title</th>
                   <th>Photo</th>
                   <th>Buttons</th>

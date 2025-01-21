@@ -150,7 +150,7 @@ class SlideController extends Controller
       'btns' => json_encode($buttons)
     ]);
 
-    return back()->with('success', 'Slide updated successfully');
+    return redirect()->route('slider.index')->with('success', 'Slide updated successfully');
   }
 
   /**
