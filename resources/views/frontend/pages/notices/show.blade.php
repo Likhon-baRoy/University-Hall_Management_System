@@ -9,6 +9,6 @@
     type="application/pdf"
     width="100%"
     height="600px">
-    <p>Unable to display PDF file. <a href="{{ Storage::url($currentNotice->file_path) }}">Download</a> instead.</p>
+    <p>Unable to display the PDF. <a href="{{ Storage::url($currentNotice->file_path) }}" target="_blank">Download</a> instead.</p>
   </object>
 </div>

@@ -36,9 +36,16 @@
   </head>
 
   <body>
+    <!-- Spinner Start -->
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <!-- /Spinner End -->
 
     @include('frontend.layouts.header')
-    @include('frontend.layouts.navbar')
 
     {{-- main section --}}
     @section('main-section')
@@ -56,6 +63,34 @@
     <script type="text/javascript" src="{{ asset('frontend/assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('frontend/assets/js/main.js') }}"></script>
+
+    <script>
+     document.addEventListener('DOMContentLoaded', function() {
+       // Sticky navbar
+       const navbar = document.querySelector('.navbar');
+       if (navbar) {
+         const navbarHeight = navbar.offsetHeight;
+
+         window.addEventListener('scroll', () => {
+           if (window.scrollY > navbarHeight) {
+             navbar.classList.add('sticky');
+           } else {
+             navbar.classList.remove('sticky');
+           }
+         });
+       }
+
+       // Mobile menu toggle - using Bootstrap 5 classes
+       const navbarToggle = document.querySelector('.navbar-toggler');
+       const navbarMenu = document.querySelector('.navbar-collapse');
+
+       if (navbarToggle && navbarMenu) {
+         navbarToggle.addEventListener('click', () => {
+           navbarMenu.classList.toggle('show');
+         });
+       }
+     });
+    </script>
 
     @stack('scripts')
   </body>

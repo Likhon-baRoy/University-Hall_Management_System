@@ -234,13 +234,6 @@
 		          <span class="span-or">or</span>
 	            </div>
 
-	            <!-- Social Login -->
-	            <div class="social-login">
-		          <span>Register with</span>
-		          <a href="#" class="facebook"><i class="fa fa-facebook"></i></a><a href="#" class="google"><i class="fa fa-google"></i></a>
-	            </div>
-	            <!-- /Social Login -->
-
 	            <div class="text-center dont-have">Already have an account? <a href="{{ route('admin.login.page') }}">Login</a></div>
 	          </div>
             </div>

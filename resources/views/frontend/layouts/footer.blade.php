@@ -10,7 +10,13 @@
             <div class="footer_map">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.4657008881873!2d90.3097415!3d23.873099500000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c2102dc1cd51%3A0x6f95e92193fc8978!2sCity%20University%20Bangladesh!5e0!3m2!1sen!2sbd!4v1726667971052!5m2!1sen!2sbd"
-                width="220" height="173" style="border:0;" allowfullscreen=""></iframe>
+                width="220"
+                height="173"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
             </div>
           </div>
         </div>

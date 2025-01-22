@@ -175,11 +175,10 @@
                     <input class="form-control" name="btn_title[]" value="{{ $btn -> btn_title }}" type="text" placeholder="Button Title">
                     <input class="form-control" value="{{ $btn -> btn_link }}" name="btn_link[]" type="text" placeholder="Button Link">
                     <select class="form-control" name="btn_type[]">
-                      <option @if( $btn -> btn_type === 'btn-light-out' ) selected @endif value="btn-light-out"> default </option>
-                      <option @if( $btn -> btn_type === 'btn-color btn-full' ) selected @endif  value="btn-color btn-full"> Red </option>
+                      <option @if( $btn -> btn_type === 'btn-light-out' ) selected @endif value="btn-light-out"> Default </option>
+                      <option @if( $btn -> btn_type === 'btn-color btn-full' ) selected @endif  value="btn-color btn-full"> SkyBlue </option>
                     </select>
                     <hr />
-
                   </div>
                   @php $i++; @endphp
                 @endforeach

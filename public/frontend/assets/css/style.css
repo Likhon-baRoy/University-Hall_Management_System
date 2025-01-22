@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 /* Profile Tooltip Menubar Style */
 .profile-container {
     position: relative;
@@ -98,61 +102,33 @@ body {
 }
 
 /* ---------------------------- Header Start ------------------------------- */
-header {
-    height: 50px;
-    padding: 5px 0;
-    margin-top: 5px;
-    font-size: 18px;
-    margin-bottom: auto;
-    background-color: var(--primary);
+.header {
+  background-color: #bd0404; /* Red background */
+  border-bottom: 1px solid #bb2d3b;
 }
 
-header .header_contact {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header_contact .c-info, .header_contact .c_box {
+  font-size: 14px;
+  color: #fff;
 }
 
-.c-info i {
-    color: #ffffff;
-    padding: 5px;
-}
-.c-info a {
-    color: #ffffff;
-    text-align: left;
-    text-decoration: none;
+.header_contact a {
+  text-decoration: none;
+  color: #ffd9da;
 }
 
-/* header .c-info a:hover {
-  font-size: 15px;
-  font-weight: 400;
-  transition: all linear 0.3s;
-} */
-header .c_box i {
-    color: #ffffff;
-    margin-right: 5px;
+.header_contact a:hover {
+  text-decoration: underline;
+  color: #fff;
 }
-
-header .c_box a {
-    color: var(--light);
-    font-family: var(--primary-font);
-    text-decoration: none;
-}
-
-/* header .c_box a:hover {
-  font-size: 15px;
-  font-weight: 400;
-  transition: all linear 0.3s;
-} */
-
 /* -------------------------- Header end -------------------------- */
 
 /*** Spinner ***/
 #spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
-    z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
+  z-index: 99999;
 }
 
 #spinner.show {
@@ -161,270 +137,96 @@ header .c_box a {
     opacity: 1;
 }
 
-/************************************ Button **************************************/
-.btn {
-    font-family: var(--primary-font);
-    font-weight: 600;
-    transition: 0.5s;
+.navbar {
+  padding: 0.3rem 1rem; /* Reduced height */
 }
 
-.btn.btn-primary,
-.btn.btn-secondary {
-    color: #ffffff;
+.navbar .nav-link {
+  color: #fff;
+  font-size: 16px;
+  margin: 0 0.5rem;
+  transition: all 0.3s;
+  position: relative;
 }
 
-.btn-square {
-    width: 30px;
-    height: 30px;
+.navbar .nav-link:hover {
+  color: #ffd9da;
 }
 
-.btn-sm-square {
-    width: 35px;
-    height: 35px;
+.navbar .nav-link:hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  background: #ffd9da;
+  animation: slideIn 0.3s ease-in-out;
 }
 
-.btn-lg-square {
-    width: 48px;
-    height: 48px;
+@keyframes slideIn {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
-.btn-square,
-.btn-sm-square,
-.btn-lg-square {
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: normal;
-    border-radius: 0px;
+.navbar .btn-primary {
+  background-color: #bb2d3b; /* Match header red */
+  border-color: #bb2d3b;
+  font-size: 16px;
+  padding: 0.4rem 1rem;
+  transition: background-color 0.3s;
 }
 
-/* ================== Navbar =========================*/
-/* .navbar .dropdown-toggle::after {
-  border: none;
-  content: "\f107";
-  font-family: var(--primary-font);
-  font-weight: 900;
-  vertical-align: middle;
-  margin-left: 4px;
+.navbar .btn-primary:hover {
+  background-color: #a11d2b;
 }
 
-.city_logo {
-  margin-top: 20px;
+.navbar .rounded-pill {
+  border-radius: 50px;
 }
 
-.navbar-light .navbar-nav .nav-link {
-  margin-top: 20px;
-  margin-right: 40px;
-  color: #bd0404;
-  font-size: 13px;
-  padding: 15px 15px 15px 15px;
-  font-weight: 600;
-  text-transform: uppercase;
-  outline: none;
-  margin-bottom: 15px;
-} */
-/* afafaf */
-
-.navbar .dropdown-toggle::after {
-    border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    vertical-align: middle;
-    margin-left: 8px;
+.logo-offset {
+  margin-left: -20px;
 }
 
-.navbar-light .navbar-nav .nav-link {
-    margin-right: 30px;
-    padding: 25px 0;
-    color: #ffffff;
-    font-size: 15px;
-    text-transform: uppercase;
-    outline: none;
+.login-offset {
+  margin-right: -20px;
 }
 
-.navbar-light .navbar-nav .nav-link:hover,
-.navbar-light .navbar-nav .nav-link.active {
-    color: var(--primary);
+/* Sticky navbar shadow */
+.sticky-top {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 991.98px) {
-    .navbar-light .navbar-nav .nav-link {
-        margin-right: 0;
-        padding: 10px 0;
-    }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar .nav-link {
+    font-size: 14px;
+    margin: 0.3rem 0;
+  }
 
-    .navbar-light .navbar-nav {
-        border-top: 1px solid #eeeeee;
-    }
+  .navbar .btn-primary {
+    font-size: 14px;
+    padding: 0.4rem 0.8rem;
+  }
 }
-
-.navbar-light .navbar-brand,
-.navbar-light a.btn {
-    height: 75px;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: var(--dark);
-    font-weight: 500;
-}
-
-.navbar-light.sticky-top {
-    top: -100px;
-    transition: 0.5s;
-}
-
-@media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
-        display: block;
-        margin-top: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.5s;
-    }
-
-    .navbar .dropdown-menu.fade-down {
-        top: 100%;
-        transform: rotateX(-75deg);
-        transform-origin: 0% 0%;
-    }
-
-    .navbar .nav-item:hover .dropdown-menu {
-        top: 100%;
-        transform: rotateX(0deg);
-        visibility: visible;
-        transition: 0.5s;
-        opacity: 1;
-    }
-}
-
-/*************************************** Combine btn start*****************************************/
-.combined-button {
-    display: inline-flex;
-    align-items: center;
-    background-color: #d44040;
-    border-radius: 30px;
-    overflow: hidden;
-}
-
-/* ===============================Sign Up button style =============================*/
-.signup-btn {
-    padding: 10px 20px;
-    border: none;
-    background-color: var(--primary);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 30px 0 0 30px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-/*============================= Log In button style =====================================*/
-.login-btn {
-    padding: 10px 20px;
-    border: none;
-    background-color: transparent;
-    color: whitesmoke;
-    font-size: 16px;
-    font-weight: 400;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-/*==== Hover effects =========*/
-.signup-btn:hover {
-    background-color: #d44040;
-    color: black;
-}
-
-.login-btn:hover {
-    background-color: var(--primary);
-    color: black;
-}
-
-/************************************** Combine btn end *******************************/
-
-.primary-btn:hover {
-    font-size: 15px;
-    font-weight: 600;
-    background-color: var(--primary);
-    color: #ffffff;
-    transition: all 0.3s ease-in-out;
-}
-
-.navbar-light .navbar-nav .nav-link:hover,
-.navbar-light .navbar-nav .nav-link.active {
-    color: var(--primary);
-    font-weight: 700;
-}
-
-@media (max-width: 991.98px) {
-    .navbar-light .navbar-nav .nav-link {
-        margin-right: 0;
-        padding: 10px 0;
-    }
-
-    .navbar-light .navbar-nav {
-        border-top: 1px solid #eeeeee;
-    }
-}
-
-.navbar-light .navbar-brand,
-.navbar-light a.btn {
-    height: 75px;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: var(--dark);
-    font-weight: 600;
-}
-
-.navbar-light.sticky-top {
-    top: -100px;
-    transition: 0.5s;
-}
-
-@media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
-        display: block;
-        margin-top: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.5s;
-    }
-
-    .navbar .dropdown-menu.fade-down {
-        top: 100%;
-        transform: rotateX(-75deg);
-        transform-origin: 0% 0%;
-    }
-
-    .navbar .nav-item:hover .dropdown-menu {
-        top: 100%;
-        transform: rotateX(0deg);
-        visibility: visible;
-        transition: 0.5s;
-        opacity: 1;
-    }
-}
-
 /***===================== Header carousel ==================***/
 @media (max-width: 768px) {
-    .header-carousel .owl-carousel-item {
-        position: relative;
-        min-height: 500px;
-    }
+  .header-carousel .owl-carousel-item {
+    position: relative;
+    min-height: 500px;
+  }
 
-    .header-carousel .owl-carousel-item img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+  .header-carousel .owl-carousel-item img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .header-carousel .owl-nav {
@@ -474,6 +276,10 @@ header .c_box a {
 }
 
 /*** =================Section Title =================***/
+section {
+  scroll-margin-top: 120px; /* Adjust based on your navbar height */
+}
+
 .section-title {
     position: relative;
     display: inline-block;
@@ -690,32 +496,32 @@ header .c_box a {
 }
 
 /* -------------------------- Life at hall start -------------------------- */
-#life_at_hall {
+#hallLife {
   margin-top: 120px;
 }
 
-#life_at_hall .life_at_main {
+#hallLife .life_at_main {
   margin-top: 75px;
   overflow: hidden;
 }
 
-#life_at_hall .life_at_main .img_row {
+#hallLife .life_at_main .img_row {
   margin: 0;
 }
 
-#life_at_hall .life_at_main .img_main {
+#hallLife .life_at_main .img_main {
   padding: 0;
 }
 
-#life_at_hall .life_at_main .img_main_2 {
+#hallLife .life_at_main .img_main_2 {
   padding: 0;
 }
 
-#life_at_hall .life_at_main .img_box {
+#hallLife .life_at_main .img_box {
   position: relative;
 }
 
-#life_at_hall .life_at_main .img_box .img_overlay {
+#hallLife .life_at_main .img_box .img_overlay {
   background-color: rgb(6, 71, 137, 0.9);
   height: 100%;
   width: 100%;
@@ -730,15 +536,15 @@ header .c_box a {
   align-items: center;
 }
 
-#life_at_hall .life_at_main .img_main:nth-child(even) .img_overlay {
+#hallLife .life_at_main .img_main:nth-child(even) .img_overlay {
   background-color: var(--primary);
 }
 
-#life_at_hall .life_at_main .img_main_2:nth-child(odd) .img_overlay {
+#hallLife .life_at_main .img_main_2:nth-child(odd) .img_overlay {
   background-color: var(--primary);
 }
 
-#life_at_hall .life_at_main .img_box .img_overlay a {
+#hallLife .life_at_main .img_box .img_overlay a {
   font-family: "Poppins", sans-serif;
   font-size: 17px;
   font-weight: 400;
@@ -748,12 +554,12 @@ header .c_box a {
   line-height: 1.8;
 }
 
-#life_at_hall .life_at_main .img_box img {
+#hallLife .life_at_main .img_box img {
   display: block;
   width: 100%;
 }
 
-#life_at_hall .life_at_main .img_box .img_overlay:hover {
+#hallLife .life_at_main .img_box .img_overlay:hover {
   opacity: 1;
 }
 /* -------------------------- Life at hall end -------------------------- */
