@@ -88,7 +88,12 @@ class AuthController extends Controller
     try {
       // First validate the basic form data
       $validated = $request->validate([
-        'name' => 'required|string|max:255',
+        'name' => [
+          'required',
+          'string',
+          'max:255',
+          'regex:/^[A-Z][a-zA-Z]*(?:\s[A-Z][a-zA-Z]*)*$/u',
+        ],
         'user_id' => 'required|string|unique:admins',
         'username' => 'required|string|unique:admins',
         'email' => 'required|string|email|unique:admins',
@@ -103,6 +108,8 @@ class AuthController extends Controller
         'hall' => 'required|string',
         'room' => 'required|string',
         'seat' => $request->has('room_id') ? 'required|string' : 'nullable|string',
+      ], [
+        'name.regex' => 'Each word in the name must start with a capital letter and contain only letters.',
       ]);
 
       // Get hall ID for verification
