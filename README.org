@@ -16,6 +16,8 @@ This is a project of a dormitory management system website designed to improve t
 * Table of Contents                                                     :toc:
 - [[#about][About]]
 - [[#what-are-we-looking-for][What are we looking for?]]
+  - [[#fronted-facilities][Fronted Facilities]]
+  - [[#admin-panel][Admin-panel]]
 - [[#-how-to-contribute][💻 How to contribute?]]
 - [[#-license][📜 License]]
 - [[#-where-to-report-for-bugs-or-issues][📝 Where to Report for bugs or issues?]]
@@ -23,24 +25,48 @@ This is a project of a dormitory management system website designed to improve t
 * What are we looking for?
 The basic things that we're looking for is fulfilment of all facilities shown this video: https://youtu.be/5u11Gv-wc_U
 
-- *Visual Booking facility:* Allow users visual representation of rooms,
-  something like: hotel online book with view system. There Wil be section Boys
-  and Girls hall in frontend and they can choose their own seat from the
-  available(only available seat will be shown).
+** Fronted Facilities
 
-  - When user clicked on =Book Now=, will redirect in registration form with info
-    data's: Hall, Room, Seat.
+[X] *Homepage:* This page represents: Hall facilities, information, helpline, visual representation of hall indoor & outdoor etc.
 
-- *Online Payment:* After Signup form submit, user data will be stored in database
+[X] *Visual Booking facility:* Allow users visual representation of rooms,
+  something like: hotel online book with view system. Can filter/search for the specific rooms. Only rooms with available seat will shown in the booking page.
+
+[X] *Fetch Booked Seat Data:*  When user checked for =Book=, user will redirect to registration page fetching Hall & Room into the form field.
+
+[X] *User validity check:* Check If the user is registered under University. Then we'll let them in. Otherwise we'll show user is invalid. For this to work we keep separate user_type tables where we'll search for user_id & email of users in given user_type in the register field.
+
+[X] *OTP verification:* OTP code will send on user given email with a time limit, If time expire, user have to request for a new OTP.
+
+[-] *Online Payment:* On user successful registration user data will be stored in database
   but with inactive status. To activate account user have to pay the rent in
-  advance. There will be shown a =Complete Payment= button to pay online after
-  submitting the registration form.
-- *Notify on account activate:* When user account is activated, user will get notified via email.
-- *Auto Activate:* on paying due the user account will activate automatically.
-- *Renewing Seat:* Inactive users can Renew seat by paying the rent.
-- *Seat Cancellation:* User can cancel their seat by future month but not acceptable in current month.
-- *Dashboard graphical representation:* In user Dashboard we'll try to show some infos about hall, users ups-and-down etc through graphical representation.
-- *User validity check:* Check user ID If the user is from city university registered ID. Then we'll let them in. Otherwise we'll show user is invalid.
+  advance. The status will automatically activate through online payment API token but as we could not use the paid API, so this  feature is missing. And have to it menualy from admin panel.
+
+** Admin-panel
+
+[X] *Notify on User Status Update:* On status update, user will get notified via email.
+
+[X] *Only Active Status login facility:* If user status is active then user can login, otherwise user is restricted.
+
+[X] *Dashboard graphical representation:* In user Dashboard we'll try to show some infos about hall, users ups-and-down etc through graphical representation.
+
+[X] *Dynamic Permissions:* Admin can give role wise permissions to each user_type so that student can't get access of admin options.
+
+[X] *Add Hall,Room,Seat Dynamically:* Permitted Admin can create/edit/update or publish/unpublish Hall,Room,Seat.
+
+*** Application Panel
+
+User can apply this fields, and when admin Approval/Rejection user will get notify through email. And when rejected admin can't proceed with that application anymore.
+
+[X] *Seat Cancellation:* User can cancel their seat by applying If admin accept their request.
+
+[X] *Seat Changing*: If user have seat, then they can apply for their seat change for available seats.
+
+[X] *Seat Renewal Request:* When user cancel their seat, they can apply for seat renew through application as long as their data is in user database.
+
+*** Problem Panel
+
+Only user can post problem & admin can see all user problems and reply. And upon reply user will get notify through email & Laravel database. There is a limit given on posting problem. User can post 3 problems per day, and If their any problem post got deleted/resolved they can post another one.
 
 ~(/so that's it for now! we may update according to our requirements./)~
 
