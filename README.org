@@ -88,18 +88,62 @@ Admin panel registration page
 #+END_CENTER
 Room view and seat booking page
 #+BEGIN_CENTER
-[[./screenshots/hall-room-view-and-booking.png]]
+[[./screenshots/hall-room-view-and-booking-page.png]]
 #+END_CENTER
 Super Admin Dashboard panel
 #+BEGIN_CENTER
-[[../screenshots/admin-dashboard.jpg]]
+[[./screenshots/admin-dashboard.jpg]]
 #+END_CENTER
 Super Admin Dynamic Role & Permissions Management Panel 🔥
 #+BEGIN_CENTER
-[[./screenshots/role_&_permission.jpg]]
+[[./screenshots/role-&-permission-panel.jpg]]
+#+END_CENTER
+Permissions Management Panel 🔥
+#+BEGIN_CENTER
+[[./screenshots/permission-panel.jpg]]
+#+END_CENTER
+Admin All problem post seeing panel
+#+BEGIN_CENTER
+[[./screenshots/problem-panel.jpg]]
+#+END_CENTER
+Admin panel reply on problem
+#+BEGIN_CENTER
+[[./screenshots/problem-post.jpg]]
+#+END_CENTER
+Admin Hall Management panel
+#+BEGIN_CENTER
+[[./screenshots/halls-panel.jpg]]
+#+END_CENTER
+Admin Room Management panel
+#+BEGIN_CENTER
+[[./screenshots/rooms-panel.jpg]]
+#+END_CENTER
+Admin Seat Management panel
+#+BEGIN_CENTER
+[[./screenshots/seats-panel.jpg]]
+#+END_CENTER
+Admin Applications Management panel
+#+BEGIN_CENTER
+[[./screenshots/application-panel.jpg]]
+#+END_CENTER
+Application post
+#+BEGIN_CENTER
+[[./screenshots/seat-application.jpg]]
+#+END_CENTER
+Admin Notice Management panel
+#+BEGIN_CENTER
+[[./screenshots/notice-panel.jpg]]
+#+END_CENTER
+Admin Notice Addition
+#+BEGIN_CENTER
+[[./screenshots/add-notice.jpg]]
+#+END_CENTER
+Admin Slider image/photo  management panel for Homepage
+#+BEGIN_CENTER
+[[./screenshots/slider-panel.jpg]]
 #+END_CENTER
 
-#+html: <p><img alt="GitHub repo size" align="right" src="https://img.shields.io/github/repo-size/Likhon-baRoy/.emacs.d?color=blue&logo=github&style=for-the-badge"></p>
+#+html: <p><img alt="GitHub repo size" align="right" src="https://img.shields.io/github/repo-size/Likhon-baRoy/University-Hall_Management_System?color=blue&logo=github&style=for-the-badge"></p>
 
 * 💻 How to contribute?
 
