@@ -18,6 +18,7 @@ This is a project of a dormitory management system website designed to improve t
 - [[#what-are-we-looking-for][What are we looking for?]]
   - [[#fronted-facilities][Fronted Facilities]]
   - [[#admin-panel][Admin-panel]]
+- [[#screenshots][Screenshots]]
 - [[#-how-to-contribute][💻 How to contribute?]]
 - [[#-license][📜 License]]
 - [[#-where-to-report-for-bugs-or-issues][📝 Where to Report for bugs or issues?]]
@@ -69,6 +70,36 @@ User can apply this fields, and when admin Approval/Rejection user will get noti
 Only user can post problem & admin can see all user problems and reply. And upon reply user will get notify through email & Laravel database. There is a limit given on posting problem. User can post 3 problems per day, and If their any problem post got deleted/resolved they can post another one.
 
 ~(/so that's it for now! we may update according to our requirements./)~
+
+* Screenshots
+Here are some demo... \\
+
+Front end Homepage user interface
+#+BEGIN_CENTER
+[[./screenshots/frontend-homepage.png]]
+#+END_CENTER
+Admin panel Login page
+#+BEGIN_CENTER
+[[./screenshots/login-page.png]]
+#+END_CENTER
+Admin panel registration page
+#+BEGIN_CENTER
+[[./screenshots/registration-page.png]]
+#+END_CENTER
+Room view and seat booking page
+#+BEGIN_CENTER
+[[./screenshots/hall-room-view-and-booking.png]]
+#+END_CENTER
+Super Admin Dashboard panel
+#+BEGIN_CENTER
+[[../screenshots/admin-dashboard.jpg]]
+#+END_CENTER
+Super Admin Dynamic Role & Permissions Management Panel 🔥
+#+BEGIN_CENTER
+[[./screenshots/role_&_permission.jpg]]
+#+END_CENTER
+
+#+html: <p><img alt="GitHub repo size" align="right" src="https://img.shields.io/github/repo-size/Likhon-baRoy/.emacs.d?color=blue&logo=github&style=for-the-badge"></p>
 
 * 💻 How to contribute?
 
