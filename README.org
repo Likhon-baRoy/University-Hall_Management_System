@@ -74,71 +74,71 @@ Only user can post problem & admin can see all user problems and reply. And upon
 * Screenshots
 Here are some demo... \\
 
-Front end Homepage user interface
+- *Front end Homepage user interface*
 #+BEGIN_CENTER
 [[./screenshots/frontend-homepage.png]]
 #+END_CENTER
-Admin panel Login page
+- *Admin panel Login page*
 #+BEGIN_CENTER
 [[./screenshots/login-page.png]]
 #+END_CENTER
-Admin panel registration page
+- *Admin panel registration page*
 #+BEGIN_CENTER
 [[./screenshots/registration-page.png]]
 #+END_CENTER
-Room view and seat booking page
+- *Room view and seat booking page*
 #+BEGIN_CENTER
 [[./screenshots/hall-room-view-and-booking-page.png]]
 #+END_CENTER
-Super Admin Dashboard panel
+- *Super Admin Dashboard panel*
 #+BEGIN_CENTER
 [[./screenshots/admin-dashboard.jpg]]
 #+END_CENTER
-Super Admin Dynamic Role & Permissions Management Panel 🔥
+- *Super Admin Dynamic Role & Permissions Management Panel* 🔥
 #+BEGIN_CENTER
 [[./screenshots/role-&-permission-panel.jpg]]
 #+END_CENTER
-Permissions Management Panel 🔥
+- *Permissions Management Panel*
 #+BEGIN_CENTER
 [[./screenshots/permission-panel.jpg]]
 #+END_CENTER
-Admin All problem post seeing panel
+- *Admin All problem post seeing panel*
 #+BEGIN_CENTER
 [[./screenshots/problem-panel.jpg]]
 #+END_CENTER
-Admin panel reply on problem
+- *Admin panel reply on problem*
 #+BEGIN_CENTER
 [[./screenshots/problem-post.jpg]]
 #+END_CENTER
-Admin Hall Management panel
+- *Admin Hall Management panel*
 #+BEGIN_CENTER
 [[./screenshots/halls-panel.jpg]]
 #+END_CENTER
-Admin Room Management panel
+- *Admin Room Management panel*
 #+BEGIN_CENTER
 [[./screenshots/rooms-panel.jpg]]
 #+END_CENTER
-Admin Seat Management panel
+- *Admin Seat Management panel*
 #+BEGIN_CENTER
 [[./screenshots/seats-panel.jpg]]
 #+END_CENTER
-Admin Applications Management panel
+- *Admin Applications Management panel*
 #+BEGIN_CENTER
 [[./screenshots/application-panel.jpg]]
 #+END_CENTER
-Application post
+- *Application post*
 #+BEGIN_CENTER
 [[./screenshots/seat-application.jpg]]
 #+END_CENTER
-Admin Notice Management panel
+- *Admin Notice Management panel*
 #+BEGIN_CENTER
 [[./screenshots/notice-panel.jpg]]
 #+END_CENTER
-Admin Notice Addition
+- *Admin Notice Addition*
 #+BEGIN_CENTER
 [[./screenshots/add-notice.jpg]]
 #+END_CENTER
-Admin Slider image/photo  management panel for Homepage
+- *Admin Slider image/photo  management panel for Homepage*
 #+BEGIN_CENTER
 [[./screenshots/slider-panel.jpg]]
 #+END_CENTER
